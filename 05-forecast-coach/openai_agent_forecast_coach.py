@@ -9,7 +9,7 @@ Requirements:
 
 Environment variables:
     OPENAI_API_KEY       — OpenAI API key
-    PEOPLEAI_MCP_URL     — People.ai MCP server URL
+    BACKSTORY_MCP_URL     — Backstory MCP server URL
     SMTP_HOST            — SMTP server
     SMTP_USER            — SMTP username
     SMTP_PASS            — SMTP password
@@ -28,7 +28,7 @@ from agents.mcp import MCPServerSse
 SYSTEM_PROMPT = """You are an AI sales coaching assistant that helps sales leaders
 improve their team's pipeline execution.
 
-You have access to People.ai via MCP tools and local email delivery.
+You have access to Backstory via MCP tools and local email delivery.
 
 Analyze each deal across: engagement recency, stakeholder coverage, stage velocity,
 competitive signals, risk indicators.
@@ -60,14 +60,14 @@ def send_coaching_email(recipient: str, report: str) -> str:
 
 
 async def create_agent() -> Agent:
-    peopleai_mcp = MCPServerSse(
-        name="peopleai", url=os.environ["PEOPLEAI_MCP_URL"],
+    backstory_mcp = MCPServerSse(
+        name="backstory", url=os.environ["BACKSTORY_MCP_URL"],
     )
     return Agent(
         name="Forecast Coach",
         instructions=SYSTEM_PROMPT,
         tools=[send_coaching_email],
-        mcp_servers=[peopleai_mcp],
+        mcp_servers=[backstory_mcp],
     )
 
 
@@ -77,7 +77,7 @@ async def run_forecast_coach():
     result = await Runner.run(
         agent,
         """Run the Forecast Coach workflow:
-1. Query People.ai MCP for sales leaders and team assignments
+1. Query Backstory MCP for sales leaders and team assignments
 2. For each leader:
    a. Pull team's open pipeline (active deals)
    b. Assess each deal: engagement, stakeholders, velocity, competition, risks

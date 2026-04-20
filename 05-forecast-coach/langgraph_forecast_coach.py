@@ -9,7 +9,7 @@ Requirements:
 
 Environment variables:
     ANTHROPIC_API_KEY    — Claude API key
-    PEOPLEAI_MCP_URL     — People.ai MCP server URL
+    BACKSTORY_MCP_URL     — Backstory MCP server URL
     SMTP_HOST            — SMTP server
     SMTP_USER            — SMTP username
     SMTP_PASS            — SMTP password
@@ -40,7 +40,7 @@ class ForecastCoachState(TypedDict):
 SYSTEM_PROMPT = """You are an AI sales coaching assistant that helps sales leaders
 improve their team's pipeline execution.
 
-You have access to People.ai via MCP tools. For each leader's team pipeline:
+You have access to Backstory via MCP tools. For each leader's team pipeline:
 
 Analyze each deal across these dimensions:
 - Engagement recency: when was last meaningful contact?
@@ -59,11 +59,11 @@ Generate a coaching report with:
 Be specific with deal names, amounts, rep names, and dates."""
 
 
-async def get_peopleai_tools():
+async def get_backstory_tools():
     try:
         from langchain_mcp_adapters.client import MultiServerMCPClient
         client = MultiServerMCPClient({
-            "peopleai": {"url": os.environ["PEOPLEAI_MCP_URL"], "transport": "sse"}
+            "backstory": {"url": os.environ["BACKSTORY_MCP_URL"], "transport": "sse"}
         })
         return await client.get_tools()
     except ImportError:
@@ -72,7 +72,7 @@ async def get_peopleai_tools():
 
 async def fetch_leaders(state: ForecastCoachState) -> dict:
     """Fetch sales leaders and their team assignments."""
-    tools = await get_peopleai_tools()
+    tools = await get_backstory_tools()
     llm = ChatAnthropic(model="claude-sonnet-4-20250514", temperature=0)
 
     if tools:
@@ -87,7 +87,7 @@ async def fetch_leaders(state: ForecastCoachState) -> dict:
 
 async def pull_pipeline(state: ForecastCoachState) -> dict:
     """Pull pipeline data for the current leader's team."""
-    tools = await get_peopleai_tools()
+    tools = await get_backstory_tools()
     llm = ChatAnthropic(model="claude-sonnet-4-20250514", temperature=0)
     leader = state["leaders"][0] if state["leaders"] else {}
 
