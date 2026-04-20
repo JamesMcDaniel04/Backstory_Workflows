@@ -1,0 +1,3031 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>People.ai Automation Library</title>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<style>
+  :root {
+    --ac-coral: #FF6B6B;
+    --ac-coral-light: #FF8E8E;
+    --ac-coral-dark: #E85555;
+    --ac-salmon: #FFA07A;
+    --ac-cream: #FFF5F2;
+    --ac-warm-white: #FFFAF8;
+    --ac-dark: #2D3436;
+    --ac-dark-secondary: #636E72;
+    --ac-med-gray: #B2BEC3;
+    --ac-light-gray: #DFE6E9;
+    --ac-white: #FFFFFF;
+    --ac-success: #00B894;
+    --ac-warning: #FDCB6E;
+    --radius: 10px;
+    --shadow: 0 2px 12px rgba(45,52,54,0.06);
+    --shadow-hover: 0 6px 20px rgba(45,52,54,0.12);
+    --wf-bg: #1a1a2e;
+    --wf-surface: #232340;
+    --wf-border: #2e2e4a;
+    --wf-green: #4cd964;
+    --wf-blue: #5b9aff;
+    --wf-purple: #a855f7;
+    --wf-orange: #ff9f43;
+    --wf-text: #e0e0f0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Proxima Nova', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: var(--ac-dark);
+    background: var(--ac-cream);
+    line-height: 1.5;
+  }
+
+  /* Header */
+  .header {
+    background: var(--ac-white);
+    color: var(--ac-dark);
+    padding: 20px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 3px solid var(--ac-coral);
+    box-shadow: var(--shadow);
+  }
+  .header-left { display: flex; align-items: center; gap: 16px; }
+  .header-logo {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--ac-coral);
+  }
+  .header-logo span { color: var(--ac-coral-dark); }
+  .header-divider {
+    width: 1px;
+    height: 32px;
+    background: var(--ac-light-gray);
+  }
+  .header-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--ac-dark);
+  }
+  .header-subtitle {
+    font-size: 13px;
+    color: var(--ac-dark-secondary);
+    margin-top: 2px;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 20px;
+    border-radius: var(--radius);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+  .btn-primary {
+    background: var(--ac-coral);
+    color: var(--ac-white);
+  }
+  .btn-primary:hover { background: var(--ac-coral-dark); }
+  .btn-secondary {
+    background: var(--ac-white);
+    color: var(--ac-coral);
+    border: 1.5px solid var(--ac-coral);
+  }
+  .btn-secondary:hover { background: var(--ac-cream); }
+  .btn-outline {
+    background: transparent;
+    color: var(--ac-dark);
+    border: 1px solid var(--ac-light-gray);
+  }
+  .btn-outline:hover { border-color: var(--ac-coral); color: var(--ac-coral); }
+  .btn-copy {
+    background: var(--ac-coral);
+    color: white;
+    padding: 12px 24px;
+    font-size: 15px;
+  }
+  .btn-copy:hover { background: var(--ac-coral-dark); }
+  .btn-download {
+    background: transparent;
+    color: var(--ac-coral);
+    border: 1.5px solid var(--ac-coral);
+    padding: 12px 24px;
+    font-size: 15px;
+  }
+  .btn-download:hover { background: var(--ac-cream); }
+  .btn-download.disabled, .btn-copy.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+  .btn-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+
+  /* Container */
+  .container { max-width: 1200px; margin: 0 auto; padding: 24px 32px; }
+
+  /* Search */
+  .search-bar {
+    position: relative;
+    margin-bottom: 16px;
+  }
+  .search-bar input {
+    width: 100%;
+    padding: 12px 16px 12px 42px;
+    border: 1.5px solid var(--ac-light-gray);
+    border-radius: var(--radius);
+    font-size: 14px;
+    background: var(--ac-white);
+    color: var(--ac-dark);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .search-bar input:focus {
+    border-color: var(--ac-coral);
+    box-shadow: 0 0 0 3px rgba(255,107,107,0.1);
+  }
+  .search-bar::before {
+    content: '\1F50D';
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+    opacity: 0.4;
+  }
+
+  /* Filters */
+  .filters {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+    align-items: center;
+  }
+  .filter-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ac-dark-secondary);
+    margin-right: 4px;
+  }
+  .filter-btn {
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1.5px solid var(--ac-light-gray);
+    background: var(--ac-white);
+    color: var(--ac-dark-secondary);
+    transition: all 0.2s;
+  }
+  .filter-btn:hover { border-color: var(--ac-coral); color: var(--ac-coral); }
+  .filter-btn.active {
+    background: var(--ac-coral);
+    color: var(--ac-white);
+    border-color: var(--ac-coral);
+  }
+
+  /* Card Grid */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 16px;
+  }
+
+  .card {
+    background: var(--ac-white);
+    border-radius: var(--radius);
+    border: 1px solid var(--ac-light-gray);
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.25s;
+    position: relative;
+    border-left: 4px solid transparent;
+  }
+  .card:hover {
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-2px);
+    border-left-color: var(--ac-coral);
+  }
+
+  .card-number {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--ac-med-gray);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .card-name {
+    font-size: 17px;
+    font-weight: 700;
+    margin: 4px 0 8px;
+    color: var(--ac-dark);
+  }
+  .card-desc {
+    font-size: 13px;
+    color: var(--ac-dark-secondary);
+    margin-bottom: 12px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .card-meta { display: flex; flex-wrap: wrap; gap: 6px; }
+
+  .badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .badge-trigger {
+    background: rgba(255,107,107,0.12);
+    color: var(--ac-coral-dark);
+  }
+  .badge-output {
+    background: rgba(255,160,122,0.15);
+    color: #C06030;
+  }
+  .badge-category {
+    background: var(--ac-light-gray);
+    color: var(--ac-dark-secondary);
+  }
+
+  /* Stats bar */
+  .stats-bar {
+    display: flex;
+    gap: 24px;
+    padding: 16px 0;
+    margin-bottom: 8px;
+    font-size: 13px;
+    color: var(--ac-dark-secondary);
+  }
+  .stats-bar strong { color: var(--ac-dark); }
+
+  /* Detail View */
+  .detail-view { display: none; }
+  .detail-view.active { display: block; }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--ac-coral);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 20px;
+    cursor: pointer;
+  }
+  .back-link:hover { text-decoration: underline; }
+
+  .detail-header {
+    background: var(--ac-white);
+    border-radius: var(--radius);
+    border: 1px solid var(--ac-light-gray);
+    padding: 24px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow);
+  }
+  .detail-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--ac-dark);
+    margin-bottom: 8px;
+  }
+  .detail-desc {
+    font-size: 15px;
+    color: var(--ac-dark-secondary);
+    margin-bottom: 16px;
+  }
+  .detail-meta-row {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    font-size: 13px;
+    color: var(--ac-dark-secondary);
+  }
+  .detail-meta-item strong { color: var(--ac-dark); }
+
+  /* Tabs */
+  .tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 2px solid var(--ac-light-gray);
+    margin-bottom: 20px;
+  }
+  .tab {
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    color: var(--ac-dark-secondary);
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .tab:hover { color: var(--ac-coral); }
+  .tab.active {
+    color: var(--ac-coral);
+    border-bottom-color: var(--ac-coral);
+  }
+
+  .tab-content {
+    background: var(--ac-white);
+    border-radius: var(--radius);
+    border: 1px solid var(--ac-light-gray);
+    padding: 24px;
+    box-shadow: var(--shadow);
+  }
+
+  /* Workflow Mockup (kept dark for Setup tab) */
+  .wf-mockup {
+    border-radius: 10px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+    overflow: hidden;
+    height: 360px;
+    margin-bottom: 16px;
+    border: 1px solid var(--wf-border);
+    display: flex;
+    flex-direction: column;
+    background: var(--wf-bg);
+  }
+  .wf-title-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    background: #16162b;
+    border-bottom: 1px solid var(--wf-border);
+  }
+  .wf-dots {
+    display: flex;
+    gap: 6px;
+  }
+  .wf-dots span {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+  .wf-dots span:nth-child(1) { background: #ff5f57; }
+  .wf-dots span:nth-child(2) { background: #ffbd2e; }
+  .wf-dots span:nth-child(3) { background: #28c840; }
+  .wf-title-text {
+    flex: 1;
+    font-size: 12px;
+    color: var(--wf-text);
+    font-family: monospace;
+    opacity: 0.7;
+  }
+  .wf-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    position: relative;
+  }
+
+  /* Setup Step Content */
+  .setup-step-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    padding: 20px;
+  }
+
+  /* Import Dialog Mockup */
+  .import-dialog {
+    background: var(--wf-surface);
+    border: 1px solid var(--wf-border);
+    border-radius: 12px;
+    padding: 24px;
+    width: 320px;
+    max-width: 100%;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.5s, transform 0.5s;
+  }
+  .import-dialog.visible { opacity: 1; transform: translateY(0); }
+  .import-dialog-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--wf-text);
+    margin-bottom: 12px;
+    text-align: center;
+  }
+  .import-dropzone {
+    border: 2px dashed var(--wf-border);
+    border-radius: 8px;
+    padding: 24px;
+    text-align: center;
+    color: var(--ac-med-gray);
+    font-size: 13px;
+    transition: border-color 0.3s, background 0.3s;
+  }
+  .import-dropzone.active {
+    border-color: var(--wf-orange);
+    background: rgba(255,159,67,0.08);
+  }
+  .import-dropzone-icon {
+    font-size: 28px;
+    margin-bottom: 8px;
+    display: block;
+  }
+  .import-file-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: rgba(255,159,67,0.15);
+    border-radius: 16px;
+    font-size: 12px;
+    color: var(--wf-orange);
+    font-weight: 600;
+    margin-top: 12px;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: opacity 0.3s, transform 0.3s;
+  }
+  .import-file-chip.visible { opacity: 1; transform: scale(1); }
+
+  /* Credential Fields */
+  .cred-field {
+    margin-bottom: 10px;
+    opacity: 0;
+    transform: translateX(-8px);
+    transition: opacity 0.3s, transform 0.3s;
+  }
+  .cred-field.visible { opacity: 1; transform: translateX(0); }
+  .cred-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ac-med-gray);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 3px;
+  }
+  .cred-input {
+    width: 100%;
+    padding: 7px 10px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--wf-border);
+    border-radius: 6px;
+    color: var(--wf-text);
+    font-size: 12px;
+    font-family: monospace;
+    transition: border-color 0.3s;
+  }
+  .cred-input.typing {
+    border-color: var(--wf-orange);
+    box-shadow: 0 0 0 2px rgba(255,159,67,0.15);
+  }
+
+  /* Config Fields */
+  .config-field {
+    margin-bottom: 10px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .config-field.visible { opacity: 1; }
+  .config-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ac-med-gray);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 3px;
+  }
+  .config-input {
+    width: 100%;
+    padding: 7px 10px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--wf-border);
+    border-radius: 6px;
+    color: var(--wf-text);
+    font-size: 12px;
+  }
+
+  /* Activate Toggle */
+  .activate-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+  .activate-label {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--wf-text);
+  }
+  .activate-toggle {
+    width: 64px;
+    height: 34px;
+    border-radius: 17px;
+    background: #3a3a5c;
+    position: relative;
+    cursor: pointer;
+    transition: background 0.4s;
+  }
+  .activate-toggle::after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: white;
+    transition: transform 0.4s;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  }
+  .activate-toggle.on {
+    background: var(--wf-green);
+  }
+  .activate-toggle.on::after {
+    transform: translateX(30px);
+  }
+  .activate-status {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ac-med-gray);
+    transition: color 0.3s;
+  }
+  .activate-status.active { color: var(--wf-green); }
+  .activate-check {
+    font-size: 32px;
+    opacity: 0;
+    transition: opacity 0.5s;
+  }
+  .activate-check.visible { opacity: 1; }
+
+  /* Playback Controls */
+  .playback-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 12px;
+  }
+  .playback-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1.5px solid var(--ac-light-gray);
+    background: var(--ac-white);
+    color: var(--ac-dark);
+    font-size: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+  .playback-btn:hover { background: var(--ac-cream); border-color: var(--ac-coral); }
+  .playback-btn.primary {
+    width: 32px;
+    height: 32px;
+    background: var(--ac-coral);
+    color: white;
+    border: none;
+    font-size: 13px;
+  }
+  .playback-btn.primary:hover { background: var(--ac-coral-dark); }
+  .playback-dots {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+  .playback-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--ac-light-gray);
+    transition: all 0.3s;
+  }
+  .playback-dot.active {
+    background: var(--ac-coral);
+    transform: scale(1.3);
+  }
+  .playback-dot.done {
+    background: var(--ac-success);
+  }
+  .step-desc {
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ac-dark);
+    margin-top: 12px;
+    min-height: 20px;
+  }
+  .step-detail {
+    text-align: center;
+    font-size: 12px;
+    color: var(--ac-dark-secondary);
+    margin-top: 4px;
+    min-height: 16px;
+    margin-bottom: 8px;
+  }
+
+  /* Detail Split Layout */
+  .detail-split {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+  }
+  .detail-split-left {
+    flex: 1;
+    min-width: 0;
+  }
+  .detail-split-right {
+    flex: 1;
+    min-width: 0;
+    position: sticky;
+    top: 24px;
+  }
+  .detail-split-right h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ac-dark);
+    margin-bottom: 8px;
+  }
+
+  /* Platform Selector */
+  .platform-selector {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+  .platform-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1.5px solid var(--ac-light-gray);
+    background: var(--ac-white);
+    color: var(--ac-med-gray);
+    transition: all 0.15s;
+  }
+  .platform-pill:hover {
+    border-color: var(--ac-coral);
+    color: var(--ac-dark);
+  }
+  .platform-pill.active {
+    border-color: var(--ac-coral);
+    background: var(--ac-coral);
+    color: white;
+  }
+  .platform-pill .pill-icon {
+    font-size: 14px;
+  }
+  .platform-download-area {
+    margin-top: 8px;
+  }
+  .platform-download-area .btn {
+    margin-right: 8px;
+  }
+  .platform-note {
+    font-size: 12px;
+    color: var(--ac-med-gray);
+    margin-top: 8px;
+    line-height: 1.5;
+  }
+
+  /* Sample Output Mockups */
+  .slack-mockup {
+    background: var(--ac-white);
+    border: 1px solid var(--ac-light-gray);
+    border-radius: 8px;
+    font-size: 13px;
+    overflow: hidden;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+  }
+  .slack-mockup-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 14px 0;
+  }
+  .slack-mockup-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 6px;
+    background: linear-gradient(135deg, var(--ac-coral), var(--ac-coral-dark));
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .slack-mockup-botname {
+    font-weight: 900;
+    font-size: 14px;
+    color: var(--ac-dark);
+  }
+  .slack-mockup-app-badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    background: var(--ac-light-gray);
+    color: var(--ac-dark-secondary);
+    padding: 1px 5px;
+    border-radius: 3px;
+    vertical-align: middle;
+    margin-left: 4px;
+  }
+  .slack-mockup-time {
+    font-size: 11px;
+    color: var(--ac-med-gray);
+    margin-left: auto;
+  }
+  .slack-mockup-body {
+    padding: 6px 14px 14px 60px;
+    color: var(--ac-dark);
+    line-height: 1.55;
+    font-size: 13px;
+  }
+  .slack-mockup-body p { margin: 0 0 4px; }
+  .slack-mockup-body strong { font-weight: 700; }
+  .slack-mockup-body em { font-style: italic; color: var(--ac-dark-secondary); }
+  .slack-mockup-body ul { margin: 0 0 6px; padding-left: 18px; list-style: disc; }
+  .slack-mockup-body li { margin: 1px 0; }
+  .slack-mockup-body hr { border: none; border-top: 1px solid var(--ac-light-gray); margin: 8px 0; }
+  .slack-mockup-body .slack-mention {
+    background: rgba(29,155,209,0.1);
+    color: #1264A3;
+    padding: 1px 3px;
+    border-radius: 3px;
+    font-weight: 500;
+  }
+  .slack-mockup-body .slack-money {
+    background: rgba(0,184,148,0.12);
+    color: #00866A;
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 12px;
+    border: 1px solid rgba(0,184,148,0.25);
+  }
+
+  /* Details Tab */
+  .detail-section {
+    margin-bottom: 20px;
+  }
+  .detail-section h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ac-dark);
+    margin-bottom: 8px;
+  }
+  .detail-section ul {
+    list-style: disc;
+    padding-left: 20px;
+    font-size: 14px;
+    color: var(--ac-dark-secondary);
+    line-height: 1.8;
+  }
+  .detail-section p {
+    font-size: 14px;
+    color: var(--ac-dark-secondary);
+    line-height: 1.7;
+  }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--ac-dark);
+    color: white;
+    padding: 12px 20px;
+    border-radius: var(--radius);
+    font-size: 14px;
+    font-weight: 500;
+    transform: translateY(100px);
+    opacity: 0;
+    transition: all 0.3s;
+    z-index: 200;
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+  /* About view */
+  .about-content {
+    background: var(--ac-white);
+    border-radius: var(--radius);
+    border: 1px solid var(--ac-light-gray);
+    padding: 24px;
+    box-shadow: var(--shadow);
+  }
+  .about-content h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--ac-dark);
+    margin-bottom: 12px;
+  }
+  .about-content p {
+    font-size: 14px;
+    color: var(--ac-dark-secondary);
+    line-height: 1.7;
+    margin-bottom: 12px;
+  }
+  .about-content strong { color: var(--ac-dark); }
+  .about-content .platform-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-right: 6px;
+    margin-bottom: 4px;
+  }
+  .about-content .platform-badge.available {
+    background: rgba(0,184,148,0.12);
+    color: #00866A;
+  }
+  .about-content .platform-badge.coming-soon {
+    background: var(--ac-light-gray);
+    color: var(--ac-dark-secondary);
+  }
+
+  /* Empty state */
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--ac-med-gray);
+  }
+
+  /* Coming soon label */
+  .coming-soon-label {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ac-dark-secondary);
+    background: var(--ac-light-gray);
+    padding: 2px 8px;
+    border-radius: 8px;
+    margin-left: 8px;
+  }
+
+  /* Print */
+  @media print {
+    .header { background: white !important; color: black !important; border-bottom: 1px solid #ccc !important; }
+    .btn, .filters, .toast { display: none !important; }
+    .card { break-inside: avoid; border: 1px solid #ccc; }
+    body { background: white; }
+  }
+
+  @media (max-width: 768px) {
+    .header { flex-direction: column; gap: 12px; align-items: flex-start; }
+    .container { padding: 16px; }
+    .card-grid { grid-template-columns: 1fr; }
+    .detail-meta-row { flex-direction: column; gap: 8px; }
+    .header-divider { display: none; }
+    .detail-split { flex-direction: column; }
+    .detail-split-right { flex: none; width: 100%; position: static; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <div>
+      <div class="header-logo">people<span>.</span>ai</div>
+    </div>
+    <div class="header-divider"></div>
+    <div>
+      <div class="header-title">Automation Library</div>
+      <div class="header-subtitle">Ready-to-import workflow automations powered by People.ai</div>
+    </div>
+  </div>
+  <div style="display:flex;gap:8px;">
+    <a class="btn btn-secondary" href="#/guides">Setup Guides</a>
+    <a class="btn btn-secondary" href="#/about">About</a>
+    <a class="btn btn-primary" href="https://happycowboyai.github.io/LLMSkills/" target="_blank">LLM Skills</a>
+  </div>
+</div>
+
+<!-- Catalog View -->
+<div id="catalog-view" class="container">
+  <div class="stats-bar" id="stats-bar"></div>
+  <div class="search-bar">
+    <input type="text" id="search-input" placeholder="Search automations..." oninput="handleSearch()">
+  </div>
+  <div class="filters" id="filters"></div>
+  <div class="card-grid" id="card-grid"></div>
+</div>
+
+<!-- Detail View -->
+<div id="detail-view" class="container detail-view">
+  <a class="back-link" onclick="navigate('#/')">&#8592; Back to Library</a>
+  <div id="detail-content"></div>
+</div>
+
+<!-- About View -->
+<div id="about-view" class="container detail-view">
+  <a class="back-link" onclick="navigate('#/')">&#8592; Back to Library</a>
+  <div class="about-content">
+    <h2>About the People.ai Automation Library</h2>
+    <p>
+      This library contains ready-to-import workflow automations that leverage the
+      <strong>People.ai MCP</strong> (Model Context Protocol) integration alongside AI models,
+      CRM data, and communication tools to deliver actionable sales intelligence.
+    </p>
+    <p>
+      Each workflow is a complete automation that can be imported into your preferred platform.
+      Workflows combine People.ai's engagement data with Claude AI to generate insights like daily
+      sales digests, meeting briefs, pipeline coaching reports, and account risk alerts.
+    </p>
+    <p style="margin-top:16px;">
+      <strong>Supported Platforms:</strong><br>
+      <span class="platform-badge available">Any (JSON import)</span>
+      <span class="platform-badge coming-soon">Workato &mdash; Coming Soon</span>
+      <span class="platform-badge coming-soon">Zapier &mdash; Coming Soon</span>
+      <span class="platform-badge coming-soon">Others &mdash; Coming Soon</span>
+    </p>
+    <p style="margin-top:16px;">
+      <strong>How it works:</strong><br>
+      1. Browse the library and pick a workflow<br>
+      2. Download the workflow JSON<br>
+      3. Import into your automation platform<br>
+      4. Connect your credentials (People.ai MCP, Anthropic, Slack, etc.)<br>
+      5. Configure schedule and channel settings<br>
+      6. Activate the workflow
+    </p>
+    <p style="margin-top:16px;">
+      <strong>Prerequisites:</strong><br>
+      &bull; An automation platform instance (self-hosted or Cloud)<br>
+      &bull; People.ai MCP credentials<br>
+      &bull; Anthropic API key for Claude AI<br>
+      &bull; Slack Bot token (for most workflows)<br>
+      &bull; Additional credentials as noted per workflow
+    </p>
+    <p style="margin-top:16px;">
+      <strong>Maintained by:</strong> AI Innovation Team<br>
+      <strong>Slack:</strong> #automation-workflows
+    </p>
+  </div>
+</div>
+
+<!-- Guides Hub -->
+<div id="guides-view" class="container detail-view">
+  <a class="back-link" onclick="navigate('#/')">&#8592; Back to Library</a>
+  <div style="max-width:900px;">
+    <h2 style="margin-bottom:8px;">Setup Guides</h2>
+    <p style="color:var(--ac-dark-secondary);margin-bottom:28px;">
+      Step-by-step configuration guides for the services that power these workflows.
+    </p>
+
+    <h3 style="margin-bottom:12px;color:var(--ac-coral);">Data Source</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-bottom:28px;">
+
+      <a href="#/guides/peopleai-mcp" style="text-decoration:none;color:inherit;">
+        <div style="background:var(--ac-white);border:2px solid var(--ac-coral);border-radius:var(--radius);padding:24px;transition:box-shadow .2s;cursor:pointer;" onmouseover="this.style.boxShadow='var(--shadow-hover)'" onmouseout="this.style.boxShadow='none'">
+          <div style="font-size:32px;margin-bottom:12px;">🧠</div>
+          <div style="font-size:17px;font-weight:700;margin-bottom:6px;">People.ai MCP</div>
+          <div style="font-size:13px;color:var(--ac-dark-secondary);line-height:1.5;">
+            Core data source for all workflows. MCP server setup, authentication, available tools, and platform integration.
+          </div>
+          <div style="margin-top:12px;">
+            <span style="display:inline-block;font-size:11px;padding:2px 8px;background:var(--ac-coral);border-radius:4px;color:white;font-weight:600;">Required for all workflows</span>
+          </div>
+        </div>
+      </a>
+
+    </div>
+
+    <h3 style="margin-bottom:12px;color:var(--ac-coral);">Delivery Platforms</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;">
+
+      <a href="#/guides/slack-bot-setup" style="text-decoration:none;color:inherit;">
+        <div style="background:var(--ac-white);border:1px solid var(--ac-light-gray);border-radius:var(--radius);padding:24px;transition:box-shadow .2s,border-color .2s;cursor:pointer;" onmouseover="this.style.boxShadow='var(--shadow-hover)';this.style.borderColor='var(--ac-coral)'" onmouseout="this.style.boxShadow='none';this.style.borderColor='var(--ac-light-gray)'">
+          <div style="font-size:32px;margin-bottom:12px;">💬</div>
+          <div style="font-size:17px;font-weight:700;margin-bottom:6px;">Slack</div>
+          <div style="font-size:13px;color:var(--ac-dark-secondary);line-height:1.5;">
+            Bot token scopes, app creation, channel invites, and DM delivery setup.
+          </div>
+          <div style="margin-top:12px;">
+            <span style="display:inline-block;font-size:11px;padding:2px 8px;background:var(--ac-cream);border-radius:4px;color:var(--ac-dark-secondary);">9 scopes covered</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="#/guides/teams-setup" style="text-decoration:none;color:inherit;">
+        <div style="background:var(--ac-white);border:1px solid var(--ac-light-gray);border-radius:var(--radius);padding:24px;transition:box-shadow .2s,border-color .2s;cursor:pointer;" onmouseover="this.style.boxShadow='var(--shadow-hover)';this.style.borderColor='var(--ac-coral)'" onmouseout="this.style.boxShadow='none';this.style.borderColor='var(--ac-light-gray)'">
+          <div style="font-size:32px;margin-bottom:12px;">🟦</div>
+          <div style="font-size:17px;font-weight:700;margin-bottom:6px;">Microsoft Teams</div>
+          <div style="font-size:13px;color:var(--ac-dark-secondary);line-height:1.5;">
+            Incoming Webhooks for channels, Bot Framework with Azure AD for DMs and adaptive cards.
+          </div>
+          <div style="margin-top:12px;">
+            <span style="display:inline-block;font-size:11px;padding:2px 8px;background:var(--ac-cream);border-radius:4px;color:var(--ac-dark-secondary);">Webhooks + Bot Framework</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="#/guides/google-chat-setup" style="text-decoration:none;color:inherit;">
+        <div style="background:var(--ac-white);border:1px solid var(--ac-light-gray);border-radius:var(--radius);padding:24px;transition:box-shadow .2s,border-color .2s;cursor:pointer;" onmouseover="this.style.boxShadow='var(--shadow-hover)';this.style.borderColor='var(--ac-coral)'" onmouseout="this.style.boxShadow='none';this.style.borderColor='var(--ac-light-gray)'">
+          <div style="font-size:32px;margin-bottom:12px;">🟢</div>
+          <div style="font-size:17px;font-weight:700;margin-bottom:6px;">Google Chat</div>
+          <div style="font-size:13px;color:var(--ac-dark-secondary);line-height:1.5;">
+            Space webhooks for alerts, Chat App with GCP service account for proactive DMs.
+          </div>
+          <div style="margin-top:12px;">
+            <span style="display:inline-block;font-size:11px;padding:2px 8px;background:var(--ac-cream);border-radius:4px;color:var(--ac-dark-secondary);">Webhooks + Chat App</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="#/guides/email-setup" style="text-decoration:none;color:inherit;">
+        <div style="background:var(--ac-white);border:1px solid var(--ac-light-gray);border-radius:var(--radius);padding:24px;transition:box-shadow .2s,border-color .2s;cursor:pointer;" onmouseover="this.style.boxShadow='var(--shadow-hover)';this.style.borderColor='var(--ac-coral)'" onmouseout="this.style.boxShadow='none';this.style.borderColor='var(--ac-light-gray)'">
+          <div style="font-size:32px;margin-bottom:12px;">📧</div>
+          <div style="font-size:17px;font-weight:700;margin-bottom:6px;">Email (SMTP)</div>
+          <div style="font-size:13px;color:var(--ac-dark-secondary);line-height:1.5;">
+            Gmail, Outlook/M365, and SendGrid setup. Universal fallback for any workflow.
+          </div>
+          <div style="margin-top:12px;">
+            <span style="display:inline-block;font-size:11px;padding:2px 8px;background:var(--ac-cream);border-radius:4px;color:var(--ac-dark-secondary);">4 providers compared</span>
+          </div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</div>
+
+<!-- People.ai MCP Setup Guide -->
+<div id="guide-peopleai-mcp-view" class="container detail-view">
+  <a class="back-link" onclick="navigate('#/guides')">&#8592; All Guides</a>
+  <div class="about-content" style="max-width:800px;">
+    <h2>People.ai MCP Setup Guide</h2>
+    <p style="color:var(--ac-dark-secondary);margin-bottom:24px;">
+      The <strong>People.ai Model Context Protocol (MCP)</strong> server is the core data source
+      for every workflow in this library. It provides AI agents with direct access to account
+      activity, engagement data, opportunity status, and contact intelligence.
+    </p>
+
+    <div style="margin-top:8px;padding:16px;background:var(--ac-cream);border-left:4px solid var(--ac-coral);border-radius:0 var(--radius) var(--radius) 0;">
+      <strong>What is MCP?</strong> Model Context Protocol is an open standard that lets AI agents
+      call external tools and data sources. People.ai's MCP server exposes sales intelligence
+      as tools that agents can invoke during reasoning — no custom API integration code needed.
+    </div>
+
+    <div style="margin-top:12px;padding:16px;background:var(--ac-cream);border-left:4px solid var(--ac-success);border-radius:0 var(--radius) var(--radius) 0;">
+      <strong>Prerequisites:</strong> An n8n instance (cloud or self-hosted <strong>v1.19.0+</strong>) and an active People.ai account with MCP API access enabled.
+      For the official People.ai guide, see <a href="https://help.people.ai/en/articles/13780674-connect-n8n-to-people-ai" target="_blank" style="color:var(--ac-coral);">Connect n8n to People.ai</a>.
+    </div>
+
+    <!-- ============ WHAT YOU CAN DO ============ -->
+    <h3 style="margin-top:28px;color:var(--ac-coral);">What You Can Do</h3>
+    <ul style="margin:8px 0 20px 20px;line-height:2;">
+      <li>Automate sales intelligence workflows like daily account health checks, weekly opportunity reviews, or risk alerts</li>
+      <li>Build AI-powered chatbots for Slack or Teams that answer questions with real CRM data</li>
+      <li>Create coaching automation that analyzes opportunities and generates weekly insights</li>
+      <li>Generate automated reports combining People.ai insights with data from other systems</li>
+      <li>Trigger actions based on sales data like sending alerts when accounts show low engagement</li>
+    </ul>
+
+    <!-- ============ AVAILABLE TOOLS ============ -->
+    <h3 style="margin-top:28px;color:var(--ac-coral);">Available MCP Tools</h3>
+    <p style="margin:8px 0;">The People.ai MCP server exposes these tools to connected agents:</p>
+    <table style="width:100%;border-collapse:collapse;margin:12px 0 20px 0;font-size:14px;">
+      <thead>
+        <tr style="background:var(--ac-cream);border-bottom:2px solid var(--ac-light-gray);">
+          <th style="padding:10px 12px;text-align:left;">Tool</th>
+          <th style="padding:10px 12px;text-align:left;">Description</th>
+          <th style="padding:10px 12px;text-align:left;">Used By</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;"><code>find_account</code></td>
+          <td style="padding:10px 12px;">Search for accounts by name or domain</td>
+          <td style="padding:10px 12px;">All workflows</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;"><code>get_account_status</code></td>
+          <td style="padding:10px 12px;">Account health, engagement score, risk signals</td>
+          <td style="padding:10px 12px;">Silence Monitor, Churn Risk</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;"><code>get_recent_account_activity</code></td>
+          <td style="padding:10px 12px;">Meetings, emails, calls in a time window</td>
+          <td style="padding:10px 12px;">Sales Digest, Channel Pulse</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;"><code>get_opportunity_status</code></td>
+          <td style="padding:10px 12px;">Deal stage, amount, close date, activity</td>
+          <td style="padding:10px 12px;">Forecast Coach, Deal Hygiene</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;"><code>get_recent_opportunity_activity</code></td>
+          <td style="padding:10px 12px;">Recent deal-level interactions and changes</td>
+          <td style="padding:10px 12px;">Opportunity Discovery, Win/Loss</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;"><code>get_engaged_people</code></td>
+          <td style="padding:10px 12px;">Contacts with recent engagement on an account</td>
+          <td style="padding:10px 12px;">Meeting Brief, Sponsor Tracker</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;"><code>get_scorecard</code></td>
+          <td style="padding:10px 12px;">Rep and team performance metrics</td>
+          <td style="padding:10px 12px;">Activity Gap, Forecast Coach</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;"><code>ask_sales_ai_about_account</code></td>
+          <td style="padding:10px 12px;">Natural language queries about any account (10-30s response)</td>
+          <td style="padding:10px 12px;">Executive Inbox, QBR Prep</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;"><code>ask_sales_ai_about_opportunity</code></td>
+          <td style="padding:10px 12px;">Natural language queries about any deal (10-30s response)</td>
+          <td style="padding:10px 12px;">Forecast Coach, Competitive Alert</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;"><code>top_records</code></td>
+          <td style="padding:10px 12px;">Top accounts/opps by activity, risk, or value</td>
+          <td style="padding:10px 12px;">Territory Heat Map</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;"><code>account_company_news</code></td>
+          <td style="padding:10px 12px;">Recent news about an account's company</td>
+          <td style="padding:10px 12px;">Meeting Brief, QBR Prep</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- ============ GETTING CREDENTIALS ============ -->
+    <h3 style="margin-top:28px;color:var(--ac-coral);">1. Obtain MCP Credentials</h3>
+    <ol style="margin:12px 0 20px 20px;line-height:2;">
+      <li>Contact your <strong>People.ai administrator or CSM</strong> to request MCP API access</li>
+      <li>You'll receive two credentials:
+        <ul style="margin:4px 0 4px 20px;">
+          <li><strong>Client ID</strong> — your organization's MCP client identifier (e.g., <code>Yl1JnBI...</code>)</li>
+          <li><strong>Client Secret</strong> — authentication secret (e.g., <code>2rT0SWrgR...</code>)</li>
+        </ul>
+      </li>
+      <li>Store these credentials securely — you'll need them for configuration</li>
+    </ol>
+    <div style="padding:16px;background:var(--ac-cream);border-left:4px solid var(--ac-warning);border-radius:0 var(--radius) var(--radius) 0;margin:8px 0 20px 0;">
+      <strong>Important:</strong> MCP credentials are different from People.ai REST API credentials. Make sure you request MCP-specific access.
+    </div>
+
+    <!-- ============ n8n ============ -->
+    <h3 style="margin-top:28px;color:var(--ac-coral);">2. Configure in n8n</h3>
+
+    <p style="margin:8px 0;">n8n v1.19.0+ has a built-in MCP Client tool. Here's the exact configuration:</p>
+    <ol style="margin:8px 0 16px 20px;line-height:2;">
+      <li>Create a new workflow or open an existing one</li>
+      <li>Add an <strong>AI Agent</strong> node (Claude is recommended for complex sales analysis; OpenAI GPT-4 also works)</li>
+      <li>In the AI Agent node, click <strong>Add Tool</strong> and select <strong>MCP Client</strong></li>
+      <li>Configure the MCP Client:
+        <table style="width:100%;border-collapse:collapse;margin:12px 0;font-size:14px;">
+          <tbody>
+            <tr style="border-bottom:1px solid var(--ac-light-gray);">
+              <td style="padding:8px 12px;font-weight:bold;width:180px;">Connection Name</td>
+              <td style="padding:8px 12px;"><code>People.ai MCP Multi-Header</code></td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--ac-light-gray);">
+              <td style="padding:8px 12px;font-weight:bold;">Server URL</td>
+              <td style="padding:8px 12px;"><code>https://mcp.people.ai/mcp</code></td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--ac-light-gray);">
+              <td style="padding:8px 12px;font-weight:bold;">Authentication</td>
+              <td style="padding:8px 12px;"><strong>Multiple Headers Auth</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+      <li>Configure <strong>three authentication headers</strong>:
+        <table style="width:100%;border-collapse:collapse;margin:12px 0;font-size:14px;">
+          <thead>
+            <tr style="background:var(--ac-cream);border-bottom:2px solid var(--ac-light-gray);">
+              <th style="padding:8px 12px;text-align:left;">Header</th>
+              <th style="padding:8px 12px;text-align:left;">Name</th>
+              <th style="padding:8px 12px;text-align:left;">Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom:1px solid var(--ac-light-gray);">
+              <td style="padding:8px 12px;">Header 1</td>
+              <td style="padding:8px 12px;"><code>PAI-Client-Id</code></td>
+              <td style="padding:8px 12px;">[Your Client ID]</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--ac-light-gray);">
+              <td style="padding:8px 12px;">Header 2</td>
+              <td style="padding:8px 12px;"><code>PAI-Client-Secret</code></td>
+              <td style="padding:8px 12px;">[Your Client Secret]</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--ac-light-gray);">
+              <td style="padding:8px 12px;">Header 3</td>
+              <td style="padding:8px 12px;"><code>Content-Type</code></td>
+              <td style="padding:8px 12px;"><code>application/json</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+      <li>Under <strong>Allowed HTTP Request Domains</strong>, select <strong>All</strong> or add <code>mcp.people.ai</code></li>
+      <li>Click <strong>Save</strong> to create the credential</li>
+    </ol>
+
+    <div style="padding:16px;background:var(--ac-cream);border-left:4px solid var(--ac-coral);border-radius:0 var(--radius) var(--radius) 0;margin:8px 0 20px 0;">
+      <strong>Header names are case-sensitive.</strong> Use exactly: <code>PAI-Client-Id</code> (not <code>PAI-Client-ID</code> or <code>pai-client-id</code>).
+    </div>
+
+    <div style="padding:12px 16px;background:var(--wf-bg);border-radius:var(--radius);margin:8px 0 20px 0;">
+      <span style="color:var(--wf-green);font-weight:600;">Tip:</span>
+      <span style="color:var(--wf-text);font-size:13px;"> When importing library workflows (<code>full.json</code>), the MCP Client Tool node is already configured — just add your credentials.</span>
+    </div>
+
+    <!-- ============ AI AGENT PROMPT ============ -->
+    <h3 style="margin-top:28px;color:var(--ac-coral);">3. Configure Your AI Agent</h3>
+    <p style="margin:8px 0;">Add a system prompt to your AI Agent that instructs it how to use People.ai tools:</p>
+    <pre style="background:var(--wf-bg);color:var(--wf-text);padding:16px;border-radius:var(--radius);margin:8px 0 16px 0;overflow-x:auto;font-size:13px;">You are a sales intelligence assistant with access to People.ai CRM data.
+When users ask about accounts, opportunities, or customer activity:
+1) Use People.ai MCP tools to search and retrieve data
+2) Analyze the information and provide strategic insights
+3) Highlight risks, next steps, and key topics
+4) Format responses clearly and actionably</pre>
+
+    <!-- ============ OTHER PLATFORMS ============ -->
+    <h3 style="margin-top:28px;color:var(--ac-coral);">4. Other Platforms</h3>
+
+    <h4 style="margin-top:20px;">LangGraph (Python)</h4>
+    <pre style="background:var(--wf-bg);color:var(--wf-text);padding:16px;border-radius:var(--radius);margin:8px 0 16px 0;overflow-x:auto;font-size:13px;">pip install langchain-mcp-adapters
+
+from langchain_mcp_adapters.client import MultiServerMCPClient
+
+client = MultiServerMCPClient({
+    "peopleai": {
+        "url": "https://mcp.people.ai/mcp",
+        "transport": "sse",
+        "headers": {
+            "PAI-Client-Id": os.environ["PEOPLEAI_CLIENT_ID"],
+            "PAI-Client-Secret": os.environ["PEOPLEAI_CLIENT_SECRET"],
+            "Content-Type": "application/json",
+        }
+    }
+})
+tools = await client.get_tools()
+# Bind tools to your LLM: llm.bind_tools(tools)</pre>
+
+    <h4 style="margin-top:20px;">Claude Agent SDK (Python)</h4>
+    <pre style="background:var(--wf-bg);color:var(--wf-text);padding:16px;border-radius:var(--radius);margin:8px 0 16px 0;overflow-x:auto;font-size:13px;">pip install claude-agent-sdk anthropic
+
+from claude_agent_sdk import Agent
+import anthropic
+
+agent = Agent(
+    client=anthropic.Anthropic(),
+    model="claude-sonnet-4-20250514",
+    system="You are a sales intelligence assistant...",
+    tools=[...],  # local tools
+    mcp_servers=[{
+        "name": "peopleai",
+        "url": "https://mcp.people.ai/mcp",
+        "headers": {
+            "PAI-Client-Id": os.environ["PEOPLEAI_CLIENT_ID"],
+            "PAI-Client-Secret": os.environ["PEOPLEAI_CLIENT_SECRET"],
+            "Content-Type": "application/json",
+        }
+    }],
+)</pre>
+
+    <h4 style="margin-top:20px;">OpenAI Agents SDK (Python)</h4>
+    <pre style="background:var(--wf-bg);color:var(--wf-text);padding:16px;border-radius:var(--radius);margin:8px 0 16px 0;overflow-x:auto;font-size:13px;">pip install openai-agents
+
+from agents import Agent
+from agents.mcp import MCPServerSse
+
+peopleai_mcp = MCPServerSse(
+    name="peopleai",
+    url="https://mcp.people.ai/mcp",
+    headers={
+        "PAI-Client-Id": os.environ["PEOPLEAI_CLIENT_ID"],
+        "PAI-Client-Secret": os.environ["PEOPLEAI_CLIENT_SECRET"],
+        "Content-Type": "application/json",
+    },
+)
+
+agent = Agent(
+    name="Sales Intelligence",
+    instructions="You are a sales intelligence assistant...",
+    tools=[...],  # local tools
+    mcp_servers=[peopleai_mcp],
+)</pre>
+
+    <h4 style="margin-top:20px;">Make / Power Automate / Zapier</h4>
+    <div style="padding:16px;background:var(--ac-cream);border-left:4px solid var(--ac-warning);border-radius:0 var(--radius) var(--radius) 0;margin:8px 0 20px 0;">
+      <strong>MCP is not natively supported</strong> on Make, Power Automate, or Zapier. Options:
+      <ol style="margin:8px 0 0 20px;line-height:2;">
+        <li><strong>n8n as middleware</strong> — n8n handles MCP, exposes results via webhook that Make/PA/Zapier can call</li>
+        <li><strong>MCP-to-REST bridge</strong> — Deploy a lightweight proxy that translates MCP tool calls to HTTP endpoints</li>
+        <li><strong>People.ai REST API</strong> — Use the Insights Export REST API for bulk data, combined with MCP for deep intelligence on specific items</li>
+      </ol>
+    </div>
+
+    <!-- ============ ENV VARS ============ -->
+    <h3 style="margin-top:28px;color:var(--ac-coral);">5. Environment Variables</h3>
+    <p style="margin:8px 0;">Set these for Python-based workflows (LangGraph, Claude Agent, OpenAI Agent):</p>
+    <pre style="background:var(--wf-bg);color:var(--wf-text);padding:16px;border-radius:var(--radius);margin:8px 0 16px 0;overflow-x:auto;font-size:13px;">export PEOPLEAI_MCP_URL="https://mcp.people.ai/mcp"
+export PEOPLEAI_CLIENT_ID="your-client-id"
+export PEOPLEAI_CLIENT_SECRET="your-client-secret"
+
+# Also needed for the LLM:
+export ANTHROPIC_API_KEY="sk-ant-..."   # for Claude Agent / LangGraph (recommended)
+export OPENAI_API_KEY="sk-..."          # for OpenAI Agent</pre>
+
+    <!-- ============ TESTING ============ -->
+    <h3 style="margin-top:28px;color:var(--ac-coral);">6. Test Your Connection</h3>
+    <p style="margin:8px 0;">Try these example queries in n8n or your agent to verify the connection:</p>
+    <ul style="margin:8px 0 16px 20px;line-height:2;">
+      <li><code>"Find the account for [Company Name]"</code></li>
+      <li><code>"What are the risks for opportunity [ID]?"</code></li>
+      <li><code>"Show me recent activity for [Account Name]"</code></li>
+    </ul>
+    <p style="margin:8px 0;">Check the execution log to verify: MCP tools appear in available tools, AI Agent calls them successfully, and data is returned.</p>
+
+    <!-- ============ TROUBLESHOOTING ============ -->
+    <h3 style="margin-top:28px;color:var(--ac-coral);">7. Troubleshooting</h3>
+    <table style="width:100%;border-collapse:collapse;margin:12px 0 20px 0;font-size:14px;">
+      <thead>
+        <tr style="background:var(--ac-cream);border-bottom:2px solid var(--ac-light-gray);">
+          <th style="padding:10px 12px;text-align:left;">Issue</th>
+          <th style="padding:10px 12px;text-align:left;">Cause</th>
+          <th style="padding:10px 12px;text-align:left;">Fix</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;">Can't find MCP Client tool</td>
+          <td style="padding:10px 12px;">n8n version below 1.19.0</td>
+          <td style="padding:10px 12px;">Update n8n to v1.19.0 or later</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;">Connection failed / server not responding</td>
+          <td style="padding:10px 12px;">Wrong URL or network issue</td>
+          <td style="padding:10px 12px;">Verify URL is exactly <code>https://mcp.people.ai/mcp</code> (no trailing slash). Check firewall/proxy settings for self-hosted n8n.</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;">Authentication failed</td>
+          <td style="padding:10px 12px;">Wrong credentials or header names</td>
+          <td style="padding:10px 12px;">Header names are case-sensitive: <code>PAI-Client-Id</code>, <code>PAI-Client-Secret</code>. Verify MCP-specific credentials (not REST API keys). Check for extra spaces.</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;">AI Agent not using People.ai tools</td>
+          <td style="padding:10px 12px;">Prompt too vague or MCP tool not connected</td>
+          <td style="padding:10px 12px;">Be explicit in prompts: "Use the find_account tool to search for [company]." Verify MCP Client is connected to the AI Agent node.</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;">Workflow times out</td>
+          <td style="padding:10px 12px;">AI-powered tools (<code>ask_sales_ai_*</code>) take 10-30s</td>
+          <td style="padding:10px 12px;">Increase workflow timeout. Use simpler tools like <code>get_account_status</code> for faster responses.</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;">Tool returns empty data</td>
+          <td style="padding:10px 12px;">Account name mismatch or no activity</td>
+          <td style="padding:10px 12px;">Use exact account names from Salesforce; widen the lookback window</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- ============ HYBRID APPROACH ============ -->
+    <h3 style="margin-top:28px;color:var(--ac-coral);">8. Combining MCP with REST API</h3>
+    <p style="margin:8px 0;">
+      For best results, use the People.ai <strong>Insights Export REST API</strong> for bulk data extraction
+      and <strong>MCP tools</strong> for deep intelligence on specific items. Example pattern:
+    </p>
+    <ol style="margin:8px 0 16px 20px;line-height:2;">
+      <li>REST API pulls all opportunities closing this quarter</li>
+      <li>n8n logic calculates risk scores</li>
+      <li>MCP tools analyze the top 10 high-risk opportunities</li>
+      <li>n8n formats and sends the report</li>
+    </ol>
+    <p style="margin:8px 0;color:var(--ac-dark-secondary);font-size:13px;">This hybrid approach combines the efficiency of bulk APIs with the intelligence of AI-powered analysis.</p>
+
+    <div style="margin-top:24px;padding:16px;background:var(--ac-cream);border-left:4px solid var(--ac-coral);border-radius:0 var(--radius) var(--radius) 0;">
+      <strong>Security:</strong> Your People.ai data never leaves the secure People.ai environment — n8n workflows only send queries and receive specific responses.
+      All communication uses HTTPS/TLS encryption. Store credentials using n8n's built-in credential system, never in workflow code.
+      The integration respects your People.ai permissions. Rotate Client ID and Secret regularly.
+    </div>
+
+    <div style="margin-top:16px;padding:16px;background:var(--ac-cream);border-left:4px solid var(--ac-success);border-radius:0 var(--radius) var(--radius) 0;">
+      <strong>Need help?</strong> For People.ai API issues, contact your CSM or email <strong>support@people.ai</strong>.
+      For n8n-specific questions, consult the <a href="https://community.n8n.io" target="_blank" style="color:var(--ac-coral);">n8n Community Forum</a>.
+    </div>
+  </div>
+</div>
+
+<!-- Slack Bot Setup Guide -->
+<div id="guide-slack-view" class="container detail-view">
+  <a class="back-link" onclick="navigate('#/guides')">&#8592; All Guides</a>
+  <div class="about-content" style="max-width:800px;">
+    <h2>Slack Bot Setup Guide</h2>
+    <p style="color:var(--ac-dark-secondary);margin-bottom:24px;">
+      Most workflows in this library deliver results via Slack. Follow these steps to create
+      and configure a Slack bot with the right permissions.
+    </p>
+
+    <h3 style="margin-top:24px;color:var(--ac-coral);">1. Create a Slack App</h3>
+    <ol style="margin:12px 0 20px 20px;line-height:2;">
+      <li>Go to <a href="https://api.slack.com/apps" target="_blank" style="color:var(--ac-coral);">api.slack.com/apps</a></li>
+      <li>Click <strong>Create New App</strong> &rarr; <strong>From scratch</strong></li>
+      <li>Name it (e.g., <code>Automation Catalog Bot</code>) and select your workspace</li>
+      <li>Click <strong>Create App</strong></li>
+    </ol>
+
+    <h3 style="margin-top:24px;color:var(--ac-coral);">2. Configure Bot Token Scopes</h3>
+    <p style="margin:8px 0;">Navigate to <strong>OAuth &amp; Permissions</strong> in the sidebar, scroll to <strong>Bot Token Scopes</strong>, and add:</p>
+    <table style="width:100%;border-collapse:collapse;margin:12px 0 20px 0;font-size:14px;">
+      <thead>
+        <tr style="background:var(--ac-cream);border-bottom:2px solid var(--ac-light-gray);">
+          <th style="padding:10px 12px;text-align:left;">Scope</th>
+          <th style="padding:10px 12px;text-align:left;">Purpose</th>
+          <th style="padding:10px 12px;text-align:left;">Required By</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;"><code>chat:write</code></td>
+          <td style="padding:10px 12px;">Send messages to channels and DMs</td>
+          <td style="padding:10px 12px;">All workflows</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;"><code>chat:write.customize</code></td>
+          <td style="padding:10px 12px;">Send messages with custom bot name/icon</td>
+          <td style="padding:10px 12px;">All workflows</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;"><code>channels:read</code></td>
+          <td style="padding:10px 12px;">List public channels</td>
+          <td style="padding:10px 12px;">Channel-targeted workflows</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;"><code>groups:read</code></td>
+          <td style="padding:10px 12px;">List private channels the bot is in</td>
+          <td style="padding:10px 12px;">Private channel delivery</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;"><code>im:write</code></td>
+          <td style="padding:10px 12px;">Open and send direct messages</td>
+          <td style="padding:10px 12px;">DM-based workflows (Sales Digest, Meeting Brief)</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;"><code>users:read</code></td>
+          <td style="padding:10px 12px;">Look up user IDs by name/email</td>
+          <td style="padding:10px 12px;">Subscriber-based workflows</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;"><code>users:read.email</code></td>
+          <td style="padding:10px 12px;">Look up users by email address</td>
+          <td style="padding:10px 12px;">Email-to-Slack user mapping</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;"><code>files:write</code></td>
+          <td style="padding:10px 12px;">Upload files and snippets</td>
+          <td style="padding:10px 12px;">Workflows with file attachments (QBR Prep)</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;"><code>reactions:write</code></td>
+          <td style="padding:10px 12px;">Add emoji reactions to messages</td>
+          <td style="padding:10px 12px;">Optional — status indicators</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 style="margin-top:24px;color:var(--ac-coral);">3. Install to Workspace</h3>
+    <ol style="margin:12px 0 20px 20px;line-height:2;">
+      <li>Scroll up on the <strong>OAuth &amp; Permissions</strong> page</li>
+      <li>Click <strong>Install to Workspace</strong></li>
+      <li>Review the permissions and click <strong>Allow</strong></li>
+      <li>Copy the <strong>Bot User OAuth Token</strong> (starts with <code>xoxb-</code>)</li>
+    </ol>
+
+    <h3 style="margin-top:24px;color:var(--ac-coral);">4. Invite Bot to Channels</h3>
+    <p style="margin:8px 0;">The bot can only post to channels it's been invited to:</p>
+    <ul style="margin:12px 0 20px 20px;line-height:2;">
+      <li>Open the target Slack channel</li>
+      <li>Type <code>/invite @Automation Catalog Bot</code> (or your bot's name)</li>
+      <li>For DM-based workflows, no invite is needed — the bot opens DMs directly using <code>im:write</code></li>
+    </ul>
+
+    <h3 style="margin-top:24px;color:var(--ac-coral);">5. Configure in Your Platform</h3>
+
+    <h4 style="margin-top:16px;">n8n</h4>
+    <ol style="margin:8px 0 16px 20px;line-height:2;">
+      <li>Go to <strong>Settings &rarr; Credentials &rarr; Add Credential</strong></li>
+      <li>Select <strong>Slack API</strong></li>
+      <li>Paste your <code>xoxb-</code> token in the <strong>Access Token</strong> field</li>
+      <li>Click <strong>Save</strong> — the credential is now available to all Slack nodes</li>
+    </ol>
+
+    <h4 style="margin-top:16px;">LangGraph / Claude Agent / OpenAI Agent (Python)</h4>
+    <pre style="background:var(--wf-bg);color:var(--wf-text);padding:16px;border-radius:var(--radius);margin:8px 0 16px 0;overflow-x:auto;font-size:13px;">export SLACK_BOT_TOKEN="xoxb-your-token-here"</pre>
+
+    <h4 style="margin-top:16px;">Make / Power Automate / Zapier</h4>
+    <ul style="margin:8px 0 20px 20px;line-height:2;">
+      <li><strong>Make:</strong> Slack connection &rarr; paste Bot Token</li>
+      <li><strong>Power Automate:</strong> Use the Slack connector with OAuth or paste token in HTTP action</li>
+      <li><strong>Zapier:</strong> Connect Slack account via OAuth flow (scopes configured in the app)</li>
+    </ul>
+
+    <h3 style="margin-top:24px;color:var(--ac-coral);">6. Bot Display Name &amp; Icon</h3>
+    <p style="margin:8px 0;">To customize how the bot appears in Slack:</p>
+    <ol style="margin:12px 0 20px 20px;line-height:2;">
+      <li>Go to your app at <a href="https://api.slack.com/apps" target="_blank" style="color:var(--ac-coral);">api.slack.com/apps</a></li>
+      <li>Click <strong>Basic Information</strong> in the sidebar</li>
+      <li>Scroll to <strong>Display Information</strong></li>
+      <li>Set the app name, description, icon, and background color</li>
+      <li>Each workflow in this library uses a unique bot name (Aria, Watchdog, Prospector, etc.) via the <code>chat:write.customize</code> scope</li>
+    </ol>
+
+    <h3 style="margin-top:24px;color:var(--ac-coral);">7. Troubleshooting</h3>
+    <table style="width:100%;border-collapse:collapse;margin:12px 0 20px 0;font-size:14px;">
+      <thead>
+        <tr style="background:var(--ac-cream);border-bottom:2px solid var(--ac-light-gray);">
+          <th style="padding:10px 12px;text-align:left;">Error</th>
+          <th style="padding:10px 12px;text-align:left;">Cause</th>
+          <th style="padding:10px 12px;text-align:left;">Fix</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;"><code>not_in_channel</code></td>
+          <td style="padding:10px 12px;">Bot hasn't been invited to the channel</td>
+          <td style="padding:10px 12px;"><code>/invite @BotName</code> in the channel</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;"><code>channel_not_found</code></td>
+          <td style="padding:10px 12px;">Wrong channel ID or channel is private</td>
+          <td style="padding:10px 12px;">Use channel ID (not name) — find it in channel details</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;"><code>missing_scope</code></td>
+          <td style="padding:10px 12px;">Required scope not added</td>
+          <td style="padding:10px 12px;">Add the scope, then <strong>reinstall</strong> the app to workspace</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;"><code>invalid_auth</code></td>
+          <td style="padding:10px 12px;">Token is wrong, expired, or revoked</td>
+          <td style="padding:10px 12px;">Reinstall app and copy the new token</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;"><code>ratelimited</code></td>
+          <td style="padding:10px 12px;">Too many API calls</td>
+          <td style="padding:10px 12px;">Add delays between messages; Slack allows ~1 msg/sec per channel</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div style="margin-top:24px;padding:16px;background:var(--ac-cream);border-left:4px solid var(--ac-coral);border-radius:0 var(--radius) var(--radius) 0;">
+      <strong>Security Tip:</strong> Never commit your <code>xoxb-</code> token to source control.
+      Store it as an environment variable or in your platform's credential store.
+      Rotate tokens immediately if exposed.
+    </div>
+  </div>
+</div>
+
+<!-- Teams Setup Guide -->
+<div id="guide-teams-view" class="container detail-view">
+  <a class="back-link" onclick="navigate('#/guides')">&#8592; All Guides</a>
+  <div class="about-content" style="max-width:800px;">
+    <h2>Microsoft Teams Setup Guide</h2>
+    <p style="color:var(--ac-dark-secondary);margin-bottom:24px;">
+      Workflows in this library can deliver results to Microsoft Teams via two methods:
+      <strong>Incoming Webhooks</strong> (quick setup, channel-only) or a
+      <strong>Bot Framework bot</strong> (full-featured, supports DMs and adaptive cards).
+    </p>
+
+    <!-- ============ OPTION A: WEBHOOKS ============ -->
+    <div style="margin-top:8px;padding:16px;background:var(--ac-cream);border-left:4px solid var(--ac-success);border-radius:0 var(--radius) var(--radius) 0;">
+      <strong>Which method should I use?</strong><br>
+      <strong>Incoming Webhook</strong> — Best for channel alerts (Silence Monitor, Opportunity Discovery, Channel Pulse). 5-minute setup, no app registration.<br>
+      <strong>Bot Framework</strong> — Best for DM-based workflows (Sales Digest, Meeting Brief) and rich adaptive cards. Requires Azure AD app registration.
+    </div>
+
+    <h2 style="margin-top:32px;padding-top:16px;border-top:2px solid var(--ac-light-gray);">Option A: Incoming Webhooks</h2>
+    <p style="color:var(--ac-dark-secondary);margin-bottom:16px;">Fastest way to post messages to a Teams channel. No Azure registration needed.</p>
+
+    <h3 style="margin-top:20px;color:var(--ac-coral);">1. Create a Webhook in Teams</h3>
+    <ol style="margin:12px 0 20px 20px;line-height:2;">
+      <li>Open the target Teams channel</li>
+      <li>Click <strong>&#8942;</strong> (more options) next to the channel name &rarr; <strong>Connectors</strong> (or <strong>Manage channel &rarr; Connectors</strong>)</li>
+      <li>Search for <strong>Incoming Webhook</strong> and click <strong>Configure</strong></li>
+      <li>Name it (e.g., <code>Automation Catalog</code>) and optionally upload an icon</li>
+      <li>Click <strong>Create</strong></li>
+      <li>Copy the <strong>Webhook URL</strong> — it looks like:<br>
+        <code style="font-size:12px;">https://outlook.office.com/webhook/...</code></li>
+    </ol>
+
+    <h3 style="margin-top:24px;color:var(--ac-coral);">2. Send Messages via Webhook</h3>
+    <p style="margin:8px 0;">POST a JSON payload to the webhook URL. Teams supports two formats:</p>
+
+    <h4 style="margin-top:16px;">Simple Text (MessageCard)</h4>
+    <pre style="background:var(--wf-bg);color:var(--wf-text);padding:16px;border-radius:var(--radius);margin:8px 0 16px 0;overflow-x:auto;font-size:13px;">POST {webhook_url}
+Content-Type: application/json
+
+{
+  "@type": "MessageCard",
+  "summary": "Silence Alert",
+  "themeColor": "FF6B6B",
+  "title": "🔴 SILENCE ALERT — 3 accounts need attention",
+  "text": "**Globex Industries** — 18 days silent..."
+}</pre>
+
+    <h4 style="margin-top:16px;">Adaptive Card (richer formatting)</h4>
+    <pre style="background:var(--wf-bg);color:var(--wf-text);padding:16px;border-radius:var(--radius);margin:8px 0 16px 0;overflow-x:auto;font-size:13px;">POST {webhook_url}
+Content-Type: application/json
+
+{
+  "type": "message",
+  "attachments": [{
+    "contentType": "application/vnd.microsoft.card.adaptive",
+    "content": {
+      "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+      "type": "AdaptiveCard",
+      "version": "1.4",
+      "body": [
+        { "type": "TextBlock", "text": "Sales Digest", "weight": "Bolder", "size": "Large" },
+        { "type": "TextBlock", "text": "Your daily summary...", "wrap": true }
+      ]
+    }
+  }]
+}</pre>
+
+    <h3 style="margin-top:24px;color:var(--ac-coral);">3. Configure in Your Platform</h3>
+
+    <h4 style="margin-top:16px;">n8n</h4>
+    <ol style="margin:8px 0 16px 20px;line-height:2;">
+      <li>Add an <strong>HTTP Request</strong> node</li>
+      <li>Method: <strong>POST</strong></li>
+      <li>URL: paste your webhook URL</li>
+      <li>Body: JSON with MessageCard or Adaptive Card payload</li>
+    </ol>
+
+    <h4 style="margin-top:16px;">Python (LangGraph / Claude Agent / OpenAI Agent)</h4>
+    <pre style="background:var(--wf-bg);color:var(--wf-text);padding:16px;border-radius:var(--radius);margin:8px 0 16px 0;overflow-x:auto;font-size:13px;">import os, json
+from urllib.request import Request, urlopen
+
+webhook_url = os.environ["TEAMS_WEBHOOK_URL"]
+payload = json.dumps({
+    "@type": "MessageCard",
+    "summary": "Alert",
+    "title": "🔴 Silence Alert",
+    "text": message_content,
+}).encode()
+
+req = Request(webhook_url, data=payload,
+              headers={"Content-Type": "application/json"})
+urlopen(req)</pre>
+
+    <h4 style="margin-top:16px;">Make / Power Automate / Zapier</h4>
+    <ul style="margin:8px 0 20px 20px;line-height:2;">
+      <li><strong>Make:</strong> HTTP module &rarr; POST to webhook URL with JSON body</li>
+      <li><strong>Power Automate:</strong> Use the built-in <strong>"Post message in a chat or channel"</strong> action (no webhook needed — native Teams connector)</li>
+      <li><strong>Zapier:</strong> Webhooks by Zapier &rarr; POST to webhook URL, or use Microsoft Teams integration</li>
+    </ul>
+
+    <!-- ============ OPTION B: BOT FRAMEWORK ============ -->
+    <h2 style="margin-top:32px;padding-top:16px;border-top:2px solid var(--ac-light-gray);">Option B: Bot Framework (Azure AD)</h2>
+    <p style="color:var(--ac-dark-secondary);margin-bottom:16px;">Full-featured bot with DM support, adaptive cards, and proactive messaging. Required for workflows that deliver personalized content to individual users.</p>
+
+    <h3 style="margin-top:20px;color:var(--ac-coral);">1. Register an Azure AD App</h3>
+    <ol style="margin:12px 0 20px 20px;line-height:2;">
+      <li>Go to <a href="https://portal.azure.com/#blade/Microsoft_AAD_RegisteredApps/ApplicationsListBlade" target="_blank" style="color:var(--ac-coral);">Azure Portal &rarr; App Registrations</a></li>
+      <li>Click <strong>New registration</strong></li>
+      <li>Name: <code>Automation Catalog Bot</code></li>
+      <li>Supported account types: <strong>Single tenant</strong> (your org only)</li>
+      <li>Click <strong>Register</strong></li>
+      <li>Note the <strong>Application (client) ID</strong> and <strong>Directory (tenant) ID</strong></li>
+      <li>Go to <strong>Certificates &amp; secrets &rarr; New client secret</strong> — copy the secret value</li>
+    </ol>
+
+    <h3 style="margin-top:24px;color:var(--ac-coral);">2. API Permissions</h3>
+    <p style="margin:8px 0;">In your app registration, go to <strong>API permissions &rarr; Add a permission &rarr; Microsoft Graph</strong>:</p>
+    <table style="width:100%;border-collapse:collapse;margin:12px 0 20px 0;font-size:14px;">
+      <thead>
+        <tr style="background:var(--ac-cream);border-bottom:2px solid var(--ac-light-gray);">
+          <th style="padding:10px 12px;text-align:left;">Permission</th>
+          <th style="padding:10px 12px;text-align:left;">Type</th>
+          <th style="padding:10px 12px;text-align:left;">Purpose</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;"><code>ChatMessage.Send</code></td>
+          <td style="padding:10px 12px;">Application</td>
+          <td style="padding:10px 12px;">Send messages to chats and channels</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;"><code>Chat.Create</code></td>
+          <td style="padding:10px 12px;">Application</td>
+          <td style="padding:10px 12px;">Create 1:1 chats for DM delivery</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;"><code>Chat.ReadWrite.All</code></td>
+          <td style="padding:10px 12px;">Application</td>
+          <td style="padding:10px 12px;">Read/write to chats (proactive messaging)</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;"><code>User.Read.All</code></td>
+          <td style="padding:10px 12px;">Application</td>
+          <td style="padding:10px 12px;">Look up users by email for DM targeting</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;"><code>ChannelMessage.Send</code></td>
+          <td style="padding:10px 12px;">Application</td>
+          <td style="padding:10px 12px;">Post to specific team channels</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;"><code>Team.ReadBasic.All</code></td>
+          <td style="padding:10px 12px;">Application</td>
+          <td style="padding:10px 12px;">List teams and channels</td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="margin:8px 0;">Click <strong>Grant admin consent</strong> after adding permissions (requires admin role).</p>
+
+    <h3 style="margin-top:24px;color:var(--ac-coral);">3. Create a Bot Channel Registration</h3>
+    <ol style="margin:12px 0 20px 20px;line-height:2;">
+      <li>In Azure Portal, search for <strong>Azure Bot</strong> and click <strong>Create</strong></li>
+      <li>Link it to the app registration you created in Step 1</li>
+      <li>Under <strong>Channels</strong>, enable <strong>Microsoft Teams</strong></li>
+      <li>Under <strong>Configuration</strong>, set the messaging endpoint if using a custom bot service</li>
+    </ol>
+
+    <h3 style="margin-top:24px;color:var(--ac-coral);">4. Install Bot in Teams</h3>
+    <ol style="margin:12px 0 20px 20px;line-height:2;">
+      <li>Go to <a href="https://dev.teams.microsoft.com/apps" target="_blank" style="color:var(--ac-coral);">Teams Developer Portal</a></li>
+      <li>Create a new app or import the bot</li>
+      <li>Under <strong>App features &rarr; Bot</strong>, link your Azure Bot registration</li>
+      <li><strong>Publish to your org</strong> or sideload for testing</li>
+      <li>Users can then find and chat with the bot, or add it to channels</li>
+    </ol>
+
+    <h3 style="margin-top:24px;color:var(--ac-coral);">5. Configure in Your Platform</h3>
+
+    <h4 style="margin-top:16px;">n8n</h4>
+    <ol style="margin:8px 0 16px 20px;line-height:2;">
+      <li>Add a <strong>Microsoft Teams</strong> node</li>
+      <li>Create a credential with your <strong>Client ID</strong>, <strong>Client Secret</strong>, and <strong>Tenant ID</strong></li>
+      <li>Select action: <strong>Send Message</strong> to channel or chat</li>
+    </ol>
+
+    <h4 style="margin-top:16px;">Python (LangGraph / Claude Agent / OpenAI Agent)</h4>
+    <pre style="background:var(--wf-bg);color:var(--wf-text);padding:16px;border-radius:var(--radius);margin:8px 0 16px 0;overflow-x:auto;font-size:13px;">export TEAMS_TENANT_ID="your-tenant-id"
+export TEAMS_CLIENT_ID="your-client-id"
+export TEAMS_CLIENT_SECRET="your-client-secret"
+
+# Python example — send via Graph API
+import msal, requests
+
+app = msal.ConfidentialClientApplication(
+    os.environ["TEAMS_CLIENT_ID"],
+    authority=f"https://login.microsoftonline.com/{os.environ['TEAMS_TENANT_ID']}",
+    client_credential=os.environ["TEAMS_CLIENT_SECRET"],
+)
+token = app.acquire_token_for_client(
+    scopes=["https://graph.microsoft.com/.default"]
+)
+
+requests.post(
+    f"https://graph.microsoft.com/v1.0/teams/{team_id}/channels/{channel_id}/messages",
+    headers={"Authorization": f"Bearer {token['access_token']}"},
+    json={"body": {"content": message_content}},
+)</pre>
+
+    <h4 style="margin-top:16px;">Power Automate (native)</h4>
+    <ul style="margin:8px 0 20px 20px;line-height:2;">
+      <li>Power Automate has a <strong>first-party Teams connector</strong> — no bot registration needed</li>
+      <li>Use <strong>"Post message in a chat or channel"</strong> action</li>
+      <li>Supports adaptive cards via <strong>"Post adaptive card in a chat or channel"</strong></li>
+      <li>For DMs, use <strong>"Post message in a chat or channel"</strong> with <strong>Flow bot</strong> as the poster</li>
+    </ul>
+
+    <h3 style="margin-top:24px;color:var(--ac-coral);">6. Troubleshooting</h3>
+    <table style="width:100%;border-collapse:collapse;margin:12px 0 20px 0;font-size:14px;">
+      <thead>
+        <tr style="background:var(--ac-cream);border-bottom:2px solid var(--ac-light-gray);">
+          <th style="padding:10px 12px;text-align:left;">Error</th>
+          <th style="padding:10px 12px;text-align:left;">Cause</th>
+          <th style="padding:10px 12px;text-align:left;">Fix</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;"><code>403 Forbidden</code></td>
+          <td style="padding:10px 12px;">Missing admin consent on Graph permissions</td>
+          <td style="padding:10px 12px;">Azure Portal &rarr; API permissions &rarr; Grant admin consent</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;"><code>404 Not Found</code></td>
+          <td style="padding:10px 12px;">Wrong team/channel ID or bot not installed</td>
+          <td style="padding:10px 12px;">Verify IDs via Graph Explorer; ensure bot is added to the team</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;"><code>InvalidAuthenticationToken</code></td>
+          <td style="padding:10px 12px;">Expired or malformed token</td>
+          <td style="padding:10px 12px;">Re-acquire token via MSAL; check client secret expiry</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;">Webhook returns <code>400</code></td>
+          <td style="padding:10px 12px;">Malformed JSON payload</td>
+          <td style="padding:10px 12px;">Validate against <a href="https://adaptivecards.io/designer/" target="_blank" style="color:var(--ac-coral);">Adaptive Cards Designer</a></td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;">Messages not appearing</td>
+          <td style="padding:10px 12px;">Webhook URL expired or connector removed</td>
+          <td style="padding:10px 12px;">Recreate the Incoming Webhook connector in the channel</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;"><code>Throttled (429)</code></td>
+          <td style="padding:10px 12px;">Rate limit exceeded</td>
+          <td style="padding:10px 12px;">Graph API allows ~30 msgs/sec per app; add retry with backoff</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div style="margin-top:24px;padding:16px;background:var(--ac-cream);border-left:4px solid var(--ac-coral);border-radius:0 var(--radius) var(--radius) 0;">
+      <strong>Security Tip:</strong> Store your Client Secret in a vault (Azure Key Vault, env var, or platform credential store).
+      Client secrets expire — set a calendar reminder to rotate before expiry.
+      Never embed secrets in workflow JSON files.
+    </div>
+
+    <div style="margin-top:24px;padding:16px;background:var(--ac-cream);border-left:4px solid var(--ac-success);border-radius:0 var(--radius) var(--radius) 0;">
+      <strong>Power Automate Users:</strong> You likely don't need any of the above!
+      Power Automate's native Teams connector handles authentication automatically.
+      Just use the <strong>"Post message in a chat or channel"</strong> action and sign in with your Microsoft account.
+    </div>
+  </div>
+</div>
+
+<!-- Google Chat Setup Guide -->
+<div id="guide-google-chat-view" class="container detail-view">
+  <a class="back-link" onclick="navigate('#/guides')">&#8592; All Guides</a>
+  <div class="about-content" style="max-width:800px;">
+    <h2>Google Chat Setup Guide</h2>
+    <p style="color:var(--ac-dark-secondary);margin-bottom:24px;">
+      Workflows can deliver results to Google Chat via <strong>Incoming Webhooks</strong>
+      (quick, space-only) or a <strong>Google Chat App</strong> (DM support, cards, slash commands).
+    </p>
+
+    <div style="margin-top:8px;padding:16px;background:var(--ac-cream);border-left:4px solid var(--ac-success);border-radius:0 var(--radius) var(--radius) 0;">
+      <strong>Which method should I use?</strong><br>
+      <strong>Webhook</strong> — Best for channel/space alerts (Silence Monitor, Opportunity Discovery). 2-minute setup.<br>
+      <strong>Chat App</strong> — Best for DM workflows (Sales Digest, Meeting Brief) and interactive cards. Requires Google Cloud project.
+    </div>
+
+    <!-- ============ OPTION A: WEBHOOKS ============ -->
+    <h2 style="margin-top:32px;padding-top:16px;border-top:2px solid var(--ac-light-gray);">Option A: Incoming Webhooks</h2>
+
+    <h3 style="margin-top:20px;color:var(--ac-coral);">1. Create a Webhook in Google Chat</h3>
+    <ol style="margin:12px 0 20px 20px;line-height:2;">
+      <li>Open the Google Chat space you want to post to</li>
+      <li>Click the space name at the top &rarr; <strong>Apps &amp; integrations</strong></li>
+      <li>Click <strong>+ Add webhooks</strong></li>
+      <li>Name it (e.g., <code>Automation Catalog</code>) and optionally set an avatar URL</li>
+      <li>Click <strong>Save</strong></li>
+      <li>Copy the <strong>Webhook URL</strong> — it looks like:<br>
+        <code style="font-size:12px;">https://chat.googleapis.com/v1/spaces/.../messages?key=...&token=...</code></li>
+    </ol>
+
+    <h3 style="margin-top:24px;color:var(--ac-coral);">2. Send Messages via Webhook</h3>
+
+    <h4 style="margin-top:16px;">Simple Text</h4>
+    <pre style="background:var(--wf-bg);color:var(--wf-text);padding:16px;border-radius:var(--radius);margin:8px 0 16px 0;overflow-x:auto;font-size:13px;">POST {webhook_url}
+Content-Type: application/json
+
+{
+  "text": "🔴 *SILENCE ALERT* — 3 accounts need attention\n\n*Globex Industries* — 18 days silent..."
+}</pre>
+
+    <h4 style="margin-top:16px;">Card Message (richer formatting)</h4>
+    <pre style="background:var(--wf-bg);color:var(--wf-text);padding:16px;border-radius:var(--radius);margin:8px 0 16px 0;overflow-x:auto;font-size:13px;">POST {webhook_url}
+Content-Type: application/json
+
+{
+  "cardsV2": [{
+    "cardId": "silence-alert",
+    "card": {
+      "header": {
+        "title": "Silence Alert",
+        "subtitle": "3 accounts need attention",
+        "imageUrl": "https://example.com/icon.png"
+      },
+      "sections": [{
+        "header": "🔴 Critical",
+        "widgets": [{
+          "decoratedText": {
+            "topLabel": "Globex Industries — $340,000",
+            "text": "18 days silent (normally 3-day cadence)"
+          }
+        }]
+      }]
+    }
+  }]
+}</pre>
+
+    <h3 style="margin-top:24px;color:var(--ac-coral);">3. Platform Configuration</h3>
+
+    <h4 style="margin-top:16px;">n8n</h4>
+    <ol style="margin:8px 0 16px 20px;line-height:2;">
+      <li>Add an <strong>HTTP Request</strong> node</li>
+      <li>Method: <strong>POST</strong>, URL: your webhook URL</li>
+      <li>Body: JSON with <code>text</code> or <code>cardsV2</code> payload</li>
+    </ol>
+
+    <h4 style="margin-top:16px;">Python (LangGraph / Claude Agent / OpenAI Agent)</h4>
+    <pre style="background:var(--wf-bg);color:var(--wf-text);padding:16px;border-radius:var(--radius);margin:8px 0 16px 0;overflow-x:auto;font-size:13px;">import os, json
+from urllib.request import Request, urlopen
+
+webhook_url = os.environ["GOOGLE_CHAT_WEBHOOK_URL"]
+payload = json.dumps({"text": message_content}).encode()
+
+req = Request(webhook_url, data=payload,
+              headers={"Content-Type": "application/json"})
+urlopen(req)</pre>
+
+    <h4 style="margin-top:16px;">Make / Power Automate / Zapier</h4>
+    <ul style="margin:8px 0 20px 20px;line-height:2;">
+      <li><strong>Make:</strong> HTTP module &rarr; POST to webhook URL</li>
+      <li><strong>Power Automate:</strong> HTTP action &rarr; POST with JSON body</li>
+      <li><strong>Zapier:</strong> Webhooks by Zapier &rarr; POST, or Google Chat integration</li>
+    </ul>
+
+    <!-- ============ OPTION B: CHAT APP ============ -->
+    <h2 style="margin-top:32px;padding-top:16px;border-top:2px solid var(--ac-light-gray);">Option B: Google Chat App</h2>
+    <p style="color:var(--ac-dark-secondary);margin-bottom:16px;">Full-featured app with DM support, interactive cards, and slash commands. Required for personalized delivery to individual users.</p>
+
+    <h3 style="margin-top:20px;color:var(--ac-coral);">1. Create a Google Cloud Project</h3>
+    <ol style="margin:12px 0 20px 20px;line-height:2;">
+      <li>Go to <a href="https://console.cloud.google.com/projectcreate" target="_blank" style="color:var(--ac-coral);">Google Cloud Console &rarr; Create Project</a></li>
+      <li>Name it (e.g., <code>automation-catalog-bot</code>)</li>
+      <li>Enable the <strong>Google Chat API</strong>: search in <strong>APIs &amp; Services &rarr; Library</strong></li>
+    </ol>
+
+    <h3 style="margin-top:24px;color:var(--ac-coral);">2. Configure the Chat App</h3>
+    <ol style="margin:12px 0 20px 20px;line-height:2;">
+      <li>Go to <a href="https://console.cloud.google.com/apis/api/chat.googleapis.com/hangouts-chat" target="_blank" style="color:var(--ac-coral);">Google Chat API &rarr; Configuration</a></li>
+      <li>Set the <strong>App name</strong> and <strong>Avatar URL</strong></li>
+      <li>Under <strong>Functionality</strong>, enable:
+        <ul>
+          <li>Receive 1:1 messages</li>
+          <li>Join spaces and group conversations</li>
+        </ul>
+      </li>
+      <li>Under <strong>Connection settings</strong>, choose <strong>App URL</strong> (for webhook-driven) or <strong>Cloud Pub/Sub</strong></li>
+      <li>Set <strong>Visibility</strong> to your organization</li>
+    </ol>
+
+    <h3 style="margin-top:24px;color:var(--ac-coral);">3. Service Account for Proactive Messaging</h3>
+    <p style="margin:8px 0;">To send DMs without user interaction (proactive messaging), you need a service account:</p>
+    <ol style="margin:12px 0 20px 20px;line-height:2;">
+      <li>Go to <strong>IAM &amp; Admin &rarr; Service Accounts &rarr; Create</strong></li>
+      <li>Name it <code>chat-bot-sender</code></li>
+      <li>Create a JSON key and download it</li>
+      <li>Enable <strong>domain-wide delegation</strong> in Google Workspace Admin if needed</li>
+    </ol>
+
+    <h3 style="margin-top:24px;color:var(--ac-coral);">4. API Scopes</h3>
+    <table style="width:100%;border-collapse:collapse;margin:12px 0 20px 0;font-size:14px;">
+      <thead>
+        <tr style="background:var(--ac-cream);border-bottom:2px solid var(--ac-light-gray);">
+          <th style="padding:10px 12px;text-align:left;">Scope</th>
+          <th style="padding:10px 12px;text-align:left;">Purpose</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;"><code>https://www.googleapis.com/auth/chat.bot</code></td>
+          <td style="padding:10px 12px;">Send and manage messages as the Chat app</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;"><code>https://www.googleapis.com/auth/chat.spaces</code></td>
+          <td style="padding:10px 12px;">List and manage spaces the app belongs to</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;"><code>https://www.googleapis.com/auth/chat.messages.create</code></td>
+          <td style="padding:10px 12px;">Create messages in spaces and DMs</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;"><code>https://www.googleapis.com/auth/chat.memberships</code></td>
+          <td style="padding:10px 12px;">Look up space members for DM targeting</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 style="margin-top:24px;color:var(--ac-coral);">5. Sending DMs via Chat API</h3>
+    <pre style="background:var(--wf-bg);color:var(--wf-text);padding:16px;border-radius:var(--radius);margin:8px 0 16px 0;overflow-x:auto;font-size:13px;">from google.oauth2 import service_account
+from googleapiclient.discovery import build
+
+creds = service_account.Credentials.from_service_account_file(
+    os.environ["GOOGLE_CHAT_SA_KEY"],
+    scopes=["https://www.googleapis.com/auth/chat.bot"],
+)
+chat = build("chat", "v1", credentials=creds)
+
+# Create or find DM space with user
+dm = chat.spaces().setup(body={
+    "space": {"spaceType": "DIRECT_MESSAGE"},
+    "memberships": [{"member": {"name": f"users/{user_email}", "type": "HUMAN"}}],
+}).execute()
+
+# Send message
+chat.spaces().messages().create(
+    parent=dm["name"],
+    body={"text": digest_content},
+).execute()</pre>
+
+    <h3 style="margin-top:24px;color:var(--ac-coral);">6. Troubleshooting</h3>
+    <table style="width:100%;border-collapse:collapse;margin:12px 0 20px 0;font-size:14px;">
+      <thead>
+        <tr style="background:var(--ac-cream);border-bottom:2px solid var(--ac-light-gray);">
+          <th style="padding:10px 12px;text-align:left;">Error</th>
+          <th style="padding:10px 12px;text-align:left;">Cause</th>
+          <th style="padding:10px 12px;text-align:left;">Fix</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;"><code>403 PERMISSION_DENIED</code></td>
+          <td style="padding:10px 12px;">Chat API not enabled or missing scopes</td>
+          <td style="padding:10px 12px;">Enable Chat API; verify service account scopes</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;"><code>404 NOT_FOUND</code></td>
+          <td style="padding:10px 12px;">Space doesn't exist or app not added</td>
+          <td style="padding:10px 12px;">Add the Chat app to the space first</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;"><code>FAILED_PRECONDITION</code></td>
+          <td style="padding:10px 12px;">App can't DM users who haven't interacted with it</td>
+          <td style="padding:10px 12px;">User must message the app first, or use <code>spaces().setup()</code> with domain-wide delegation</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;">Webhook returns <code>400</code></td>
+          <td style="padding:10px 12px;">Invalid JSON or card schema</td>
+          <td style="padding:10px 12px;">Validate with <a href="https://addons.gsuite.google.com/uikit/builder" target="_blank" style="color:var(--ac-coral);">Card Builder</a></td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;">Rate limited</td>
+          <td style="padding:10px 12px;">Exceeding Chat API quotas</td>
+          <td style="padding:10px 12px;">Default: 60 msgs/min per space; add batching with delays</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div style="margin-top:24px;padding:16px;background:var(--ac-cream);border-left:4px solid var(--ac-coral);border-radius:0 var(--radius) var(--radius) 0;">
+      <strong>Security Tip:</strong> Store the service account JSON key securely — never commit it to source control.
+      Use environment variables or a secret manager. Rotate keys periodically via Google Cloud Console.
+    </div>
+  </div>
+</div>
+
+<!-- Email (SMTP) Setup Guide -->
+<div id="guide-email-view" class="container detail-view">
+  <a class="back-link" onclick="navigate('#/guides')">&#8592; All Guides</a>
+  <div class="about-content" style="max-width:800px;">
+    <h2>Email Delivery Setup Guide</h2>
+    <p style="color:var(--ac-dark-secondary);margin-bottom:24px;">
+      Email is the universal fallback — every workflow can deliver via SMTP.
+      This guide covers Gmail, Outlook/M365, SendGrid, and generic SMTP.
+    </p>
+
+    <div style="margin-top:8px;padding:16px;background:var(--ac-cream);border-left:4px solid var(--ac-success);border-radius:0 var(--radius) var(--radius) 0;">
+      <strong>When to use email delivery:</strong> When recipients don't share a common messaging platform,
+      for formal reports (QBR Prep, Forecast Coach), as a fallback alongside Slack/Teams, or for
+      stakeholders outside your organization.
+    </div>
+
+    <!-- ============ GMAIL ============ -->
+    <h2 style="margin-top:32px;padding-top:16px;border-top:2px solid var(--ac-light-gray);">Option A: Gmail / Google Workspace</h2>
+
+    <h3 style="margin-top:20px;color:var(--ac-coral);">1. Create an App Password</h3>
+    <p style="margin:8px 0;">Google blocks "less secure app" logins. Use an App Password instead:</p>
+    <ol style="margin:12px 0 20px 20px;line-height:2;">
+      <li>Go to <a href="https://myaccount.google.com/security" target="_blank" style="color:var(--ac-coral);">myaccount.google.com/security</a></li>
+      <li>Ensure <strong>2-Step Verification</strong> is enabled</li>
+      <li>Go to <a href="https://myaccount.google.com/apppasswords" target="_blank" style="color:var(--ac-coral);">App Passwords</a></li>
+      <li>Select app: <strong>Mail</strong>, device: <strong>Other</strong> (name it <code>Automation Catalog</code>)</li>
+      <li>Click <strong>Generate</strong> — copy the 16-character password</li>
+    </ol>
+
+    <h4 style="margin-top:16px;">SMTP Settings</h4>
+    <table style="width:100%;border-collapse:collapse;margin:12px 0 20px 0;font-size:14px;">
+      <tbody>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:8px 12px;font-weight:bold;width:140px;">Host</td>
+          <td style="padding:8px 12px;"><code>smtp.gmail.com</code></td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:8px 12px;font-weight:bold;">Port</td>
+          <td style="padding:8px 12px;"><code>587</code> (STARTTLS) or <code>465</code> (SSL)</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:8px 12px;font-weight:bold;">Username</td>
+          <td style="padding:8px 12px;">Your full Gmail address</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:8px 12px;font-weight:bold;">Password</td>
+          <td style="padding:8px 12px;">The 16-character App Password (not your Google password)</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:8px 12px;font-weight:bold;">Daily limit</td>
+          <td style="padding:8px 12px;">500 emails (personal) / 2,000 (Workspace)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 style="margin-top:20px;color:var(--ac-coral);">Alternative: Gmail API (OAuth)</h3>
+    <p style="margin:8px 0;">For Google Workspace orgs, the Gmail API with a service account avoids App Passwords:</p>
+    <ol style="margin:12px 0 20px 20px;line-height:2;">
+      <li>Enable the <strong>Gmail API</strong> in Google Cloud Console</li>
+      <li>Create a service account with domain-wide delegation</li>
+      <li>Grant the <code>https://www.googleapis.com/auth/gmail.send</code> scope</li>
+      <li>Use the service account to send on behalf of users</li>
+    </ol>
+
+    <!-- ============ OUTLOOK / M365 ============ -->
+    <h2 style="margin-top:32px;padding-top:16px;border-top:2px solid var(--ac-light-gray);">Option B: Outlook / Microsoft 365</h2>
+
+    <h3 style="margin-top:20px;color:var(--ac-coral);">1. SMTP Settings</h3>
+    <table style="width:100%;border-collapse:collapse;margin:12px 0 20px 0;font-size:14px;">
+      <tbody>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:8px 12px;font-weight:bold;width:140px;">Host</td>
+          <td style="padding:8px 12px;"><code>smtp.office365.com</code></td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:8px 12px;font-weight:bold;">Port</td>
+          <td style="padding:8px 12px;"><code>587</code> (STARTTLS)</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:8px 12px;font-weight:bold;">Username</td>
+          <td style="padding:8px 12px;">Your full email address</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:8px 12px;font-weight:bold;">Password</td>
+          <td style="padding:8px 12px;">Account password (or App Password if MFA enabled)</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:8px 12px;font-weight:bold;">Auth</td>
+          <td style="padding:8px 12px;">SMTP AUTH must be enabled per-mailbox by M365 admin</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 style="margin-top:20px;color:var(--ac-coral);">2. Enable SMTP AUTH (Admin)</h3>
+    <p style="margin:8px 0;">M365 disables SMTP AUTH by default. An admin must enable it:</p>
+    <ol style="margin:12px 0 20px 20px;line-height:2;">
+      <li>Go to <strong>Microsoft 365 Admin Center &rarr; Users &rarr; Active Users</strong></li>
+      <li>Select the sending account &rarr; <strong>Mail &rarr; Manage email apps</strong></li>
+      <li>Check <strong>Authenticated SMTP</strong> and save</li>
+    </ol>
+
+    <h3 style="margin-top:20px;color:var(--ac-coral);">Alternative: Microsoft Graph API</h3>
+    <p style="margin:8px 0;">For production use, the Graph API with app-only auth is more reliable:</p>
+    <pre style="background:var(--wf-bg);color:var(--wf-text);padding:16px;border-radius:var(--radius);margin:8px 0 16px 0;overflow-x:auto;font-size:13px;">POST https://graph.microsoft.com/v1.0/users/{sender}/sendMail
+Authorization: Bearer {token}
+
+{
+  "message": {
+    "subject": "Weekly Forecast Coaching",
+    "body": { "contentType": "HTML", "content": "&lt;h1&gt;Report...&lt;/h1&gt;" },
+    "toRecipients": [{ "emailAddress": { "address": "leader@company.com" } }]
+  }
+}</pre>
+    <p style="margin:8px 0;">Requires the <code>Mail.Send</code> application permission with admin consent.</p>
+
+    <!-- ============ SENDGRID ============ -->
+    <h2 style="margin-top:32px;padding-top:16px;border-top:2px solid var(--ac-light-gray);">Option C: SendGrid (Transactional Email)</h2>
+    <p style="color:var(--ac-dark-secondary);margin-bottom:16px;">Best for production — high deliverability, no per-user mailbox needed, generous free tier (100 emails/day).</p>
+
+    <h3 style="margin-top:20px;color:var(--ac-coral);">1. Get an API Key</h3>
+    <ol style="margin:12px 0 20px 20px;line-height:2;">
+      <li>Sign up at <a href="https://sendgrid.com" target="_blank" style="color:var(--ac-coral);">sendgrid.com</a></li>
+      <li>Verify a <strong>Sender Identity</strong> (single sender or domain authentication)</li>
+      <li>Go to <strong>Settings &rarr; API Keys &rarr; Create API Key</strong></li>
+      <li>Grant <strong>Mail Send</strong> permission</li>
+      <li>Copy the key (starts with <code>SG.</code>)</li>
+    </ol>
+
+    <h4 style="margin-top:16px;">SMTP Settings</h4>
+    <table style="width:100%;border-collapse:collapse;margin:12px 0 20px 0;font-size:14px;">
+      <tbody>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:8px 12px;font-weight:bold;width:140px;">Host</td>
+          <td style="padding:8px 12px;"><code>smtp.sendgrid.net</code></td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:8px 12px;font-weight:bold;">Port</td>
+          <td style="padding:8px 12px;"><code>587</code> (STARTTLS) or <code>465</code> (SSL)</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:8px 12px;font-weight:bold;">Username</td>
+          <td style="padding:8px 12px;"><code>apikey</code> (literally the word "apikey")</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:8px 12px;font-weight:bold;">Password</td>
+          <td style="padding:8px 12px;">Your SendGrid API key</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h4 style="margin-top:16px;">Or use the SendGrid API directly</h4>
+    <pre style="background:var(--wf-bg);color:var(--wf-text);padding:16px;border-radius:var(--radius);margin:8px 0 16px 0;overflow-x:auto;font-size:13px;">POST https://api.sendgrid.com/v3/mail/send
+Authorization: Bearer SG.your-api-key
+Content-Type: application/json
+
+{
+  "personalizations": [{"to": [{"email": "leader@company.com"}]}],
+  "from": {"email": "automation@company.com", "name": "Automation Catalog"},
+  "subject": "Weekly Forecast Coaching",
+  "content": [{"type": "text/html", "value": "&lt;h1&gt;Report&lt;/h1&gt;"}]
+}</pre>
+
+    <!-- ============ PLATFORM CONFIG ============ -->
+    <h2 style="margin-top:32px;padding-top:16px;border-top:2px solid var(--ac-light-gray);">Platform Configuration</h2>
+
+    <h3 style="margin-top:20px;color:var(--ac-coral);">n8n</h3>
+    <ol style="margin:8px 0 16px 20px;line-height:2;">
+      <li>Go to <strong>Settings &rarr; Credentials &rarr; Add Credential</strong></li>
+      <li>Select <strong>SMTP</strong> (or <strong>SendGrid</strong> / <strong>Gmail</strong> for those providers)</li>
+      <li>Enter host, port, username, password from above</li>
+      <li>Use the <strong>Send Email</strong> node in your workflow</li>
+    </ol>
+
+    <h3 style="margin-top:20px;color:var(--ac-coral);">Python (LangGraph / Claude Agent / OpenAI Agent)</h3>
+    <pre style="background:var(--wf-bg);color:var(--wf-text);padding:16px;border-radius:var(--radius);margin:8px 0 16px 0;overflow-x:auto;font-size:13px;">export SMTP_HOST="smtp.gmail.com"      # or smtp.office365.com, smtp.sendgrid.net
+export SMTP_PORT="587"
+export SMTP_USER="you@company.com"      # or "apikey" for SendGrid
+export SMTP_PASS="your-app-password"    # or API key for SendGrid
+
+# Python example
+import os, smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
+msg = MIMEMultipart("alternative")
+msg["Subject"] = "Weekly Forecast Coaching"
+msg["From"] = os.environ["SMTP_USER"]
+msg["To"] = "leader@company.com"
+msg.attach(MIMEText(plain_text, "plain"))
+msg.attach(MIMEText(html_content, "html"))
+
+with smtplib.SMTP(os.environ["SMTP_HOST"], int(os.environ["SMTP_PORT"])) as s:
+    s.starttls()
+    s.login(os.environ["SMTP_USER"], os.environ["SMTP_PASS"])
+    s.send_message(msg)</pre>
+
+    <h3 style="margin-top:20px;color:var(--ac-coral);">Make / Power Automate / Zapier</h3>
+    <ul style="margin:8px 0 20px 20px;line-height:2;">
+      <li><strong>Make:</strong> Email &rarr; Send (SMTP), Gmail &rarr; Send, or SendGrid &rarr; Send</li>
+      <li><strong>Power Automate:</strong> <strong>Send an email (V2)</strong> action (native Office 365), or SMTP via HTTP</li>
+      <li><strong>Zapier:</strong> Email by Zapier (built-in, limited), Gmail integration, or SendGrid integration</li>
+    </ul>
+
+    <!-- ============ COMPARISON ============ -->
+    <h2 style="margin-top:32px;padding-top:16px;border-top:2px solid var(--ac-light-gray);">Provider Comparison</h2>
+    <table style="width:100%;border-collapse:collapse;margin:12px 0 20px 0;font-size:14px;">
+      <thead>
+        <tr style="background:var(--ac-cream);border-bottom:2px solid var(--ac-light-gray);">
+          <th style="padding:10px 12px;text-align:left;">Provider</th>
+          <th style="padding:10px 12px;text-align:left;">Free Tier</th>
+          <th style="padding:10px 12px;text-align:left;">Best For</th>
+          <th style="padding:10px 12px;text-align:left;">Setup</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;">Gmail</td>
+          <td style="padding:10px 12px;">500/day</td>
+          <td style="padding:10px 12px;">Prototyping, small teams</td>
+          <td style="padding:10px 12px;">5 min</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;">Outlook / M365</td>
+          <td style="padding:10px 12px;">10,000/day</td>
+          <td style="padding:10px 12px;">Microsoft shops</td>
+          <td style="padding:10px 12px;">10 min (+ admin)</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;">SendGrid</td>
+          <td style="padding:10px 12px;">100/day</td>
+          <td style="padding:10px 12px;">Production, high deliverability</td>
+          <td style="padding:10px 12px;">15 min</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;">Amazon SES</td>
+          <td style="padding:10px 12px;">62,000/mo (from EC2)</td>
+          <td style="padding:10px 12px;">AWS-native orgs, volume</td>
+          <td style="padding:10px 12px;">30 min</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 style="margin-top:32px;padding-top:16px;border-top:2px solid var(--ac-light-gray);">Troubleshooting</h2>
+    <table style="width:100%;border-collapse:collapse;margin:12px 0 20px 0;font-size:14px;">
+      <thead>
+        <tr style="background:var(--ac-cream);border-bottom:2px solid var(--ac-light-gray);">
+          <th style="padding:10px 12px;text-align:left;">Error</th>
+          <th style="padding:10px 12px;text-align:left;">Cause</th>
+          <th style="padding:10px 12px;text-align:left;">Fix</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;"><code>535 Authentication failed</code></td>
+          <td style="padding:10px 12px;">Wrong password or App Password needed</td>
+          <td style="padding:10px 12px;">Use App Password (Gmail) or enable SMTP AUTH (M365)</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;"><code>Connection refused (port 25)</code></td>
+          <td style="padding:10px 12px;">ISP or cloud provider blocks port 25</td>
+          <td style="padding:10px 12px;">Use port 587 (STARTTLS) or 465 (SSL) instead</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;">Emails going to spam</td>
+          <td style="padding:10px 12px;">Missing SPF/DKIM/DMARC records</td>
+          <td style="padding:10px 12px;">Set up domain authentication with your email provider</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;"><code>Daily sending limit reached</code></td>
+          <td style="padding:10px 12px;">Exceeded provider quota</td>
+          <td style="padding:10px 12px;">Upgrade plan or switch to SendGrid/SES for volume</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;">HTML not rendering</td>
+          <td style="padding:10px 12px;">Sent as plain text instead of HTML</td>
+          <td style="padding:10px 12px;">Set content type to <code>text/html</code> or use multipart/alternative</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div style="margin-top:24px;padding:16px;background:var(--ac-cream);border-left:4px solid var(--ac-coral);border-radius:0 var(--radius) var(--radius) 0;">
+      <strong>Security Tip:</strong> Never use your primary account password for SMTP.
+      Always use App Passwords, API keys, or OAuth tokens. Store credentials in environment
+      variables or your platform's secret store.
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+let catalogData = null;
+let currentFilter = 'all';
+let searchQuery = '';
+
+// -- Data Loading --
+async function loadWorkflows() {
+  try {
+    const res = await fetch('workflows.json');
+    catalogData = await res.json();
+    handleRoute();
+  } catch (e) {
+    console.error('Failed to load workflows.json:', e);
+    document.getElementById('card-grid').innerHTML =
+      '<div class="empty-state">Failed to load workflow data. Ensure workflows.json is in the same directory.</div>';
+  }
+}
+
+// -- Routing --
+function navigate(hash) { location.hash = hash; }
+
+function handleRoute() {
+  const hash = location.hash || '#/';
+  const views = ['catalog-view', 'detail-view', 'about-view', 'guides-view', 'guide-peopleai-mcp-view', 'guide-slack-view', 'guide-teams-view', 'guide-google-chat-view', 'guide-email-view'];
+  views.forEach(v => {
+    document.getElementById(v).style.display = 'none';
+    document.getElementById(v).classList.remove('active');
+  });
+
+  if (hash.startsWith('#/workflow/')) {
+    const id = hash.replace('#/workflow/', '');
+    document.getElementById('detail-view').style.display = 'block';
+    document.getElementById('detail-view').classList.add('active');
+    renderDetail(id);
+  } else if (hash === '#/guides') {
+    document.getElementById('guides-view').style.display = 'block';
+    document.getElementById('guides-view').classList.add('active');
+  } else if (hash === '#/guides/peopleai-mcp') {
+    document.getElementById('guide-peopleai-mcp-view').style.display = 'block';
+    document.getElementById('guide-peopleai-mcp-view').classList.add('active');
+  } else if (hash === '#/guides/slack-bot-setup') {
+    document.getElementById('guide-slack-view').style.display = 'block';
+    document.getElementById('guide-slack-view').classList.add('active');
+  } else if (hash === '#/guides/teams-setup') {
+    document.getElementById('guide-teams-view').style.display = 'block';
+    document.getElementById('guide-teams-view').classList.add('active');
+  } else if (hash === '#/guides/google-chat-setup') {
+    document.getElementById('guide-google-chat-view').style.display = 'block';
+    document.getElementById('guide-google-chat-view').classList.add('active');
+  } else if (hash === '#/guides/email-setup') {
+    document.getElementById('guide-email-view').style.display = 'block';
+    document.getElementById('guide-email-view').classList.add('active');
+  } else if (hash === '#/about') {
+    document.getElementById('about-view').style.display = 'block';
+    document.getElementById('about-view').classList.add('active');
+  } else {
+    document.getElementById('catalog-view').style.display = 'block';
+    document.getElementById('catalog-view').classList.add('active');
+    renderCatalog();
+  }
+}
+
+// -- Catalog Rendering --
+function renderCatalog() {
+  if (!catalogData) return;
+  renderStats();
+  renderFilters();
+  renderCards();
+}
+
+function renderStats() {
+  const wf = catalogData.workflows;
+  document.getElementById('stats-bar').innerHTML =
+    `<span><strong>${wf.length}</strong> automations</span>
+     <span><strong>${catalogData.categories.length}</strong> categories</span>`;
+}
+
+function renderFilters() {
+  const cats = catalogData.categories;
+  let html = '<span class="filter-label">Category:</span>';
+  html += `<button class="filter-btn ${currentFilter === 'all' ? 'active' : ''}" onclick="setFilter('all')">All</button>`;
+  cats.forEach(c => {
+    html += `<button class="filter-btn ${currentFilter === c.id ? 'active' : ''}" onclick="setFilter('${c.id}')">${c.name}</button>`;
+  });
+  document.getElementById('filters').innerHTML = html;
+}
+
+function setFilter(f) { currentFilter = f; renderCatalog(); }
+
+function handleSearch() {
+  searchQuery = document.getElementById('search-input').value.toLowerCase().trim();
+  renderCards();
+}
+
+function mdToHtml(md) {
+  // Inline formatting first
+  let text = md
+    .replace(/===(.+?)===/g, '<span class="slack-money">$1</span>')
+    .replace(/@([\w.]+)/g, '<span class="slack-mention">@$1</span>')
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>');
+
+  // Process line by line, grouping consecutive bullets into one <ul>
+  const lines = text.split('\n');
+  let html = '';
+  let inList = false;
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (!trimmed) continue;
+    if (trimmed === '---') {
+      if (inList) { html += '</ul>'; inList = false; }
+      html += '<hr>';
+    } else if (trimmed.startsWith('- ')) {
+      if (!inList) { html += '<ul>'; inList = true; }
+      html += `<li>${trimmed.slice(2)}</li>`;
+    } else {
+      if (inList) { html += '</ul>'; inList = false; }
+      html += `<p>${trimmed}</p>`;
+    }
+  }
+  if (inList) html += '</ul>';
+  return html;
+}
+
+function renderSlackMockup(sample) {
+  const initial = sample.bot_name ? sample.bot_name[0] : 'A';
+  const appBadge = sample.bot_app ? '<span class="slack-mockup-app-badge">APP</span>' : '';
+  return `
+    <div class="slack-mockup">
+      <div class="slack-mockup-header">
+        <div class="slack-mockup-avatar">${initial}</div>
+        <div>
+          <span class="slack-mockup-botname">${sample.bot_name || 'Bot'}</span>${appBadge}
+          <span class="slack-mockup-time">7:21 AM</span>
+        </div>
+      </div>
+      <div class="slack-mockup-body">${mdToHtml(sample.content)}</div>
+    </div>`;
+}
+
+function renderCards() {
+  let workflows = catalogData.workflows;
+
+  if (currentFilter !== 'all') {
+    workflows = workflows.filter(w => w.category === currentFilter);
+  }
+  if (searchQuery) {
+    workflows = workflows.filter(w =>
+      w.name.toLowerCase().includes(searchQuery) ||
+      w.description.toLowerCase().includes(searchQuery)
+    );
+  }
+
+  if (workflows.length === 0) {
+    document.getElementById('card-grid').innerHTML =
+      '<div class="empty-state">No automations match the selected filters.</div>';
+    return;
+  }
+
+  document.getElementById('card-grid').innerHTML = workflows.map(w => {
+    const cat = catalogData.categories.find(c => c.id === w.category);
+    const triggerShort = w.trigger.replace(/\s*\|.*$/, '').trim();
+    return `
+      <div class="card" onclick="navigate('#/workflow/${w.id}')">
+        <div class="card-number">${w.id} &middot; ${cat ? cat.name : ''}</div>
+        <div class="card-name">${w.name}</div>
+        <div class="card-desc">${w.description}</div>
+        <div class="card-meta">
+          <span class="badge badge-trigger">${triggerShort}</span>
+          ${w.output ? `<span class="badge badge-output">${w.output}</span>` : ''}
+          <span class="badge badge-category">${cat ? cat.name : ''}</span>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+// -- Detail Rendering --
+function renderDetail(workflowId) {
+  const wf = catalogData.workflows.find(w => w.id === workflowId);
+  if (!wf) {
+    document.getElementById('detail-content').innerHTML =
+      '<div class="empty-state">Workflow not found.</div>';
+    return;
+  }
+
+  const cat = catalogData.categories.find(c => c.id === wf.category);
+  const triggerShort = wf.trigger.replace(/\s*\|.*$/, '').trim();
+
+  let html = `
+    <div class="detail-header">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:4px;">
+        <span class="badge badge-category">${cat ? cat.name : ''}</span>
+        <span style="font-size:12px;color:var(--ac-med-gray);">${wf.id}</span>
+      </div>
+      <div class="detail-title">${wf.name}</div>
+      <div class="detail-desc">${wf.description}</div>
+      <div class="detail-meta-row">
+        <div><strong>Trigger:</strong> ${triggerShort}</div>
+        ${wf.output ? `<div><strong>Output:</strong> ${wf.output}</div>` : ''}
+        <div><strong>Nodes:</strong> ${wf.node_flow.length}</div>
+        <div><strong>Credentials:</strong> ${wf.credentials.length}</div>
+      </div>
+    </div>
+
+    <div class="tabs" id="detail-tabs">
+      <div class="tab active" data-tab="details" onclick="switchTab('details')">Details</div>
+      <div class="tab" data-tab="setup" onclick="switchTab('setup')">Setup</div>
+    </div>
+
+    <div id="tab-panels">
+      <div class="tab-content" data-panel="details" style="display:block">
+        <div id="details-content-container"></div>
+      </div>
+      <div class="tab-content" data-panel="setup" style="display:none">
+        <div id="setup-walkthrough-container"></div>
+      </div>
+    </div>`;
+
+  document.getElementById('detail-content').innerHTML = html;
+
+  // Initialize Setup Walkthrough
+  const setupContainer = document.getElementById('setup-walkthrough-container');
+  if (setupContainer) {
+    const setup = new SetupWalkthrough(wf, setupContainer);
+    setup.init();
+  }
+
+  // Render Details Tab
+  renderDetailsTab(wf);
+}
+
+function switchTab(tabId) {
+  document.querySelectorAll('#detail-tabs .tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.tab === tabId);
+  });
+  document.querySelectorAll('#tab-panels .tab-content').forEach(p => {
+    p.style.display = p.dataset.panel === tabId ? 'block' : 'none';
+  });
+}
+
+function renderDetailsTab(wf) {
+  const container = document.getElementById('details-content-container');
+  if (!container) return;
+
+  let leftHtml = `
+    <div class="detail-section">
+      <h3>Description</h3>
+      <p>${wf.description}</p>
+    </div>
+    <div class="detail-section">
+      <h3>Required Credentials</h3>
+      <ul>
+        ${wf.credentials.map(c => `<li>${c}</li>`).join('')}
+      </ul>
+    </div>`;
+
+  if (wf.configuration && wf.configuration.length > 0) {
+    leftHtml += `
+      <div class="detail-section">
+        <h3>Configuration Options</h3>
+        <ul>
+          ${wf.configuration.map(c => `<li>${c}</li>`).join('')}
+        </ul>
+      </div>`;
+  }
+
+  const rawBase = 'https://raw.githubusercontent.com/HappyCowboyAI/automation-catalog/main';
+  const platforms = wf.platforms || {};
+  const PLATFORM_META = {
+    'n8n':          { label: 'n8n',             icon: '⚡', note: 'Import JSON directly into n8n' },
+    'langgraph':    { label: 'LangGraph',       icon: '🔗', note: 'Python — requires langgraph, langchain-anthropic' },
+    'claude-agent': { label: 'Claude Agent',    icon: '🤖', note: 'Python — requires claude-agent-sdk' },
+    'openai-agent': { label: 'OpenAI Agent',    icon: '🧠', note: 'Python — requires openai-agents' },
+    'recipe-card':  { label: 'Recipe Card',     icon: '📋', note: 'Step-by-step guide for Make, Power Automate, Zapier' },
+  };
+  const availablePlatforms = Object.keys(PLATFORM_META).filter(p => platforms[p]);
+  const defaultPlatform = availablePlatforms.includes('n8n') ? 'n8n' : availablePlatforms[0] || '';
+
+  if (availablePlatforms.length > 0) {
+    const pills = availablePlatforms.map(p => {
+      const m = PLATFORM_META[p];
+      const active = p === defaultPlatform ? ' active' : '';
+      return `<span class="platform-pill${active}" data-platform="${p}" onclick="selectPlatform('${wf.id}','${p}')"><span class="pill-icon">${m.icon}</span>${m.label}</span>`;
+    }).join('');
+
+    leftHtml += `
+      <div class="detail-section">
+        <h3>Download Workflow</h3>
+        <div class="platform-selector">${pills}</div>
+        <div class="platform-download-area" id="platform-download-${wf.id}"></div>
+      </div>`;
+  } else {
+    leftHtml += `
+      <div class="detail-section">
+        <h3>Download Workflow</h3>
+        <div class="btn-actions">
+          <button class="btn btn-copy disabled">Download Workflow <span class="coming-soon-label">Coming Soon</span></button>
+        </div>
+      </div>`;
+  }
+
+  if (wf.sample_output) {
+    const rightHtml = `
+      <h3>Sample Output</h3>
+      ${renderSlackMockup(wf.sample_output)}`;
+    container.innerHTML = `
+      <div class="detail-split">
+        <div class="detail-split-left">${leftHtml}</div>
+        <div class="detail-split-right">${rightHtml}</div>
+      </div>`;
+  } else {
+    container.innerHTML = leftHtml;
+  }
+
+  // Initialize platform selector if present
+  if (defaultPlatform) {
+    setTimeout(() => selectPlatform(wf.id, defaultPlatform), 0);
+  }
+}
+
+function selectPlatform(workflowId, platformId) {
+  const rawBase = 'https://raw.githubusercontent.com/HappyCowboyAI/automation-catalog/main';
+  const wf = catalogData.workflows.find(w => w.id === workflowId);
+  if (!wf || !wf.platforms) return;
+
+  const PLATFORM_META = {
+    'n8n':          { label: 'n8n',             note: 'Import this JSON directly into your n8n instance.' },
+    'langgraph':    { label: 'LangGraph',       note: 'Python script using LangGraph + LangChain MCP adapters. Requires: langgraph, langchain-anthropic, langchain-mcp-adapters, slack-sdk' },
+    'claude-agent': { label: 'Claude Agent SDK', note: 'Python script using the Claude Agent SDK with native MCP support. Requires: claude-agent-sdk, anthropic, slack-sdk' },
+    'openai-agent': { label: 'OpenAI Agents SDK', note: 'Python script using the OpenAI Agents SDK with MCP support. Requires: openai-agents, slack-sdk' },
+    'recipe-card':  { label: 'Recipe Card',     note: 'Step-by-step rebuild guide for Make, Power Automate, Zapier, and other platforms without native MCP support.' },
+  };
+
+  // Update pill states
+  document.querySelectorAll('.platform-pill').forEach(pill => {
+    pill.classList.toggle('active', pill.dataset.platform === platformId);
+  });
+
+  const area = document.getElementById(`platform-download-${workflowId}`);
+  if (!area) return;
+
+  const fileName = wf.platforms[platformId];
+  const meta = PLATFORM_META[platformId] || {};
+  const url = `${rawBase}/${workflowId}/${fileName}`;
+
+  const isCode = fileName.endsWith('.py');
+  const isMd = fileName.endsWith('.md') && platformId === 'recipe-card';
+  const btnLabel = isCode ? 'Download Script' : isMd ? 'View Recipe Card' : 'Download Workflow';
+
+  area.innerHTML = `
+    <div class="btn-actions">
+      <a href="${url}" ${isMd ? 'target="_blank"' : 'download'} class="btn btn-copy">${btnLabel}</a>
+    </div>
+    <div class="platform-note">${meta.note || ''}</div>`;
+}
+
+// -- Toast --
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2500);
+}
+
+// -- Setup Walkthrough Component (dark mockup preserved) --
+class SetupWalkthrough {
+  constructor(workflow, container) {
+    this.workflow = workflow;
+    this.container = container;
+    this.currentStep = -1;
+    this.totalSteps = 4;
+    this.playing = false;
+    this.mockupEl = null;
+    this.stepTitles = [
+      'Import Workflow',
+      'Connect Credentials',
+      'Configure',
+      'Activate'
+    ];
+    this.stepDetails = [
+      'Import the workflow JSON into your automation platform',
+      'Connect required credential accounts',
+      'Set schedule, channels, and preferences',
+      'Toggle the workflow active to start automation'
+    ];
+  }
+
+  init() {
+    this.render();
+  }
+
+  render() {
+    this.container.innerHTML = `
+      <h3 style="margin-bottom:16px;color:var(--ac-dark);">Setup Walkthrough</h3>
+      <div class="wf-mockup">
+        <div class="wf-title-bar">
+          <div class="wf-dots"><span></span><span></span><span></span></div>
+          <div class="wf-title-text">Workflow &mdash; ${this.workflow.name}</div>
+        </div>
+        <div class="wf-body" id="setup-mockup-body"></div>
+      </div>
+      <div class="step-desc" id="setup-step-desc"></div>
+      <div class="step-detail" id="setup-step-detail"></div>
+      <div class="playback-controls">
+        <button class="playback-btn" data-action="prev">&#9664;</button>
+        <button class="playback-btn primary" data-action="play" id="setup-play-btn">&#9654;</button>
+        <div class="playback-dots" id="setup-dots"></div>
+        <button class="playback-btn" data-action="next">&#9654;</button>
+      </div>`;
+
+    this.mockupBody = this.container.querySelector('#setup-mockup-body');
+    this.descEl = this.container.querySelector('#setup-step-desc');
+    this.detailEl = this.container.querySelector('#setup-step-detail');
+    this.dotsEl = this.container.querySelector('#setup-dots');
+    this.playBtn = this.container.querySelector('#setup-play-btn');
+
+    this.container.querySelector('[data-action="prev"]').onclick = () => this.stepBack();
+    this.container.querySelector('[data-action="play"]').onclick = () => this.togglePlay();
+    this.container.querySelector('[data-action="next"]').onclick = () => this.stepForward();
+
+    this.renderDots();
+    this.updateDesc();
+    this.showStep(0);
+  }
+
+  renderDots() {
+    let html = '';
+    for (let i = 0; i < this.totalSteps; i++) {
+      const cls = i === this.currentStep ? 'active' : (i < this.currentStep ? 'done' : '');
+      html += `<div class="playback-dot ${cls}"></div>`;
+    }
+    this.dotsEl.innerHTML = html;
+  }
+
+  updateDesc() {
+    if (this.currentStep >= 0 && this.currentStep < this.totalSteps) {
+      this.descEl.textContent = `Step ${this.currentStep + 1}: ${this.stepTitles[this.currentStep]}`;
+      this.detailEl.textContent = this.stepDetails[this.currentStep];
+    } else {
+      this.descEl.textContent = 'Click play or step forward to begin';
+      this.detailEl.textContent = '';
+    }
+  }
+
+  showStep(stepIndex) {
+    this.currentStep = stepIndex;
+    this.renderDots();
+    this.updateDesc();
+    this.mockupBody.innerHTML = '';
+
+    switch(stepIndex) {
+      case 0: this.renderImportStep(); break;
+      case 1: this.renderCredentialsStep(); break;
+      case 2: this.renderConfigureStep(); break;
+      case 3: this.renderActivateStep(); break;
+    }
+  }
+
+  renderImportStep() {
+    this.mockupBody.innerHTML = `
+      <div class="setup-step-content">
+        <div class="import-dialog" id="import-dialog">
+          <div class="import-dialog-title">Import Workflow</div>
+          <div class="import-dropzone" id="import-dropzone">
+            <span class="import-dropzone-icon">&#128230;</span>
+            Drop workflow JSON here<br>
+            <span style="font-size:11px;opacity:0.7;">or click to browse</span>
+          </div>
+          <div style="text-align:center;">
+            <div class="import-file-chip" id="import-file-chip">
+              &#128196; ${this.workflow.id}.json
+            </div>
+          </div>
+        </div>
+      </div>`;
+    this.animateImport();
+  }
+
+  async animateImport() {
+    await this.wait(300);
+    const dialog = this.mockupBody.querySelector('#import-dialog');
+    if (dialog) dialog.classList.add('visible');
+    await this.wait(800);
+    const dropzone = this.mockupBody.querySelector('#import-dropzone');
+    if (dropzone) dropzone.classList.add('active');
+    await this.wait(600);
+    const chip = this.mockupBody.querySelector('#import-file-chip');
+    if (chip) chip.classList.add('visible');
+  }
+
+  renderCredentialsStep() {
+    const creds = this.workflow.credentials;
+    this.mockupBody.innerHTML = `
+      <div style="padding: 8px; overflow-y: auto; max-height: 100%;">
+        <div style="font-size:14px;font-weight:700;color:var(--wf-text);margin-bottom:12px;">
+          Connect Credentials
+        </div>
+        <div id="cred-fields">
+          ${creds.map((c, i) => {
+            const parts = c.split(' \u2014 ');
+            const name = parts[0] || c;
+            const desc = parts[1] || '';
+            return `
+              <div class="cred-field" data-idx="${i}">
+                <div class="cred-label">${name}</div>
+                <div class="cred-input" data-placeholder="${desc}"></div>
+              </div>`;
+          }).join('')}
+        </div>
+      </div>`;
+    this.animateCredentials();
+  }
+
+  async animateCredentials() {
+    const fields = this.mockupBody.querySelectorAll('.cred-field');
+    for (let i = 0; i < fields.length; i++) {
+      await this.wait(300);
+      fields[i].classList.add('visible');
+      const input = fields[i].querySelector('.cred-input');
+      if (input) {
+        input.classList.add('typing');
+        const placeholder = input.dataset.placeholder;
+        await this.typeText(input, placeholder, 30);
+        await this.wait(200);
+        input.classList.remove('typing');
+      }
+    }
+  }
+
+  renderConfigureStep() {
+    const configs = this.workflow.configuration.length > 0
+      ? this.workflow.configuration
+      : ['Schedule: Weekdays at 6:00 AM', 'Channel: #sales-alerts', 'Batch size: 10'];
+
+    this.mockupBody.innerHTML = `
+      <div style="padding: 8px; overflow-y: auto; max-height: 100%;">
+        <div style="font-size:14px;font-weight:700;color:var(--wf-text);margin-bottom:12px;">
+          Configuration
+        </div>
+        <div id="config-fields">
+          ${configs.map((c, i) => {
+            const parts = c.split(':');
+            const label = parts[0].trim();
+            const val = parts.length > 1 ? parts.slice(1).join(':').trim() : '';
+            return `
+              <div class="config-field" data-idx="${i}">
+                <div class="config-label">${label}</div>
+                <div class="config-input">${val}</div>
+              </div>`;
+          }).join('')}
+        </div>
+      </div>`;
+    this.animateConfig();
+  }
+
+  async animateConfig() {
+    const fields = this.mockupBody.querySelectorAll('.config-field');
+    for (let i = 0; i < fields.length; i++) {
+      await this.wait(400);
+      fields[i].classList.add('visible');
+    }
+  }
+
+  renderActivateStep() {
+    this.mockupBody.innerHTML = `
+      <div class="setup-step-content">
+        <div class="activate-container">
+          <div class="activate-label">Activate Workflow</div>
+          <div class="activate-toggle" id="activate-toggle"></div>
+          <div class="activate-status" id="activate-status">Inactive</div>
+          <div class="activate-check" id="activate-check">&#10003;</div>
+        </div>
+      </div>`;
+    this.animateActivate();
+  }
+
+  async animateActivate() {
+    await this.wait(800);
+    const toggle = this.mockupBody.querySelector('#activate-toggle');
+    const status = this.mockupBody.querySelector('#activate-status');
+    const check = this.mockupBody.querySelector('#activate-check');
+    if (toggle) toggle.classList.add('on');
+    if (status) { status.textContent = 'Active'; status.classList.add('active'); }
+    await this.wait(500);
+    if (check) check.classList.add('visible');
+  }
+
+  async stepForward() {
+    if (this.currentStep < this.totalSteps - 1) {
+      this.showStep(this.currentStep + 1);
+    }
+  }
+
+  stepBack() {
+    if (this.currentStep > 0) {
+      this.showStep(this.currentStep - 1);
+    }
+  }
+
+  async togglePlay() {
+    if (this.playing) {
+      this.stop();
+      return;
+    }
+    this.playing = true;
+    this.playBtn.innerHTML = '&#9646;&#9646;';
+    if (this.currentStep < 0) this.currentStep = -1;
+    while (this.playing && this.currentStep < this.totalSteps - 1) {
+      this.showStep(this.currentStep + 1);
+      if (this.playing) await this.wait(2500);
+    }
+    this.stop();
+  }
+
+  stop() {
+    this.playing = false;
+    if (this.playBtn) this.playBtn.innerHTML = '&#9654;';
+  }
+
+  async typeText(el, text, speed) {
+    el.textContent = '';
+    for (let i = 0; i <= text.length; i++) {
+      if (!this.mockupBody.isConnected) return;
+      el.textContent = text.substring(0, i);
+      await this.wait(speed);
+    }
+  }
+
+  wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+}
+
+// -- Init --
+window.addEventListener('hashchange', handleRoute);
+loadWorkflows();
+</script>
+</body>
+</html>
