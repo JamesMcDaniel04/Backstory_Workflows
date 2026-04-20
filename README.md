@@ -7,6 +7,7 @@ Static GitHub Pages SPA rebranded from the original `HappyCowboyAI/automation-ca
 - `index.html`: single-page app with hash routing
 - `workflows.json`: catalog data for the original 18 workflows
 - `01-*` through `18-*`: copied workflow assets and downloadable files used by the detail pages
+- `skills/`: standalone Backstory LLM Skills SPA with local skill assets and downloads
 
 The site requires no build step and is designed to deploy directly from the repo root.
 
@@ -21,6 +22,10 @@ The site requires no build step and is designed to deploy directly from the repo
 - `#/guides/google-chat-setup`
 - `#/guides/email-setup`
 - `#/workflow/<id>`
+- `skills/#/`
+- `skills/#/about`
+- `skills/#/guides`
+- `skills/#/skill/<id>`
 
 Legacy links to `#/guides/peopleai-mcp` redirect to `#/guides/backstory-mcp`.
 
@@ -36,6 +41,12 @@ Then open:
 
 ```text
 http://localhost:8000/#/
+```
+
+The LLM skills companion page is available at:
+
+```text
+http://localhost:8000/skills/#/
 ```
 
 ## GitHub Pages Deployment
