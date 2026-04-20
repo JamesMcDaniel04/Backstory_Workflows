@@ -51,7 +51,7 @@
 
   /* Header */
   .header {
-    background: rgba(251, 252, 250, 0.96);
+    background: #eeeef0;
     color: var(--ac-dark);
     padding: 20px 32px;
     display: flex;
@@ -69,24 +69,10 @@
     align-items: center;
     gap: 12px;
   }
-  .brand-mark {
-    width: 42px;
+  .brand-lockup {
     height: 42px;
-    border-radius: 12px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    font-weight: 800;
-    color: #f8fafc;
-    background: var(--ac-coral);
-    box-shadow: 0 10px 20px rgba(111, 158, 178, 0.22);
-  }
-  .brand-wordmark {
-    font-size: 20px;
-    font-weight: 800;
-    letter-spacing: -0.03em;
-    color: var(--ac-dark);
+    display: block;
+    object-fit: contain;
   }
   .header-divider {
     width: 1px;
@@ -777,7 +763,7 @@
     width: 36px;
     height: 36px;
     border-radius: 6px;
-    background: linear-gradient(135deg, var(--ac-coral), var(--ac-coral-dark));
+    background: var(--ac-coral);
     color: white;
     display: flex;
     align-items: center;
@@ -960,8 +946,7 @@
 <div class="header">
   <div class="header-left">
     <div class="header-logo" aria-label="Backstory">
-      <div class="brand-mark">B</div>
-      <div class="brand-wordmark">Backstory</div>
+      <img class="brand-lockup" src="assets/backstory-logo-lockup.png" alt="Backstory logo">
     </div>
     <div class="header-divider"></div>
     <div>

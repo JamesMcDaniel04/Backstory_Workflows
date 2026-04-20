@@ -42,7 +42,7 @@
 
   /* Header */
   .header {
-    background: rgba(251, 252, 250, 0.96);
+    background: #eeeef0;
     color: var(--pai-off-black);
     padding: 20px 32px;
     display: flex;
@@ -60,24 +60,10 @@
     align-items: center;
     gap: 12px;
   }
-  .brand-mark {
-    width: 42px;
+  .brand-lockup {
     height: 42px;
-    border-radius: 12px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    font-weight: 800;
-    color: #ffffff;
-    background: var(--pai-primary-blue);
-    box-shadow: 0 10px 20px rgba(111, 158, 178, 0.22);
-  }
-  .brand-wordmark {
-    font-size: 20px;
-    font-weight: 800;
-    letter-spacing: -0.03em;
-    color: var(--pai-off-black);
+    display: block;
+    object-fit: contain;
   }
   .header-divider {
     width: 1px;
@@ -598,7 +584,7 @@
     width: 36px;
     height: 36px;
     border-radius: 6px;
-    background: linear-gradient(135deg, var(--pai-primary-blue), var(--pai-blue));
+    background: var(--pai-primary-blue);
     color: white;
     display: flex;
     align-items: center;
@@ -1743,8 +1729,7 @@
 <div class="header">
   <div class="header-left">
     <div class="header-logo">
-      <div class="brand-mark">B</div>
-      <div class="brand-wordmark">Backstory</div>
+      <img class="brand-lockup" src="../assets/backstory-logo-lockup.png" alt="Backstory logo">
     </div>
     <div class="header-divider"></div>
     <div>
@@ -1933,7 +1918,7 @@
     <!-- ============ CLAUDE CODE ============ -->
     <h3 style="margin-top:28px;color:var(--pai-primary-blue);">3. Configure in Claude Code</h3>
     <p style="margin:8px 0;">Add Backstory MCP to your Claude Code settings:</p>
-    <pre style="background:#1e1e2e;color:#cdd6f4;padding:16px;border-radius:var(--radius);margin:8px 0 16px 0;overflow-x:auto;font-size:13px;"># In your Claude Code MCP settings (settings.json or .mcp.json):
+    <pre style="background:#1e1e2e;color:#eef4f2;padding:16px;border-radius:var(--radius);margin:8px 0 16px 0;overflow-x:auto;font-size:13px;"># In your Claude Code MCP settings (settings.json or .mcp.json):
 {
   "mcpServers": {
     "backstory": {
@@ -1989,7 +1974,7 @@
     <p style="margin:8px 0;">For programmatic access, use these SDK examples:</p>
 
     <h4 style="margin-top:20px;">LangGraph (Python)</h4>
-    <pre style="background:#1e1e2e;color:#cdd6f4;padding:16px;border-radius:var(--radius);margin:8px 0 16px 0;overflow-x:auto;font-size:13px;">pip install langchain-mcp-adapters
+    <pre style="background:#1e1e2e;color:#eef4f2;padding:16px;border-radius:var(--radius);margin:8px 0 16px 0;overflow-x:auto;font-size:13px;">pip install langchain-mcp-adapters
 
 from langchain_mcp_adapters.client import MultiServerMCPClient
 
@@ -2007,7 +1992,7 @@ client = MultiServerMCPClient({
 tools = await client.get_tools()</pre>
 
     <h4 style="margin-top:20px;">Claude Agent SDK (Python)</h4>
-    <pre style="background:#1e1e2e;color:#cdd6f4;padding:16px;border-radius:var(--radius);margin:8px 0 16px 0;overflow-x:auto;font-size:13px;">pip install claude-agent-sdk anthropic
+    <pre style="background:#1e1e2e;color:#eef4f2;padding:16px;border-radius:var(--radius);margin:8px 0 16px 0;overflow-x:auto;font-size:13px;">pip install claude-agent-sdk anthropic
 
 from claude_agent_sdk import Agent
 import anthropic
@@ -2028,7 +2013,7 @@ agent = Agent(
 )</pre>
 
     <h4 style="margin-top:20px;">OpenAI Agents SDK (Python)</h4>
-    <pre style="background:#1e1e2e;color:#cdd6f4;padding:16px;border-radius:var(--radius);margin:8px 0 16px 0;overflow-x:auto;font-size:13px;">pip install openai-agents
+    <pre style="background:#1e1e2e;color:#eef4f2;padding:16px;border-radius:var(--radius);margin:8px 0 16px 0;overflow-x:auto;font-size:13px;">pip install openai-agents
 
 from agents import Agent
 from agents.mcp import MCPServerSse
@@ -2052,7 +2037,7 @@ agent = Agent(
     <!-- ============ ENV VARS ============ -->
     <h3 style="margin-top:28px;color:var(--pai-primary-blue);">8. Environment Variables</h3>
     <p style="margin:8px 0;">Set these for Python-based integrations:</p>
-    <pre style="background:#1e1e2e;color:#cdd6f4;padding:16px;border-radius:var(--radius);margin:8px 0 16px 0;overflow-x:auto;font-size:13px;">export BACKSTORY_MCP_URL="https://mcp.people.ai/mcp"
+    <pre style="background:#1e1e2e;color:#eef4f2;padding:16px;border-radius:var(--radius);margin:8px 0 16px 0;overflow-x:auto;font-size:13px;">export BACKSTORY_MCP_URL="https://mcp.people.ai/mcp"
 export BACKSTORY_CLIENT_ID="your-client-id"
 export BACKSTORY_CLIENT_SECRET="your-client-secret"
 
@@ -2375,8 +2360,8 @@ export OPENAI_API_KEY="sk-..."          # for OpenAI-based integrations</pre>
     </table>
 
     <div style="padding:12px 16px;background:#1e1e2e;border-radius:var(--radius);margin:8px 0 20px 0;">
-      <span style="color:#89b4fa;font-weight:600;">Apex Example:</span>
-      <pre style="color:#cdd6f4;margin:8px 0 0 0;font-size:13px;overflow-x:auto;">@InvocableMethod(label='Get Account Status from Backstory'
+      <span style="color:#a9c2cb;font-weight:600;">Apex Example:</span>
+      <pre style="color:#eef4f2;margin:8px 0 0 0;font-size:13px;overflow-x:auto;">@InvocableMethod(label='Get Account Status from Backstory'
     description='Retrieves account health and engagement data')
 public static List&lt;AccountStatusResult&gt; getAccountStatus(
     List&lt;AccountStatusRequest&gt; requests
