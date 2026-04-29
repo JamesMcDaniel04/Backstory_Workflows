@@ -442,6 +442,9 @@
       ],
       "platforms": {
         "n8n": "full.json",
+        "langgraph": "langgraph_executive_inbox.py",
+        "claude-agent": "claude_agent_executive_inbox.py",
+        "openai-agent": "openai_agent_executive_inbox.py",
         "recipe-card": "recipe-card.md"
       }
     },
@@ -515,6 +518,9 @@
       ],
       "platforms": {
         "n8n": "full.json",
+        "langgraph": "langgraph_churn_risk_scorecard.py",
+        "claude-agent": "claude_agent_churn_risk_scorecard.py",
+        "openai-agent": "openai_agent_churn_risk_scorecard.py",
         "recipe-card": "recipe-card.md"
       }
     },
@@ -581,6 +587,9 @@
       ],
       "platforms": {
         "n8n": "full.json",
+        "langgraph": "langgraph_renewal_prep_brief.py",
+        "claude-agent": "claude_agent_renewal_prep_brief.py",
+        "openai-agent": "openai_agent_renewal_prep_brief.py",
         "recipe-card": "recipe-card.md"
       }
     },
@@ -647,6 +656,9 @@
       ],
       "platforms": {
         "n8n": "full.json",
+        "langgraph": "langgraph_onboarding_pulse.py",
+        "claude-agent": "claude_agent_onboarding_pulse.py",
+        "openai-agent": "openai_agent_onboarding_pulse.py",
         "recipe-card": "recipe-card.md"
       }
     },
@@ -712,6 +724,9 @@
       ],
       "platforms": {
         "n8n": "full.json",
+        "langgraph": "langgraph_activity_gap_detector.py",
+        "claude-agent": "claude_agent_activity_gap_detector.py",
+        "openai-agent": "openai_agent_activity_gap_detector.py",
         "recipe-card": "recipe-card.md"
       }
     },
@@ -778,6 +793,9 @@
       ],
       "platforms": {
         "n8n": "full.json",
+        "langgraph": "langgraph_deal_hygiene_audit.py",
+        "claude-agent": "claude_agent_deal_hygiene_audit.py",
+        "openai-agent": "openai_agent_deal_hygiene_audit.py",
         "recipe-card": "recipe-card.md"
       }
     },
@@ -837,6 +855,9 @@
       ],
       "platforms": {
         "n8n": "full.json",
+        "langgraph": "langgraph_win_loss_debrief.py",
+        "claude-agent": "claude_agent_win_loss_debrief.py",
+        "openai-agent": "openai_agent_win_loss_debrief.py",
         "recipe-card": "recipe-card.md"
       }
     },
@@ -903,6 +924,9 @@
       ],
       "platforms": {
         "n8n": "full.json",
+        "langgraph": "langgraph_competitive_displacement_alert.py",
+        "claude-agent": "claude_agent_competitive_displacement_alert.py",
+        "openai-agent": "openai_agent_competitive_displacement_alert.py",
         "recipe-card": "recipe-card.md"
       }
     },
@@ -968,6 +992,9 @@
       ],
       "platforms": {
         "n8n": "full.json",
+        "langgraph": "langgraph_territory_heat_map.py",
+        "claude-agent": "claude_agent_territory_heat_map.py",
+        "openai-agent": "openai_agent_territory_heat_map.py",
         "recipe-card": "recipe-card.md"
       }
     },
@@ -1035,6 +1062,9 @@
       ],
       "platforms": {
         "n8n": "full.json",
+        "langgraph": "langgraph_qbr_auto_prep.py",
+        "claude-agent": "claude_agent_qbr_auto_prep.py",
+        "openai-agent": "openai_agent_qbr_auto_prep.py",
         "recipe-card": "recipe-card.md"
       }
     },
@@ -1101,6 +1131,9 @@
       ],
       "platforms": {
         "n8n": "full.json",
+        "langgraph": "langgraph_executive_sponsor_tracker.py",
+        "claude-agent": "claude_agent_executive_sponsor_tracker.py",
+        "openai-agent": "openai_agent_executive_sponsor_tracker.py",
         "recipe-card": "recipe-card.md"
       }
     },
@@ -1160,6 +1193,9 @@
       ],
       "platforms": {
         "n8n": "full.json",
+        "langgraph": "langgraph_marketing_sales_handoff_scorer.py",
+        "claude-agent": "claude_agent_marketing_sales_handoff_scorer.py",
+        "openai-agent": "openai_agent_marketing_sales_handoff_scorer.py",
         "recipe-card": "recipe-card.md"
       }
     },

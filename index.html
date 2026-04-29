@@ -2437,7 +2437,7 @@ let searchQuery = '';
 // -- Data Loading --
 async function loadWorkflows() {
   try {
-    const res = await fetch('workflows.json');
+    const res = await fetch(`workflows.json?ts=${Date.now()}`, { cache: 'no-store' });
     catalogData = await res.json();
     handleRoute();
   } catch (e) {
