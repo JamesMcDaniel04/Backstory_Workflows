@@ -143,14 +143,225 @@
   .btn-actions { display: flex; gap: 12px; flex-wrap: wrap; }
 
   /* Container */
-  .container { max-width: 1200px; margin: 0 auto; padding: 24px 32px; }
+  .container { max-width: 1280px; margin: 0 auto; padding: 28px 32px 40px; }
+
+  /* Landing Hero */
+  .hero-shell {
+    position: relative;
+    margin-bottom: 24px;
+    padding: 32px;
+    border-radius: 28px;
+    border: 1px solid rgba(111, 158, 178, 0.18);
+    background:
+      radial-gradient(circle at top right, rgba(111, 158, 178, 0.2), transparent 36%),
+      linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(234, 243, 239, 0.92));
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .hero-shell::before {
+    content: '';
+    position: absolute;
+    inset: auto -8% -42% auto;
+    width: 360px;
+    height: 360px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(111, 158, 178, 0.16) 0%, rgba(111, 158, 178, 0) 72%);
+    pointer-events: none;
+  }
+  .hero-grid {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(320px, 0.95fr);
+    gap: 24px;
+    align-items: stretch;
+  }
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 12px;
+    border-radius: 999px;
+    background: rgba(111, 158, 178, 0.1);
+    color: var(--pai-primary-blue);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .hero-title {
+    font-size: clamp(34px, 5vw, 52px);
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+    color: var(--pai-dark-blue);
+    max-width: 13ch;
+    margin-bottom: 14px;
+  }
+  .hero-text {
+    font-size: 16px;
+    color: var(--pai-dark-gray);
+    max-width: 62ch;
+    margin-bottom: 20px;
+  }
+  .hero-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .hero-panel {
+    background: rgba(255, 255, 255, 0.74);
+    border: 1px solid rgba(111, 158, 178, 0.16);
+    border-radius: 22px;
+    padding: 22px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(14px);
+  }
+  .hero-panel-label {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--pai-med-gray);
+    margin-bottom: 16px;
+  }
+  .hero-stat-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+  .hero-stat-card {
+    padding: 14px 16px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(111, 158, 178, 0.14);
+  }
+  .hero-stat-value {
+    display: block;
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--pai-dark-blue);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .hero-stat-copy {
+    display: block;
+    font-size: 12px;
+    color: var(--pai-dark-gray);
+  }
+  .hero-feature-list {
+    display: grid;
+    gap: 10px;
+  }
+  .hero-feature {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    font-size: 13px;
+    color: var(--pai-dark-gray);
+  }
+  .hero-feature strong {
+    color: var(--pai-dark-blue);
+  }
+  .hero-feature-mark {
+    width: 24px;
+    height: 24px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(111, 158, 178, 0.12);
+    color: var(--pai-primary-blue);
+    font-size: 12px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .catalog-shell {
+    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid rgba(111, 158, 178, 0.12);
+    border-radius: 24px;
+    padding: 24px;
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(12px);
+  }
+  .toolbar {
+    margin-bottom: 24px;
+  }
+  .toolbar-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 16px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .section-kicker {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--pai-med-gray);
+    margin-bottom: 6px;
+  }
+  .section-title {
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--pai-dark-blue);
+    margin-bottom: 6px;
+  }
+  .section-text {
+    font-size: 14px;
+    color: var(--pai-dark-gray);
+    max-width: 60ch;
+  }
+  .results-summary {
+    font-size: 13px;
+    color: var(--pai-dark-gray);
+    padding: 10px 14px;
+    border-radius: 999px;
+    background: rgba(111, 158, 178, 0.08);
+    border: 1px solid rgba(111, 158, 178, 0.14);
+  }
+
+  /* Search */
+  .search-bar {
+    position: relative;
+    margin-bottom: 16px;
+  }
+  .search-bar input {
+    width: 100%;
+    padding: 16px 18px 16px 48px;
+    border: 1.5px solid rgba(111, 158, 178, 0.18);
+    border-radius: 18px;
+    font-size: 15px;
+    background: rgba(255, 255, 255, 0.92);
+    color: var(--pai-dark-blue);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .search-bar input:focus {
+    border-color: var(--pai-primary-blue);
+    box-shadow: 0 0 0 3px rgba(111, 158, 178, 0.16);
+  }
+  .search-bar::before {
+    content: '\1F50D';
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 15px;
+    opacity: 0.45;
+  }
 
   /* Filters */
   .filters {
     display: flex;
     gap: 8px;
     flex-wrap: wrap;
-    margin-bottom: 24px;
+    margin-bottom: 8px;
     align-items: center;
   }
   .filter-label {
@@ -187,25 +398,57 @@
   .card-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 16px;
+    gap: 18px;
   }
 
   .card {
-    background: white;
-    border-radius: var(--radius);
-    border: 1px solid var(--pai-light-gray);
-    padding: 20px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(251, 252, 250, 0.94));
+    border-radius: 22px;
+    border: 1px solid rgba(111, 158, 178, 0.14);
+    padding: 22px;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.25s;
     position: relative;
-    border-left: 4px solid transparent;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    min-height: 100%;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    inset: 0 auto auto 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--pai-primary-blue), rgba(111, 158, 178, 0.15));
+    opacity: 0;
+    transition: opacity 0.2s;
   }
   .card:hover {
     box-shadow: var(--shadow-hover);
-    transform: translateY(-2px);
+    transform: translateY(-6px);
   }
-  .card.status-ready { border-left-color: var(--pai-teal); }
-  .card.status-draft { border-left-color: var(--pai-orange); }
+  .card:hover::before { opacity: 1; }
+  .card.status-ready::before { opacity: 1; }
+  .card-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .card-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(111, 158, 178, 0.08);
+    color: var(--pai-primary-blue);
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
 
   .card-number {
     font-size: 12px;
@@ -215,21 +458,59 @@
     letter-spacing: 0.5px;
   }
   .card-name {
-    font-size: 17px;
-    font-weight: 700;
-    margin: 4px 0 8px;
+    font-size: 20px;
+    font-weight: 800;
+    margin: 6px 0 0;
     color: var(--pai-dark-blue);
+    letter-spacing: -0.02em;
   }
   .card-desc {
-    font-size: 13px;
+    font-size: 14px;
     color: var(--pai-dark-gray);
-    margin-bottom: 12px;
     display: -webkit-box;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    min-height: 64px;
   }
   .card-meta { display: flex; flex-wrap: wrap; gap: 6px; }
+  .card-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .metric-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 10px;
+    border-radius: 12px;
+    background: rgba(234, 243, 239, 0.86);
+    border: 1px solid rgba(111, 158, 178, 0.12);
+    font-size: 12px;
+    color: var(--pai-dark-gray);
+  }
+  .metric-chip strong {
+    color: var(--pai-dark-blue);
+    font-weight: 700;
+  }
+  .card-footer {
+    margin-top: auto;
+    padding-top: 6px;
+    border-top: 1px solid rgba(215, 224, 218, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    font-size: 13px;
+  }
+  .card-link {
+    color: var(--pai-primary-blue);
+    font-weight: 700;
+  }
+  .card-footer-note {
+    color: var(--pai-med-gray);
+  }
 
   .badge {
     display: inline-block;
@@ -277,56 +558,128 @@
   .back-link:hover { text-decoration: underline; }
 
   .detail-header {
-    background: white;
-    border-radius: var(--radius);
-    border: 1px solid var(--pai-light-gray);
-    padding: 24px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(250, 252, 249, 0.96));
+    border-radius: 24px;
+    border: 1px solid rgba(111, 158, 178, 0.12);
+    padding: 28px;
     margin-bottom: 20px;
+    box-shadow: var(--shadow);
+  }
+  .detail-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(290px, 0.8fr);
+    gap: 24px;
+    align-items: start;
+  }
+  .detail-kicker-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
   }
   .detail-title {
-    font-size: 24px;
-    font-weight: 700;
+    font-size: clamp(28px, 4vw, 38px);
+    font-weight: 800;
     color: var(--pai-dark-blue);
-    margin-bottom: 8px;
+    letter-spacing: -0.03em;
+    line-height: 1.04;
+    margin-bottom: 10px;
   }
   .detail-desc {
-    font-size: 15px;
+    font-size: 16px;
     color: var(--pai-dark-gray);
-    margin-bottom: 16px;
+    margin-bottom: 18px;
+    max-width: 62ch;
   }
   .detail-meta-row {
     display: flex;
-    gap: 24px;
+    gap: 10px;
     flex-wrap: wrap;
     font-size: 13px;
     color: var(--pai-dark-gray);
   }
+  .detail-meta-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 12px;
+    border-radius: 999px;
+    background: rgba(111, 158, 178, 0.08);
+    border: 1px solid rgba(111, 158, 178, 0.12);
+  }
   .detail-meta-item strong { color: var(--pai-off-black); }
+  .detail-hero-side {
+    background: rgba(250, 252, 249, 0.98);
+    border: 1px solid rgba(111, 158, 178, 0.12);
+    border-radius: 20px;
+    padding: 20px;
+  }
+  .detail-side-label {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--pai-med-gray);
+    margin-bottom: 14px;
+  }
+  .detail-stat-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .detail-stat-card {
+    padding: 14px;
+    border-radius: 16px;
+    background: var(--pai-white);
+    border: 1px solid rgba(111, 158, 178, 0.12);
+  }
+  .detail-stat-card strong {
+    display: block;
+    font-size: 20px;
+    line-height: 1;
+    color: var(--pai-dark-blue);
+    margin-bottom: 6px;
+  }
+  .detail-stat-card span {
+    font-size: 12px;
+    color: var(--pai-dark-gray);
+  }
+  .detail-side-note {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--pai-dark-gray);
+  }
 
   /* Tabs */
   .tabs {
     display: flex;
-    gap: 0;
-    border-bottom: 2px solid var(--pai-light-gray);
+    gap: 10px;
+    border-bottom: none;
     margin-bottom: 20px;
+    flex-wrap: wrap;
   }
   .tab {
-    padding: 10px 20px;
+    padding: 10px 18px;
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
-    border-bottom: 2px solid transparent;
-    margin-bottom: -2px;
+    border: 1px solid rgba(111, 158, 178, 0.12);
+    border-radius: 999px;
+    margin-bottom: 0;
     color: var(--pai-dark-gray);
     transition: all 0.2s;
     display: flex;
     align-items: center;
     gap: 6px;
+    background: rgba(255, 255, 255, 0.85);
   }
   .tab:hover { color: var(--pai-primary-blue); }
   .tab.active {
-    color: var(--pai-primary-blue);
-    border-bottom-color: var(--pai-primary-blue);
+    color: var(--pai-white);
+    border-color: var(--pai-dark-blue);
+    background: var(--pai-dark-blue);
   }
   .tab.disabled {
     opacity: 0.4;
@@ -342,9 +695,10 @@
 
   .tab-content {
     background: white;
-    border-radius: var(--radius);
-    border: 1px solid var(--pai-light-gray);
+    border-radius: 24px;
+    border: 1px solid rgba(111, 158, 178, 0.12);
     padding: 24px;
+    box-shadow: var(--shadow);
   }
 
   .instructions-block {
@@ -511,58 +865,105 @@
   /* Stats bar */
   .stats-bar {
     display: flex;
-    gap: 24px;
-    padding: 16px 0;
-    margin-bottom: 8px;
+    gap: 10px;
+    padding: 0;
     font-size: 13px;
     color: var(--pai-dark-gray);
+    flex-wrap: wrap;
+  }
+  .stats-bar span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: rgba(111, 158, 178, 0.08);
+    border: 1px solid rgba(111, 158, 178, 0.12);
   }
   .stats-bar strong { color: var(--pai-dark-blue); }
 
   /* Detail Split Layout */
   .detail-split {
-    display: flex;
-    gap: 28px;
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+    gap: 20px;
     align-items: flex-start;
   }
   .detail-split-left {
     flex: 1;
     min-width: 0;
+    display: grid;
+    gap: 16px;
   }
   .detail-split-right {
     flex: 1;
     min-width: 0;
     position: sticky;
-    top: 24px;
-  }
-  .detail-split-right h3 {
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--pai-off-black);
-    margin-bottom: 10px;
+    top: 96px;
+    display: grid;
+    gap: 16px;
   }
   .detail-section {
-    margin-bottom: 20px;
+    margin-bottom: 0;
   }
-  .detail-section h3 {
-    font-size: 15px;
-    font-weight: 700;
+  .section-card {
+    padding: 20px;
+    border-radius: 20px;
+    border: 1px solid rgba(111, 158, 178, 0.12);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(250, 252, 249, 0.95));
+  }
+  .detail-section h3,
+  .section-card h3 {
+    font-size: 16px;
+    font-weight: 800;
     color: var(--pai-off-black);
-    margin-bottom: 6px;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
   }
-  .detail-section ul {
-    padding-left: 20px;
-    font-size: 14px;
+  .stack-list {
+    display: grid;
+    gap: 10px;
+  }
+  .stack-item {
+    padding: 12px 14px;
+    border-radius: 14px;
+    background: rgba(234, 243, 239, 0.56);
+    border: 1px solid rgba(111, 158, 178, 0.12);
+    font-size: 13px;
     color: var(--pai-dark-gray);
-  }
-  .detail-section li {
-    margin-bottom: 4px;
     line-height: 1.5;
   }
-  .detail-section p {
+  .detail-section p,
+  .section-card p {
     font-size: 14px;
     color: var(--pai-dark-gray);
     line-height: 1.6;
+  }
+  .detail-subtext {
+    font-size: 13px;
+    color: var(--pai-med-gray);
+  }
+  .sample-panel-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+  .sample-panel-label {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--pai-med-gray);
+  }
+  .sample-panel-chip {
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(111, 158, 178, 0.08);
+    color: var(--pai-primary-blue);
+    font-size: 11px;
+    font-weight: 700;
   }
 
   /* Sample Output Mockups */
@@ -644,8 +1045,21 @@
   }
 
   @media (max-width: 768px) {
-    .detail-split { flex-direction: column; }
+    .header { flex-direction: column; gap: 12px; align-items: flex-start; }
+    .header-right { width: 100%; justify-content: flex-start; }
+    .container { padding: 16px; }
+    .hero-shell { padding: 24px 20px; border-radius: 22px; }
+    .hero-grid,
+    .detail-hero,
+    .detail-split { grid-template-columns: 1fr; }
+    .hero-title { max-width: none; }
+    .toolbar-top { align-items: flex-start; }
+    .results-summary { width: 100%; }
+    .card-grid { grid-template-columns: 1fr; }
+    .detail-meta-row { flex-direction: column; gap: 8px; }
     .detail-split-right { flex: none; width: 100%; position: static; }
+    .hero-stat-grid,
+    .detail-stat-grid { grid-template-columns: 1fr 1fr; }
   }
 
   /* Print */
@@ -1747,9 +2161,49 @@
 
 <!-- Catalog View -->
 <div id="catalog-view" class="container">
-  <div class="stats-bar" id="stats-bar"></div>
-  <div class="filters" id="filters"></div>
-  <div class="card-grid" id="card-grid"></div>
+  <section class="hero-shell">
+    <div class="hero-grid">
+      <div>
+        <div class="eyebrow">Backstory LLM Skills Library</div>
+        <h1 class="hero-title">Deploy reusable agent behaviors without writing the instructions from scratch.</h1>
+        <p class="hero-text">
+          Compare platform-specific skill instructions, MCP tool coverage, and setup surfaces before you open the full deployment guide.
+        </p>
+        <div class="hero-actions">
+          <button class="btn btn-primary" onclick="openWizard()">Launch Guided Setup</button>
+          <a class="btn btn-secondary" href="../#/">Open Automation Library</a>
+        </div>
+      </div>
+      <div class="hero-panel">
+        <div class="hero-panel-label">Library Snapshot</div>
+        <div class="hero-stat-grid" id="hero-stat-grid"></div>
+        <div class="hero-feature-list">
+          <div class="hero-feature"><span class="hero-feature-mark">01</span><span><strong>Platform-aware instructions</strong> for project mode, coding agents, GPT-style assistants, and copilots.</span></div>
+          <div class="hero-feature"><span class="hero-feature-mark">02</span><span><strong>MCP-first behavior design</strong> with explicit tool plans and knowledge-file attachments.</span></div>
+          <div class="hero-feature"><span class="hero-feature-mark">03</span><span><strong>Quicker rollout decisions</strong> through visible readiness, audience, and connector coverage.</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="catalog-shell">
+    <div class="toolbar">
+      <div class="toolbar-top">
+        <div>
+          <div class="section-kicker">Catalog</div>
+          <div class="section-title">Choose the right skill and surface</div>
+          <div class="section-text">Search by use case, audience, or MCP tooling, then filter by platform to find the fastest path to deployment.</div>
+        </div>
+        <div class="results-summary" id="results-summary">Loading library...</div>
+      </div>
+      <div class="stats-bar" id="stats-bar"></div>
+      <div class="search-bar">
+        <input type="text" id="search-input" placeholder="Search skills, audiences, MCP tools, or deployment surfaces..." oninput="handleSearch()">
+      </div>
+      <div class="filters" id="filters"></div>
+    </div>
+    <div class="card-grid" id="card-grid"></div>
+  </section>
 </div>
 
 <!-- Detail View -->
@@ -2561,6 +3015,7 @@ public static List&lt;AccountStatusResult&gt; getAccountStatus(
 let catalogData = null;
 let currentFilter = 'all';
 let currentPlatformFilter = 'all';
+let searchQuery = '';
 const wizardState = { step: 0, platform: null, skill: null };
 
 // ── Data Loading ──
@@ -2630,11 +3085,30 @@ function renderStats() {
   const skills = catalogData.skills;
   const ready = skills.filter(s => s.status === 'ready').length;
   const platforms = catalogData.catalog.platforms.filter(p => p.status === 'supported').length;
+  const knowledgeFiles = skills.reduce((sum, skill) => sum + (skill.projectKnowledgeFiles || []).length, 0);
   document.getElementById('stats-bar').innerHTML =
     `<span><strong>${skills.length}</strong> skills</span>
      <span><strong>${ready}</strong> ready to deploy</span>
-     <span><strong>${platforms}</strong> platforms supported</span>
-     <span>Updated: ${catalogData.catalog.lastUpdated}</span>`;
+     <span><strong>${platforms}</strong> supported platforms</span>
+     <span>Updated ${catalogData.catalog.lastUpdated}</span>`;
+
+  document.getElementById('hero-stat-grid').innerHTML =
+    `<div class="hero-stat-card">
+        <span class="hero-stat-value">${skills.length}</span>
+        <span class="hero-stat-copy">Skill patterns</span>
+      </div>
+      <div class="hero-stat-card">
+        <span class="hero-stat-value">${ready}</span>
+        <span class="hero-stat-copy">Ready to deploy</span>
+      </div>
+      <div class="hero-stat-card">
+        <span class="hero-stat-value">${platforms}</span>
+        <span class="hero-stat-copy">Supported platforms</span>
+      </div>
+      <div class="hero-stat-card">
+        <span class="hero-stat-value">${knowledgeFiles}</span>
+        <span class="hero-stat-copy">Knowledge files linked</span>
+      </div>`;
 }
 
 function renderFilters() {
@@ -2659,6 +3133,10 @@ function renderFilters() {
 
 function setFilter(f) { currentFilter = f; renderCatalog(); }
 function setPlatformFilter(f) { currentPlatformFilter = f; renderCatalog(); }
+function handleSearch() {
+  searchQuery = document.getElementById('search-input').value.toLowerCase().trim();
+  renderCards();
+}
 
 function renderCards() {
   let skills = catalogData.skills;
@@ -2669,6 +3147,25 @@ function renderCards() {
   if (currentPlatformFilter !== 'all') {
     skills = skills.filter(s => s.platforms[currentPlatformFilter] !== null);
   }
+  if (searchQuery) {
+    skills = skills.filter(s =>
+      s.name.toLowerCase().includes(searchQuery) ||
+      s.description.toLowerCase().includes(searchQuery) ||
+      s.audience.some(a => a.toLowerCase().includes(searchQuery)) ||
+      s.mcpTools.some(tool => tool.toLowerCase().includes(searchQuery)) ||
+      s.mcpConnectors.some(connector => connector.toLowerCase().includes(searchQuery))
+    );
+  }
+
+  const activeCategory = currentFilter === 'all'
+    ? 'All categories'
+    : (catalogData.categories.find(c => c.id === currentFilter)?.name || 'Filtered');
+  const platformLabel = currentPlatformFilter === 'all'
+    ? 'all platforms'
+    : (catalogData.catalog.platforms.find(p => p.id === currentPlatformFilter)?.name || 'selected platform');
+  const searchCopy = searchQuery ? ` for "${searchQuery}"` : '';
+  document.getElementById('results-summary').textContent =
+    `${skills.length} result${skills.length === 1 ? '' : 's'} in ${activeCategory} across ${platformLabel}${searchCopy}`;
 
   if (skills.length === 0) {
     document.getElementById('card-grid').innerHTML =
@@ -2679,15 +3176,30 @@ function renderCards() {
   document.getElementById('card-grid').innerHTML = skills.map(s => {
     const cat = catalogData.categories.find(c => c.id === s.category);
     const platformCount = Object.values(s.platforms).filter(v => v !== null).length;
+    const toolCount = s.mcpTools.length;
+    const knowledgeCount = (s.projectKnowledgeFiles || []).length;
     return `
       <div class="card status-${s.status}" onclick="navigate('#/skill/${s.id}')">
-        <div class="card-number">Skill ${s.number} &middot; ${cat ? cat.name : ''}</div>
-        <div class="card-name">${s.name}</div>
+        <div class="card-head">
+          <div>
+            <div class="card-number">Skill ${s.number}</div>
+            <div class="card-name">${s.name}</div>
+          </div>
+          <div class="card-chip">${cat ? cat.name : 'Skill'}</div>
+        </div>
         <div class="card-desc">${s.description}</div>
         <div class="card-meta">
           ${s.audience.map(a => `<span class="badge badge-audience">${a}</span>`).join('')}
-          <span class="badge badge-platform">${platformCount} platform${platformCount !== 1 ? 's' : ''}</span>
           <span class="badge badge-status-${s.status}">${s.status === 'ready' ? 'Ready' : 'Draft'}</span>
+        </div>
+        <div class="card-stats">
+          <span class="metric-chip"><strong>${platformCount}</strong> platforms</span>
+          <span class="metric-chip"><strong>${toolCount}</strong> MCP tools</span>
+          <span class="metric-chip"><strong>${knowledgeCount}</strong> knowledge files</span>
+        </div>
+        <div class="card-footer">
+          <span class="card-link">Open skill</span>
+          <span class="card-footer-note">${s.input}</span>
         </div>
       </div>`;
   }).join('');
@@ -2754,6 +3266,7 @@ function renderDetail(skillId) {
   const cat = catalogData.categories.find(c => c.id === skill.category);
   const allPlatforms = catalogData.catalog.platforms;
   const repoRawBase = (catalogData.catalog && catalogData.catalog.repoRawBase) ? catalogData.catalog.repoRawBase : '';
+  const availablePlatforms = allPlatforms.filter(p => skill.platforms[p.id] !== null);
 
   // Determine first available platform tab
   const firstAvailable = allPlatforms.find(p => skill.platforms[p.id] !== null);
@@ -2761,26 +3274,36 @@ function renderDetail(skillId) {
 
   let html = `
     <div class="detail-header">
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:4px;">
-        <span class="badge badge-status-${skill.status}" style="font-size:12px;">
-          ${skill.status === 'ready' ? 'Ready to Deploy' : 'Draft'}
-        </span>
-        <span style="font-size:12px;color:var(--pai-med-gray);">Skill ${skill.number}</span>
+      <div class="detail-hero">
+        <div>
+          <div class="detail-kicker-row">
+            <span class="badge badge-status-${skill.status}" style="font-size:12px;">
+              ${skill.status === 'ready' ? 'Ready to Deploy' : 'Draft'}
+            </span>
+            <span style="font-size:12px;color:var(--pai-med-gray);font-weight:700;">Skill ${skill.number}</span>
+            ${cat ? `<span class="badge badge-audience">${cat.name}</span>` : ''}
+          </div>
+          <div class="detail-title">${skill.name}</div>
+          <div class="detail-desc">${skill.description}</div>
+          <div class="detail-meta-row">
+            <div class="detail-meta-item"><strong>Audience</strong> ${skill.audience.join(', ')}</div>
+            <div class="detail-meta-item"><strong>Input</strong> ${skill.input}</div>
+            <div class="detail-meta-item"><strong>Connector</strong> ${skill.mcpConnectors.join(', ')}</div>
+          </div>
+        </div>
+        <div class="detail-hero-side">
+          <div class="detail-side-label">Deployment Snapshot</div>
+          <div class="detail-stat-grid">
+            <div class="detail-stat-card"><strong>${availablePlatforms.length}</strong><span>platform variants</span></div>
+            <div class="detail-stat-card"><strong>${skill.mcpTools.length}</strong><span>MCP tools used</span></div>
+            <div class="detail-stat-card"><strong>${skill.projectKnowledgeFiles.length}</strong><span>knowledge files</span></div>
+            <div class="detail-stat-card"><strong>${skill.status === 'ready' ? 'Live' : 'Draft'}</strong><span>readiness state</span></div>
+          </div>
+          <div class="detail-side-note">
+            ${firstAvailable ? `Recommended first surface: <strong>${firstAvailable.name}</strong>. Use the platform tabs below for copyable instructions and any attached knowledge files.` : 'No platform instructions are attached to this skill yet.'}
+          </div>
+        </div>
       </div>
-      <div class="detail-title">${skill.name}</div>
-      <div class="detail-desc">${skill.description}</div>
-      <div class="detail-meta-row">
-        <div><strong>Audience:</strong> ${skill.audience.join(', ')}</div>
-        <div><strong>Input:</strong> ${skill.input}</div>
-        <div><strong>Category:</strong> ${cat ? cat.name : ''}</div>
-        <div><strong>MCP:</strong> ${skill.mcpConnectors.join(', ')}</div>
-      </div>
-      ${skill.mcpTools.length ? `<div style="margin-top:8px;font-size:12px;color:var(--pai-dark-gray);">
-        <strong>Tools:</strong> ${skill.mcpTools.join(', ')}
-      </div>` : ''}
-      ${skill.projectKnowledgeFiles.length ? `<div style="margin-top:8px;font-size:12px;color:var(--pai-dark-gray);">
-        <strong>Knowledge Files:</strong> ${skill.projectKnowledgeFiles.join(', ')}
-      </div>` : ''}
     </div>
 
     <div class="tabs" id="detail-tabs">
@@ -2854,45 +3377,78 @@ function renderDetail(skillId) {
   // Render Details tab content
   const detailsContainer = document.getElementById('details-content-container');
   if (detailsContainer) {
+    const renderStack = (items) => items.length
+      ? `<div class="stack-list">${items.map(item => `<div class="stack-item">${item}</div>`).join('')}</div>`
+      : '<p class="detail-subtext">Nothing additional is attached for this section.</p>';
+    const platformCoverage = allPlatforms.map(platform => {
+      const supported = skill.platforms[platform.id] !== null;
+      const label = supported ? 'Instructions ready' : (platform.status === 'coming-soon' ? 'Platform support coming soon' : 'Not built yet');
+      return `<div class="stack-item"><strong style="display:block;color:var(--pai-dark-blue);margin-bottom:4px;">${platform.name}</strong>${label}</div>`;
+    }).join('');
+
     let leftHtml = `
-      <div class="detail-section">
+      <div class="section-card detail-section">
         <h3>Description</h3>
         <p>${skill.description}</p>
       </div>
-      <div class="detail-section">
+      <div class="section-card detail-section">
         <h3>Audience</h3>
-        <p>${skill.audience.join(', ')}</p>
+        ${renderStack(skill.audience)}
+      </div>
+      <div class="section-card detail-section">
+        <h3>MCP Connectors</h3>
+        ${renderStack(skill.mcpConnectors)}
       </div>`;
 
     if (skill.mcpTools.length) {
       leftHtml += `
-        <div class="detail-section">
+        <div class="section-card detail-section">
           <h3>MCP Tools Used</h3>
-          <ul>${skill.mcpTools.map(t => `<li>${t}</li>`).join('')}</ul>
+          ${renderStack(skill.mcpTools)}
         </div>`;
     }
 
     if (skill.projectKnowledgeFiles.length) {
       const repoBase = repoRawBase;
       leftHtml += `
-        <div class="detail-section">
+        <div class="section-card detail-section">
           <h3>Knowledge Files</h3>
-          ${repoBase ? `<ul>${skill.projectKnowledgeFiles.map(f => `<li><a href="${repoBase}/${skill.id}/assets/${encodeURIComponent(f)}" download="${f}" style="color:var(--pai-primary-blue);text-decoration:none;">${f} <span style="font-size:11px;">&#x2913;</span></a></li>`).join('')}</ul>` : '<div style="font-size:13px;color:var(--pai-dark-gray);">Knowledge-file downloads are not configured for this build.</div>'}
+          ${repoBase
+            ? `<div class="stack-list">${skill.projectKnowledgeFiles.map(f => `
+                <div class="stack-item">
+                  <a href="${repoBase}/${skill.id}/assets/${encodeURIComponent(f)}" download="${f}" style="color:var(--pai-primary-blue);text-decoration:none;font-weight:600;">
+                    ${f} <span style="font-size:11px;">&#x2913;</span>
+                  </a>
+                </div>`).join('')}</div>`
+            : '<p class="detail-subtext">Knowledge-file downloads are not configured for this build.</p>'}
         </div>`;
     }
 
+    let rightHtml = `
+      <div class="section-card">
+        <h3>Platform Coverage</h3>
+        <div class="stack-list">${platformCoverage}</div>
+      </div>`;
+
     if (skill.sample_output) {
-      const rightHtml = `
-        <h3>Sample Output</h3>
-        ${renderSlackMockup(skill.sample_output)}`;
-      detailsContainer.innerHTML = `
-        <div class="detail-split">
-          <div class="detail-split-left">${leftHtml}</div>
-          <div class="detail-split-right">${rightHtml}</div>
+      rightHtml += `
+        <div class="section-card sample-panel">
+          <div class="sample-panel-head">
+            <div>
+              <div class="sample-panel-label">Sample Output</div>
+              <h3 style="margin-bottom:0;">Deployment Preview</h3>
+            </div>
+            <div class="sample-panel-chip">${skill.sample_output.mockup || 'Slack'}</div>
+          </div>
+          ${renderSlackMockup(skill.sample_output)}
         </div>`;
-    } else {
-      detailsContainer.innerHTML = leftHtml;
     }
+
+    detailsContainer.innerHTML = `
+      <div class="detail-split">
+        <div class="detail-split-left">${leftHtml}</div>
+        <div class="detail-split-right">${rightHtml}</div>
+      </div>`;
   }
 
   // Initialize setup walkthrough
