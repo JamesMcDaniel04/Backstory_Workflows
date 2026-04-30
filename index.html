@@ -3062,9 +3062,19 @@ async function loadWorkflows() {
 function navigate(hash) { location.hash = hash; }
 
 function scrollViewToTop() {
+  const reset = () => {
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    window.scrollTo(0, 0);
+  };
+
+  reset();
   requestAnimationFrame(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+    reset();
+    requestAnimationFrame(reset);
   });
+  setTimeout(reset, 0);
+  setTimeout(reset, 120);
 }
 
 function handleRoute() {
@@ -3829,6 +3839,10 @@ class SetupWalkthrough {
 }
 
 // -- Init --
+if ('scrollRestoration' in history) {
+  history.scrollRestoration = 'manual';
+}
+
 window.addEventListener('hashchange', handleRoute);
 loadWorkflows();
 </script>
