@@ -3061,6 +3061,12 @@ async function loadWorkflows() {
 // -- Routing --
 function navigate(hash) { location.hash = hash; }
 
+function scrollViewToTop() {
+  requestAnimationFrame(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+  });
+}
+
 function handleRoute() {
   const hash = location.hash || '#/';
   if (hash === '#/guides/peopleai-mcp') {
@@ -3078,34 +3084,44 @@ function handleRoute() {
     document.getElementById('detail-view').style.display = 'block';
     document.getElementById('detail-view').classList.add('active');
     renderDetail(id);
+    scrollViewToTop();
   } else if (hash === '#/guides') {
     document.getElementById('guides-view').style.display = 'block';
     document.getElementById('guides-view').classList.add('active');
+    scrollViewToTop();
   } else if (hash === '#/guides/cross-tool-templates') {
     document.getElementById('guide-cross-tool-view').style.display = 'block';
     document.getElementById('guide-cross-tool-view').classList.add('active');
+    scrollViewToTop();
   } else if (hash === '#/guides/backstory-mcp') {
     document.getElementById('guide-backstory-mcp-view').style.display = 'block';
     document.getElementById('guide-backstory-mcp-view').classList.add('active');
+    scrollViewToTop();
   } else if (hash === '#/guides/slack-bot-setup') {
     document.getElementById('guide-slack-view').style.display = 'block';
     document.getElementById('guide-slack-view').classList.add('active');
+    scrollViewToTop();
   } else if (hash === '#/guides/teams-setup') {
     document.getElementById('guide-teams-view').style.display = 'block';
     document.getElementById('guide-teams-view').classList.add('active');
+    scrollViewToTop();
   } else if (hash === '#/guides/google-chat-setup') {
     document.getElementById('guide-google-chat-view').style.display = 'block';
     document.getElementById('guide-google-chat-view').classList.add('active');
+    scrollViewToTop();
   } else if (hash === '#/guides/email-setup') {
     document.getElementById('guide-email-view').style.display = 'block';
     document.getElementById('guide-email-view').classList.add('active');
+    scrollViewToTop();
   } else if (hash === '#/about') {
     document.getElementById('about-view').style.display = 'block';
     document.getElementById('about-view').classList.add('active');
+    scrollViewToTop();
   } else {
     document.getElementById('catalog-view').style.display = 'block';
     document.getElementById('catalog-view').classList.add('active');
     renderCatalog();
+    scrollViewToTop();
   }
 }
 
