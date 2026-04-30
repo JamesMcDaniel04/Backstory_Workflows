@@ -1,12 +1,12 @@
 # Executive Sponsor Tracker — Platform-Agnostic Recipe
 
-> Rebuild this workflow on **any** automation platform (Make, Power Automate, Zapier, etc.)
+> Rebuild this workflow on **any** automation platform (Make, Power Automate, Zapier, Workato, etc.)
 
 ## Prerequisites
 
 - **Backstory API access** — REST API access or an MCP-to-REST bridge for enrichment calls
 - **LLM API key** — Claude, OpenAI, Gemini, or another chat completion provider
-- **CRM access** — Salesforce, HubSpot, or equivalent API credentials
+- **CRM access** — Salesforce, Dynamics 365, HubSpot, or equivalent API credentials
 - **Messaging credentials** — Slack Bot Token, Teams webhook, or SMTP for delivery
 
 ## Architecture
@@ -14,6 +14,29 @@
 ```
 Schedule Trigger → Find Strategic Deals → Check Executive Engagement → AI Risk & Re-engagement → Alert Deal Owners
 ```
+
+## Productization Template
+
+Use this workflow in three layers so it scales beyond a single customer environment:
+
+1. **Validated implementations in this repo** — start with the included n8n JSON or agent-script variants when the customer stack matches a shipped asset.
+2. **Deep recipes for common orchestrators** — use the rebuild steps below for Make, Power Automate, Zapier, Workato, or a similar orchestration tool.
+3. **Generic adaptation path** — preserve the workflow pattern and substitute equivalent connectors for customer-specific systems.
+
+### Common System Substitutions
+
+| Layer | Common choices | Adaptation guidance |
+|---|---|---|
+| CRM / system of record | Salesforce, Dynamics 365, HubSpot, custom CRM or warehouse | Replace record fetch and write-back steps with equivalent account, contact, opportunity, and activity queries. |
+| Delivery | Slack, Microsoft Teams, email, ticket queue | Keep the message schema and routing logic the same; only replace the final delivery action. |
+| Notes / meetings / source systems | Google Calendar, Microsoft 365, Gong, Zoom, Otter, Fireflies, Fathom | Use the system that owns the meeting, transcript, or event data, then normalize it into the same enrichment payload. |
+| Orchestration | n8n, Make, Power Automate, Zapier, Workato, custom code | Preserve the trigger -> gather -> enrich -> analyze -> route -> deliver pattern even if the tool names change. |
+
+### Implementation Guidance
+
+- Prioritize the most common customer stacks first, then adapt this recipe for less common tools.
+- Start from a validated workflow when possible, then swap only the CRM, delivery, and source-system connectors.
+- Keep prompts, scoring logic, and routing rules productized; treat vendor-specific connector steps as thin wrappers.
 
 ## Step-by-Step Rebuild
 
@@ -48,7 +71,7 @@ Schedule Trigger → Find Strategic Deals → Check Executive Engagement → AI 
   You are generating the Executive Sponsor Tracker output.
   Purpose: Monitors executive-level contact engagement across strategic deals to ensure champion and sponsor relationships stay active. The workflow identifies open opportunities above a configurable deal value threshold, checks Backstory for executive contact engagement (VP+ titles), and flags deals where executive sponsors have gone silent (no meetings or emails in the configured lookback window). An AI agent assesses the risk of each silent-sponsor situation and recommends re-engagement tactics. Alerts are sent to the deal owner and sales leadership via Messaging.
   Use Backstory context plus the source payload to produce concise, actionable guidance.
-  Return a Slack-safe markdown summary with findings, risks, and next actions.
+  Return a channel-safe markdown or HTML summary with findings, risks, and next actions that can be delivered in Slack, Teams, or email.
   ```
 - **All platforms:** Use your preferred LLM connector or raw HTTP requests to Claude/OpenAI/Gemini.
 

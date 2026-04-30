@@ -1427,9 +1427,9 @@
         <div class="hero-panel-label">Library Snapshot</div>
         <div class="hero-stat-grid" id="hero-stat-grid"></div>
         <div class="hero-feature-list">
-          <div class="hero-feature"><span class="hero-feature-mark">01</span><span><strong>Multiple delivery paths</strong> with JSON imports, agent scripts, and rebuild recipes.</span></div>
-          <div class="hero-feature"><span class="hero-feature-mark">02</span><span><strong>Decision support built in</strong> so users can compare complexity, credentials, and workflow shape before downloading.</span></div>
-          <div class="hero-feature"><span class="hero-feature-mark">03</span><span><strong>Consistent setup guidance</strong> across Backstory MCP, messaging channels, and automation surfaces.</span></div>
+          <div class="hero-feature"><span class="hero-feature-mark">01</span><span><strong>Validated starting points</strong> with shipped n8n JSON and agent-script implementations for common environments.</span></div>
+          <div class="hero-feature"><span class="hero-feature-mark">02</span><span><strong>Deep recipes for major orchestrators</strong> so Make, Power Automate, Zapier, and similar stacks have a repeatable path.</span></div>
+          <div class="hero-feature"><span class="hero-feature-mark">03</span><span><strong>Adaptable system substitutions</strong> across Salesforce, Dynamics, HubSpot, Slack, Teams, email, and customer-specific tooling.</span></div>
         </div>
       </div>
     </div>
@@ -1472,33 +1472,31 @@
       CRM data, and communication tools to deliver actionable sales intelligence.
     </p>
     <p>
-      Each workflow is a complete automation that can be imported into your preferred platform.
-      Workflows combine Backstory's engagement data with Claude AI to generate insights like daily
-      sales digests, meeting briefs, pipeline coaching reports, and account risk alerts.
+      Each workflow is packaged as a reusable pattern rather than a one-off customer build.
+      The library combines validated implementations, recipes for the most common orchestration
+      tools, and generic adaptation guidance so the same workflow can move across different
+      CRM, delivery, and source-system environments.
     </p>
     <p style="margin-top:16px;">
-      <strong>Supported Platforms:</strong><br>
-      <span class="platform-badge available">Any (JSON import)</span>
-      <span class="platform-badge coming-soon">Workato &mdash; Coming Soon</span>
-      <span class="platform-badge coming-soon">Zapier &mdash; Coming Soon</span>
-      <span class="platform-badge coming-soon">Others &mdash; Coming Soon</span>
+      <strong>Packaging Strategy:</strong><br>
+      <span class="platform-badge available">Validated: n8n + agent scripts</span>
+      <span class="platform-badge available">Recipes: Make / Power Automate / Zapier</span>
+      <span class="platform-badge available">Adaptable: other orchestration stacks</span>
     </p>
     <p style="margin-top:16px;">
-      <strong>How it works:</strong><br>
-      1. Browse the library and pick a workflow<br>
-      2. Download the workflow JSON<br>
-      3. Import into your automation platform<br>
-      4. Connect your credentials (Backstory MCP, Anthropic, Slack, etc.)<br>
-      5. Configure schedule and channel settings<br>
-      6. Activate the workflow
+      <strong>Cross-Tool Template Model:</strong><br>
+      1. Start from the workflow pattern and pick the closest validated implementation<br>
+      2. Use the recipe card if the customer is on Make, Power Automate, Zapier, or a similar orchestrator<br>
+      3. Swap equivalent connectors for CRM, delivery, notes, and data sources while preserving the workflow shape<br>
+      4. Productize the logic that repeats across customers: prompts, scoring, routing, and thresholds<br>
+      5. Keep vendor-specific steps thin so the workflow survives stack changes
     </p>
     <p style="margin-top:16px;">
-      <strong>Prerequisites:</strong><br>
-      &bull; An automation platform instance (self-hosted or Cloud)<br>
-      &bull; Backstory MCP credentials<br>
-      &bull; Anthropic API key for Claude AI<br>
-      &bull; Slack Bot token (for most workflows)<br>
-      &bull; Additional credentials as noted per workflow
+      <strong>Common System Families:</strong><br>
+      &bull; CRM / system of record: Salesforce, Dynamics 365, HubSpot, or a customer-specific CRM/data warehouse<br>
+      &bull; Delivery: Slack, Microsoft Teams, email, or internal queues<br>
+      &bull; Meeting / note sources: Google Calendar, Microsoft 365, Gong, Zoom, Otter, Fireflies, Fathom<br>
+      &bull; Orchestration: n8n, Make, Power Automate, Zapier, Workato, or custom code
     </p>
     <p style="margin-top:16px;">
       <strong>Maintained by:</strong> AI Innovation Team<br>
@@ -1515,6 +1513,22 @@
     <p style="color:var(--ac-dark-secondary);margin-bottom:28px;">
       Step-by-step configuration guides for the services that power these workflows.
     </p>
+
+    <h3 style="margin-bottom:12px;color:var(--ac-coral);">Productization</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-bottom:28px;">
+      <a href="#/guides/cross-tool-templates" style="text-decoration:none;color:inherit;">
+        <div style="background:var(--ac-white);border:2px solid var(--ac-coral);border-radius:var(--radius);padding:24px;transition:box-shadow .2s;cursor:pointer;" onmouseover="this.style.boxShadow='var(--shadow-hover)'" onmouseout="this.style.boxShadow='none'">
+          <div style="font-size:32px;margin-bottom:12px;">🧩</div>
+          <div style="font-size:17px;font-weight:700;margin-bottom:6px;">Cross-Tool Workflow Templates</div>
+          <div style="font-size:13px;color:var(--ac-dark-secondary);line-height:1.5;">
+            How to turn a single workflow implementation into a reusable offering across n8n, Make, Power Automate, Zapier, Salesforce, Dynamics, Slack, Teams, and more.
+          </div>
+          <div style="margin-top:12px;">
+            <span style="display:inline-block;font-size:11px;padding:2px 8px;background:var(--ac-coral);border-radius:4px;color:white;font-weight:600;">Recommended starting guide</span>
+          </div>
+        </div>
+      </a>
+    </div>
 
     <h3 style="margin-bottom:12px;color:var(--ac-coral);">Data Source</h3>
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-bottom:28px;">
@@ -1589,6 +1603,112 @@
         </div>
       </a>
 
+    </div>
+  </div>
+</div>
+
+<!-- Cross-Tool Template Guide -->
+<div id="guide-cross-tool-view" class="container detail-view">
+  <a class="back-link" onclick="navigate('#/guides')">&#8592; All Guides</a>
+  <div class="about-content" style="max-width:860px;">
+    <h2>Cross-Tool Workflow Template Guide</h2>
+    <p style="color:var(--ac-dark-secondary);margin-bottom:18px;">
+      Use this guide when a workflow needs to move from a single-customer implementation
+      to a repeatable offering that works across multiple customer environments.
+    </p>
+
+    <h3 style="margin-top:20px;color:var(--ac-coral);">The Three-Layer Model</h3>
+    <table style="width:100%;border-collapse:collapse;margin:12px 0 20px 0;font-size:14px;">
+      <thead>
+        <tr style="background:var(--ac-cream);border-bottom:2px solid var(--ac-light-gray);">
+          <th style="padding:10px 12px;text-align:left;">Layer</th>
+          <th style="padding:10px 12px;text-align:left;">What to Ship</th>
+          <th style="padding:10px 12px;text-align:left;">Why It Exists</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;"><strong>Validated implementations</strong></td>
+          <td style="padding:10px 12px;">n8n JSON, LangGraph, Claude Agent SDK, OpenAI Agents SDK</td>
+          <td style="padding:10px 12px;">These are the fastest starting points when the customer stack matches a known-good implementation.</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;"><strong>Deep recipes for common orchestrators</strong></td>
+          <td style="padding:10px 12px;">Make, Power Automate, Zapier, and similar step-by-step rebuild guides</td>
+          <td style="padding:10px 12px;">These cover the most common orchestration environments without trying to support every tool equally.</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;"><strong>Generic adaptation path</strong></td>
+          <td style="padding:10px 12px;">Connector substitution guidance for customer-specific stacks</td>
+          <td style="padding:10px 12px;">This is how the workflow survives differences in CRM, delivery, note takers, and orchestration tooling.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 style="margin-top:20px;color:var(--ac-coral);">What Stays Productized</h3>
+    <ul style="padding-left:20px;color:var(--ac-dark-secondary);line-height:1.8;">
+      <li>The workflow pattern: trigger → gather → enrich → analyze → route → deliver</li>
+      <li>Prompts, scoring logic, thresholds, and escalation rules</li>
+      <li>Canonical payload shapes between steps</li>
+      <li>Configuration knobs like lookback windows, channel routing, account filters, and owner mappings</li>
+    </ul>
+
+    <h3 style="margin-top:20px;color:var(--ac-coral);">What Should Stay Thin</h3>
+    <ul style="padding-left:20px;color:var(--ac-dark-secondary);line-height:1.8;">
+      <li>Vendor-specific connector steps</li>
+      <li>Authentication wrappers</li>
+      <li>Field-name mappings between Salesforce, Dynamics, HubSpot, or custom schemas</li>
+      <li>Delivery-node implementations for Slack, Teams, email, or queueing tools</li>
+    </ul>
+
+    <h3 style="margin-top:20px;color:var(--ac-coral);">Common Substitution Matrix</h3>
+    <table style="width:100%;border-collapse:collapse;margin:12px 0 20px 0;font-size:14px;">
+      <thead>
+        <tr style="background:var(--ac-cream);border-bottom:2px solid var(--ac-light-gray);">
+          <th style="padding:10px 12px;text-align:left;">System Family</th>
+          <th style="padding:10px 12px;text-align:left;">Common Choices</th>
+          <th style="padding:10px 12px;text-align:left;">Adaptation Rule</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;">CRM / system of record</td>
+          <td style="padding:10px 12px;">Salesforce, Dynamics 365, HubSpot, custom CRM, data warehouse</td>
+          <td style="padding:10px 12px;">Swap fetch and write-back steps, but keep the canonical account, contact, opportunity, and activity payloads the same.</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;">Delivery</td>
+          <td style="padding:10px 12px;">Slack, Microsoft Teams, email, ticket queues</td>
+          <td style="padding:10px 12px;">Replace only the final routing and formatting layer; do not fork the business logic.</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;">Meetings / notes</td>
+          <td style="padding:10px 12px;">Google Calendar, Microsoft 365, Gong, Zoom, Otter, Fireflies, Fathom</td>
+          <td style="padding:10px 12px;">Normalize meetings, transcripts, and attendees into a shared enrichment payload before the AI step.</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ac-light-gray);">
+          <td style="padding:10px 12px;">Orchestration</td>
+          <td style="padding:10px 12px;">n8n, Make, Power Automate, Zapier, Workato, custom code</td>
+          <td style="padding:10px 12px;">Preserve workflow order and state handling even if the tool surface changes.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 style="margin-top:20px;color:var(--ac-coral);">Prioritization Rule</h3>
+    <p>
+      Do not try to write recipes for every tool. Prioritize the ecosystems that are both
+      common in the field and validated through real implementations. In practice, that means:
+    </p>
+    <ol style="padding-left:20px;color:var(--ac-dark-secondary);line-height:1.8;">
+      <li>Ship deep support for the most common orchestrators first.</li>
+      <li>Reuse workflows already proven in customer implementations as the template baseline.</li>
+      <li>Use the generic adaptation layer for less common customer-specific stacks.</li>
+    </ol>
+
+    <div style="margin-top:24px;padding:16px;background:var(--ac-cream);border-left:4px solid var(--ac-coral);border-radius:0 var(--radius) var(--radius) 0;">
+      <strong>Practical rule:</strong> Productize the pattern, not the vendor. The more the prompts,
+      decision logic, and payload contracts can survive a connector swap, the more reusable the
+      workflow becomes across customers.
     </div>
   </div>
 </div>
@@ -2947,7 +3067,7 @@ function handleRoute() {
     location.replace('#/guides/backstory-mcp');
     return;
   }
-  const views = ['catalog-view', 'detail-view', 'about-view', 'guides-view', 'guide-backstory-mcp-view', 'guide-slack-view', 'guide-teams-view', 'guide-google-chat-view', 'guide-email-view'];
+  const views = ['catalog-view', 'detail-view', 'about-view', 'guides-view', 'guide-cross-tool-view', 'guide-backstory-mcp-view', 'guide-slack-view', 'guide-teams-view', 'guide-google-chat-view', 'guide-email-view'];
   views.forEach(v => {
     document.getElementById(v).style.display = 'none';
     document.getElementById(v).classList.remove('active');
@@ -2961,6 +3081,9 @@ function handleRoute() {
   } else if (hash === '#/guides') {
     document.getElementById('guides-view').style.display = 'block';
     document.getElementById('guides-view').classList.add('active');
+  } else if (hash === '#/guides/cross-tool-templates') {
+    document.getElementById('guide-cross-tool-view').style.display = 'block';
+    document.getElementById('guide-cross-tool-view').classList.add('active');
   } else if (hash === '#/guides/backstory-mcp') {
     document.getElementById('guide-backstory-mcp-view').style.display = 'block';
     document.getElementById('guide-backstory-mcp-view').classList.add('active');
@@ -3086,6 +3209,47 @@ function renderSlackMockup(sample) {
       </div>
       <div class="slack-mockup-body">${mdToHtml(sample.content)}</div>
     </div>`;
+}
+
+function includesAny(text, patterns) {
+  return patterns.some(pattern => pattern.test(text));
+}
+
+function buildTemplateStrategy(wf) {
+  const text = [wf.name, wf.description, ...(wf.credentials || []), ...(wf.configuration || [])].join(' ').toLowerCase();
+  const validated = Object.keys(WORKFLOW_PLATFORM_META)
+    .filter(platform => wf.platforms && wf.platforms[platform])
+    .map(platform => WORKFLOW_PLATFORM_META[platform].label);
+  const substitutions = [];
+
+  if (includesAny(text, [/crm/, /opportun/, /pipeline/, /deal/, /renewal/, /forecast/, /territory/, /mql/, /account/])) {
+    substitutions.push('CRM / system of record: Salesforce, Dynamics 365, HubSpot, or a customer-specific CRM / warehouse');
+  }
+  if (includesAny(text, [/message/, /alert/, /digest/, /brief/, /email/, /slack/, /teams/, /channel/])) {
+    substitutions.push('Delivery surfaces: Slack, Microsoft Teams, email, ticket queues, or internal portals');
+  }
+  if (includesAny(text, [/meeting/, /calendar/, /brief/, /qbr/, /debrief/, /transcript/, /attendee/])) {
+    substitutions.push('Meetings and note sources: Google Calendar, Microsoft 365, Gong, Zoom, Otter, Fireflies, Fathom');
+  }
+  if (includesAny(text, [/email/, /inbox/, /outlook/, /gmail/])) {
+    substitutions.push('Mail systems: Gmail, Outlook, IMAP, Microsoft Graph, or another mail API');
+  }
+  if (includesAny(text, [/ticket/, /project management/, /jira/, /asana/, /support/, /onboarding/])) {
+    substitutions.push('Work-management systems: Jira, Asana, ServiceNow, Linear, or a custom task API');
+  }
+  if (includesAny(text, [/config/, /user configuration store/, /airtable/, /supabase/, /database/, /sheet/])) {
+    substitutions.push('Config and state stores: Airtable, Google Sheets, Supabase, Postgres, Redis, or internal config APIs');
+  }
+  if (!substitutions.length) {
+    substitutions.push('Connector families vary by customer; preserve the canonical payload and swap equivalent APIs.');
+  }
+
+  return {
+    validated,
+    orchestrators: ['n8n', 'Make', 'Power Automate', 'Zapier', 'Workato', 'Custom code'],
+    substitutions,
+    rule: 'Preserve the trigger -> gather -> enrich -> analyze -> route -> deliver pattern. Swap only the connector shells when moving between customer stacks.',
+  };
 }
 
 function renderCards() {
@@ -3235,6 +3399,7 @@ function switchTab(tabId) {
 function renderDetailsTab(wf) {
   const container = document.getElementById('details-content-container');
   if (!container) return;
+  const template = buildTemplateStrategy(wf);
 
   const renderStack = (items) => items.length
     ? `<div class="stack-list">${items.map(item => `<div class="stack-item">${item}</div>`).join('')}</div>`
@@ -3260,6 +3425,16 @@ function renderDetailsTab(wf) {
     <div class="section-card detail-section">
       <h3>Required Credentials</h3>
       ${renderStack(wf.credentials)}
+    </div>
+    <div class="section-card detail-section">
+      <h3>Template Strategy</h3>
+      <p>This workflow is packaged as a reusable pattern: start from a validated implementation when the stack matches, use the recipe card for major orchestration tools, and swap only the connector shells for customer-specific environments.</p>
+      ${renderStack([
+        `<strong>Validated implementations in this repo</strong><br>${template.validated.join(', ') || 'Recipe Card only'}`,
+        `<strong>Major orchestration tools to support deeply</strong><br>${template.orchestrators.join(', ')}`,
+        `<strong>Common system substitutions</strong><br>${template.substitutions.join('<br>')}`,
+        `<strong>Productization rule</strong><br>${template.rule}`,
+      ])}
     </div>`;
 
   if (wf.configuration && wf.configuration.length > 0) {

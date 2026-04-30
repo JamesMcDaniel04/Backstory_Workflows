@@ -16,6 +16,7 @@ The site requires no build step and is designed to deploy directly from the repo
 - `#/`
 - `#/about`
 - `#/guides`
+- `#/guides/cross-tool-templates`
 - `#/guides/backstory-mcp`
 - `#/guides/slack-bot-setup`
 - `#/guides/teams-setup`
@@ -28,6 +29,29 @@ The site requires no build step and is designed to deploy directly from the repo
 - `skills/#/skill/<id>`
 
 Legacy links to `#/guides/peopleai-mcp` redirect to `#/guides/backstory-mcp`.
+
+## Cross-Tool Template Strategy
+
+The workflow library is structured in three layers so patterns can move from a
+single implementation to a repeatable offering across customer environments:
+
+1. Validated implementations: shipped assets like `n8n` JSON and agent SDK scripts.
+2. Deep recipes for common orchestrators: Make, Power Automate, Zapier, and similar tools.
+3. Generic adaptation guidance: connector substitution across CRM, delivery, meeting-note, and customer-specific systems.
+
+The goal is to productize the reusable logic:
+
+- prompts and scoring rules
+- payload shapes between steps
+- routing and escalation decisions
+- configuration knobs such as lookback windows and thresholds
+
+And keep vendor-specific layers thin:
+
+- CRM connector implementations
+- delivery-node implementations
+- auth wrappers
+- system-specific field mappings
 
 ## Local Preview
 
