@@ -404,4 +404,119 @@ Output format:
         lookback_days=180,
         trigger_mode="webhook",
     ),
+    "19-customer-stack-blueprint": _spec(
+        "19-customer-stack-blueprint",
+        "Customer Stack Blueprint",
+        "Turns a customer tool-stack intake into a reusable implementation blueprint that recommends the best validated workflow assets, orchestration recipe, connector substitutions, and rollout path.",
+        """You are a workflow solution architect focused on repeatable productization.
+
+Given a customer stack intake, produce an implementation blueprint that:
+- identifies the closest validated implementation path
+- recommends the best orchestration approach
+- maps CRM, delivery, meeting, and storage substitutions
+- calls out risks, gaps, and required configuration decisions
+- keeps the recommendation reusable across similar customers
+""",
+        """Run the Customer Stack Blueprint workflow:
+1. Call get_run_context() and load_records().
+2. For each intake record, identify the workflow goal, the systems in the
+   customer's current stack, and the constraints that affect implementation.
+3. Recommend the best validated starting point from this library.
+4. Produce a blueprint with connector substitutions, build sequencing,
+   validation checkpoints, and productization notes.
+5. Compile the blueprint(s) into a delivery report for solutions engineering.
+6. Deliver the report to Slack and optionally email.
+""",
+        "customer workflow implementation intake requests",
+        "IMPLEMENTATION_INTAKE_API_BASE_URL",
+        "/implementation-intakes",
+        "requests",
+        source_method="POST",
+        lookback_days=30,
+        trigger_mode="webhook",
+    ),
+    "20-crm-signal-normalizer": _spec(
+        "20-crm-signal-normalizer",
+        "CRM Signal Normalizer",
+        "Normalizes Salesforce, Dynamics 365, HubSpot, or custom CRM records into a canonical opportunity, account, and contact payload that downstream Backstory workflows can reuse.",
+        """You are a CRM normalization assistant.
+
+For each batch of CRM records, produce:
+- canonical entity mapping summary
+- fields that mapped cleanly
+- fields that need transformation or fallback logic
+- identity and deduplication risks
+- downstream workflow implications
+""",
+        """Run the CRM Signal Normalizer workflow:
+1. Call get_run_context() and load_records().
+2. For each CRM record batch, determine the source CRM and object family.
+3. Normalize account, contact, opportunity, owner, stage, amount, and
+   activity fields into a canonical workflow payload.
+4. Highlight mapping gaps, schema drift, and records that need manual review.
+5. Compile a normalization report plus the canonical output examples.
+6. Deliver the report to Slack and optionally email.
+""",
+        "CRM records that need canonical normalization",
+        "CRM_API_BASE_URL",
+        "/crm/changed-records",
+        "records",
+        lookback_days=7,
+    ),
+    "21-meeting-intelligence-normalizer": _spec(
+        "21-meeting-intelligence-normalizer",
+        "Meeting Intelligence Normalizer",
+        "Normalizes calendars, transcripts, attendees, and action items from Gong, Zoom, Teams, Otter, Fireflies, Fathom, and other note-taker systems into one reusable meeting-intelligence payload.",
+        """You are a meeting intelligence normalization assistant.
+
+For each meeting source payload, explain:
+- the canonical meeting object that should be produced
+- the attendee, transcript, and action-item fields that mapped correctly
+- account-association and identity risks
+- missing signals that downstream briefing or coaching workflows will care about
+""",
+        """Run the Meeting Intelligence Normalizer workflow:
+1. Call get_run_context() and load_records().
+2. For each meeting or transcript payload, identify the source calendar or
+   note-taker system and normalize it into a shared meeting schema.
+3. Extract attendee, timeline, transcript, action-item, and account-mapping
+   fields needed by downstream workflows.
+4. Flag ambiguous owners, missing CRM/account links, or partial transcripts.
+5. Compile a normalization report with canonical payload examples.
+6. Deliver the report to Slack and optionally email.
+""",
+        "meeting events and note-taker payloads for normalization",
+        "MEETING_SOURCE_API_BASE_URL",
+        "/meeting-intelligence/recent",
+        "meetings",
+        lookback_days=3,
+    ),
+    "22-multi-channel-delivery-router": _spec(
+        "22-multi-channel-delivery-router",
+        "Multi-Channel Delivery Router",
+        "Receives a formatted workflow insight payload, resolves the correct Slack, Teams, email, or webhook destination, adapts the message for the target surface, and applies fallback routing rules.",
+        """You are a delivery routing assistant.
+
+For each inbound insight payload, produce:
+- routing decision and why it was selected
+- destination surface and fallback path
+- format adjustments needed for Slack, Teams, email, or webhook delivery
+- identity mapping or permissions issues that could block delivery
+""",
+        """Run the Multi-Channel Delivery Router workflow:
+1. Call get_run_context() and load_records().
+2. For each inbound insight payload, identify the account, owner, audience,
+   and preferred destination from config or routing metadata.
+3. Adapt the message for the target surface and note any fallback behavior.
+4. Compile a routing report highlighting successful paths and delivery risks.
+5. Deliver the report to Slack and optionally email.
+""",
+        "formatted workflow insights waiting for routed delivery",
+        "ROUTING_API_BASE_URL",
+        "/delivery-queue",
+        "messages",
+        source_method="POST",
+        lookback_days=7,
+        trigger_mode="webhook",
+    ),
 }

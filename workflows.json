@@ -1,5 +1,5 @@
 {
-  "_generated": "2026-04-29T16:58:33.963Z",
+  "_generated": "2026-04-30T18:00:00.000Z",
   "_generator": "docs/build-catalog.py",
   "categories": [
     {
@@ -31,6 +31,11 @@
       "id": "strategic-intelligence",
       "name": "Strategic Intelligence",
       "icon": "zap"
+    },
+    {
+      "id": "platform-enablement",
+      "name": "Platform Enablement",
+      "icon": "layers"
     }
   ],
   "workflows": [
@@ -1277,6 +1282,320 @@
         "langgraph": "langgraph_channel_pulse.py",
         "claude-agent": "claude_agent_channel_pulse.py",
         "openai-agent": "openai_agent_channel_pulse.py",
+        "recipe-card": "recipe-card.md"
+      }
+    },
+    {
+      "id": "19-customer-stack-blueprint",
+      "name": "Customer Stack Blueprint",
+      "description": "Turns a customer workflow request and tool-stack intake into a reusable implementation blueprint that recommends the closest validated asset, the right orchestration recipe, and the connector substitutions required for CRM, delivery, and meeting-source differences.",
+      "category": "platform-enablement",
+      "trigger": "Webhook / Manual Intake                              |",
+      "output": "Implementation blueprint delivered to Slack, Teams, Email, or ticketing",
+      "credentials": [
+        "Request intake source — Form, CRM record, ticket, or solution intake queue",
+        "Workflow library knowledge — Validated workflow assets, recipes, and substitution rules",
+        "LLM API (Claude, OpenAI, Gemini, etc.) — Generates the implementation blueprint",
+        "Messaging or work-management surface — Slack, Teams, Email, Jira, Asana, or Linear"
+      ],
+      "node_flow": [
+        {
+          "step": 1,
+          "name": "Receive Stack Intake",
+          "description": "Captures the workflow goal plus the customer's orchestrator, CRM, delivery tools, meeting sources, and implementation constraints.",
+          "type": "trigger",
+          "color": "green"
+        },
+        {
+          "step": 2,
+          "name": "Normalize Customer Context",
+          "description": "Converts the intake into a canonical request object with fields for workflow goal, source systems, delivery surfaces, constraints, and timeline.",
+          "type": "data",
+          "color": "blue"
+        },
+        {
+          "step": 3,
+          "name": "Match Validated Patterns",
+          "description": "Identifies the closest known-good implementation path and flags where recipes or connector substitutions are required.",
+          "type": "data",
+          "color": "blue"
+        },
+        {
+          "step": 4,
+          "name": "AI Blueprint Design",
+          "description": "AI Agent recommends the best starting asset, orchestration approach, connector substitutions, rollout milestones, and productization notes.",
+          "type": "ai",
+          "color": "purple"
+        },
+        {
+          "step": 5,
+          "name": "Deliver Blueprint",
+          "description": "Routes the implementation plan to Solutions, RevOps, or a delivery queue for follow-up execution.",
+          "type": "output",
+          "color": "orange"
+        }
+      ],
+      "configuration": [
+        "Validated asset preference: Prefer n8n, agent scripts, or recipe-first starts",
+        "Supported orchestration families: n8n, Make, Power Automate, Zapier, Workato, custom code",
+        "Connector substitution defaults: Salesforce, Dynamics 365, HubSpot, Slack, Teams, email, note-taker systems",
+        "Delivery route: Slack, Teams, email, or work-management queue",
+        "Implementation milestones: discovery, mapping, prototype, QA, rollout"
+      ],
+      "quick_start_vs_full": "",
+      "sample_output": {
+        "mockup": "slack",
+        "bot_name": "Blueprint",
+        "bot_app": true,
+        "content": "🧩 **Customer Stack Blueprint** — Contoso Expansion Monitoring\n\n**BEST STARTING POINT:**\n- Use **Channel Pulse** as the validated pattern\n- Orchestration: **Power Automate** recipe first, not n8n JSON\n- Reason: Customer stack is Microsoft-first and already standardized on Dataverse + Teams\n\n**SYSTEM SUBSTITUTIONS:**\n- CRM: **Dynamics 365** instead of Salesforce — map account, opportunity, owner, and stage fields to canonical payloads\n- Delivery: **Microsoft Teams** instead of Slack — format final output for chat/card delivery\n- Meeting sources: **Teams + Fireflies** instead of Google Calendar + Gong\n\n**IMPLEMENTATION RISKS:**\n- Account-to-channel mapping does not exist yet for Teams\n- Fireflies transcript payload needs owner + account association logic\n- Dynamics close-date and stage history fields differ from Salesforce baseline recipe\n\n**FIRST MILESTONES:**\n1. Build CRM normalization layer for Dynamics account/opportunity objects\n2. Reuse the Channel Pulse weekly-summary logic and adapt delivery for Teams\n3. Add transcript normalization before QBR and meeting-prep automations\n\n---\n*Outcome: productized path chosen from validated pattern + connector substitutions, not a one-off custom design*"
+      },
+      "exports": [
+        "full.json"
+      ],
+      "platforms": {
+        "n8n": "full.json",
+        "langgraph": "langgraph_customer_stack_blueprint.py",
+        "claude-agent": "claude_agent_customer_stack_blueprint.py",
+        "openai-agent": "openai_agent_customer_stack_blueprint.py",
+        "recipe-card": "recipe-card.md"
+      }
+    },
+    {
+      "id": "20-crm-signal-normalizer",
+      "name": "CRM Signal Normalizer",
+      "description": "Normalizes Salesforce, Dynamics 365, HubSpot, or custom CRM records into a canonical account, contact, opportunity, and activity payload so downstream Backstory workflows can be reused without forking business logic by CRM.",
+      "category": "platform-enablement",
+      "trigger": "Schedule / CDC / Webhook                            |",
+      "output": "Canonical CRM event payload + QA alert",
+      "credentials": [
+        "CRM API access — Salesforce, Dynamics 365, HubSpot, or custom warehouse/API",
+        "Mapping store — Canonical schema, field translations, dedupe keys, and fallback logic",
+        "Event sink — Webhook, queue, database, warehouse, or downstream orchestrator",
+        "Optional LLM API (Claude, OpenAI, Gemini, etc.) — Mapping QA and drift explanations"
+      ],
+      "node_flow": [
+        {
+          "step": 1,
+          "name": "Receive or Poll Changed Records",
+          "description": "Collects changed account, contact, opportunity, and owner records from the source CRM using polling, CDC, or webhooks.",
+          "type": "trigger",
+          "color": "green"
+        },
+        {
+          "step": 2,
+          "name": "Fetch Source Records",
+          "description": "Pulls only the record families needed by downstream workflows and enriches them with source metadata.",
+          "type": "data",
+          "color": "blue"
+        },
+        {
+          "step": 3,
+          "name": "Canonical Field Mapping",
+          "description": "Maps source-specific field names into a shared schema for accounts, contacts, opportunities, owners, stages, amounts, and activity timestamps.",
+          "type": "data",
+          "color": "blue"
+        },
+        {
+          "step": 4,
+          "name": "Identity Resolution",
+          "description": "Resolves source IDs, owner IDs, domains, and dedupe keys so records can be joined across CRM and workflow layers.",
+          "type": "data",
+          "color": "blue"
+        },
+        {
+          "step": 5,
+          "name": "AI Mapping QA",
+          "description": "AI Agent explains missing fields, schema drift, and downstream workflow risks before the batch is published broadly.",
+          "type": "ai",
+          "color": "purple"
+        },
+        {
+          "step": 6,
+          "name": "Publish Canonical Batch",
+          "description": "Sends the normalized payload to a queue, webhook, database, or downstream workflow for reuse across the library.",
+          "type": "output",
+          "color": "orange"
+        }
+      ],
+      "configuration": [
+        "Source CRM: Salesforce, Dynamics 365, HubSpot, or custom",
+        "Canonical schema version: account/contact/opportunity/activity payload contract",
+        "Deduplication strategy: source IDs, domains, email, or external keys",
+        "Publish destination: queue, webhook, warehouse, or sub-workflow",
+        "QA threshold: when to alert on missing or ambiguous mappings"
+      ],
+      "quick_start_vs_full": "",
+      "sample_output": {
+        "mockup": "slack",
+        "bot_name": "Normalizer",
+        "bot_app": true,
+        "content": "🧱 **CRM Signal Normalizer** — Dynamics 365 batch complete\n\n**BATCH SUMMARY:**\n- 142 records processed across accounts, contacts, and opportunities\n- 136 records mapped cleanly to canonical schema\n- 6 records require manual review before downstream workflows consume them\n\n**MAPPING NOTES:**\n- `estimatedclose` -> `closeDate`\n- `stepname` -> canonical `stage`\n- `ownerid` resolved for 140 / 142 records\n- 4 accounts missing clean domain values, using fallback CRM account IDs\n\n**RISKS FOR DOWNSTREAM WORKFLOWS:**\n- 2 renewal records are missing renewal owner mapping\n- 3 opportunity records have ambiguous account associations due to duplicate company names\n- Territory Heat Map and Renewal Prep should ignore the 6 flagged records until reviewed\n\n👉 **NEXT ACTIONS:**\n- Add domain fallback rule for acquired subsidiaries\n- Patch owner mapping for the new EMEA sales pod\n- Re-run only the 6 flagged records after mapping update\n\n---\n*Canonical payload published to webhook bus `crm-normalized-v1`*"
+      },
+      "exports": [
+        "full.json"
+      ],
+      "platforms": {
+        "n8n": "full.json",
+        "langgraph": "langgraph_crm_signal_normalizer.py",
+        "claude-agent": "claude_agent_crm_signal_normalizer.py",
+        "openai-agent": "openai_agent_crm_signal_normalizer.py",
+        "recipe-card": "recipe-card.md"
+      }
+    },
+    {
+      "id": "21-meeting-intelligence-normalizer",
+      "name": "Meeting Intelligence Normalizer",
+      "description": "Normalizes meetings, transcripts, attendees, and action items from Gong, Zoom, Teams, Otter, Fireflies, Fathom, and other note-taker systems into one reusable meeting-intelligence payload for prep, coaching, and QBR workflows.",
+      "category": "platform-enablement",
+      "trigger": "Schedule / Webhook                                  |",
+      "output": "Canonical meeting intelligence event + QA alert",
+      "credentials": [
+        "Meeting or transcript source access — Gong, Zoom, Teams, Otter, Fireflies, Fathom, or equivalent",
+        "Calendar metadata source — Google Calendar or Microsoft 365 when transcript systems do not carry full attendee context",
+        "Account-mapping store — Domain, owner, or CRM lookup logic to associate meetings correctly",
+        "Optional LLM API (Claude, OpenAI, Gemini, etc.) — Transcript QA and summary normalization"
+      ],
+      "node_flow": [
+        {
+          "step": 1,
+          "name": "Receive Meeting Artifacts",
+          "description": "Collects completed meeting events, transcripts, summaries, and action items through polling or webhooks.",
+          "type": "trigger",
+          "color": "green"
+        },
+        {
+          "step": 2,
+          "name": "Fetch Source Payloads",
+          "description": "Pulls calendar metadata, attendee lists, transcript snippets, summaries, and action items from the chosen source family.",
+          "type": "data",
+          "color": "blue"
+        },
+        {
+          "step": 3,
+          "name": "Normalize Meeting Schema",
+          "description": "Maps source-specific payloads into canonical meeting fields used by prep, coaching, and follow-up workflows.",
+          "type": "data",
+          "color": "blue"
+        },
+        {
+          "step": 4,
+          "name": "Resolve Account Association",
+          "description": "Matches the meeting to accounts, opportunities, owners, and contacts using attendee, domain, or CRM context.",
+          "type": "data",
+          "color": "blue"
+        },
+        {
+          "step": 5,
+          "name": "AI Transcript QA",
+          "description": "AI Agent flags weak transcripts, missing attendees, ambiguous action items, or poor account mapping before the event is reused downstream.",
+          "type": "ai",
+          "color": "purple"
+        },
+        {
+          "step": 6,
+          "name": "Publish Canonical Meeting Event",
+          "description": "Routes the normalized meeting object to meeting-prep, QBR, coaching, or handoff workflows.",
+          "type": "output",
+          "color": "orange"
+        }
+      ],
+      "configuration": [
+        "Source family: Gong, Zoom, Teams, Google Meet, Otter, Fireflies, Fathom",
+        "Calendar join strategy: Google, Microsoft, or transcript-only mode",
+        "Canonical meeting schema version and transcript retention policy",
+        "Account association rules: domain, owner, attendee, or CRM ID",
+        "Downstream destinations: prep, QBR, coaching, or follow-up workflows"
+      ],
+      "quick_start_vs_full": "",
+      "sample_output": {
+        "mockup": "slack",
+        "bot_name": "Meeting Sync",
+        "bot_app": true,
+        "content": "🎙️ **Meeting Intelligence Normalizer** — Fireflies batch ready\n\n**SOURCE SUMMARY:**\n- 18 meetings processed in the last hour\n- 15 meetings mapped cleanly to accounts and owners\n- 3 meetings need review before they feed QBR Prep and Meeting Brief workflows\n\n**NORMALIZATION HIGHLIGHTS:**\n- Attendees standardized from mixed calendar + transcript sources\n- Action items converted into shared owner / due-date structure\n- Transcript summaries compressed into channel-safe meeting briefs\n\n**FLAGGED ISSUES:**\n- 2 meetings include external attendees from new domains not yet mapped to CRM accounts\n- 1 transcript lacks speaker separation, reducing confidence for coaching workflows\n- Teams meeting IDs and Fireflies note IDs need a shared dedupe key before backfill\n\n👉 **NEXT ACTIONS:**\n- Add new domain-to-account rules for EMEA pilot customers\n- Enable speaker-separated transcript export for the enterprise Teams tenant\n- Hold the 3 flagged events from downstream automation until reprocessed\n\n---\n*Published canonical meeting events to `meeting-intelligence-v1`*"
+      },
+      "exports": [
+        "full.json"
+      ],
+      "platforms": {
+        "n8n": "full.json",
+        "langgraph": "langgraph_meeting_intelligence_normalizer.py",
+        "claude-agent": "claude_agent_meeting_intelligence_normalizer.py",
+        "openai-agent": "openai_agent_meeting_intelligence_normalizer.py",
+        "recipe-card": "recipe-card.md"
+      }
+    },
+    {
+      "id": "22-multi-channel-delivery-router",
+      "name": "Multi-Channel Delivery Router",
+      "description": "Receives a ready-to-send insight payload, resolves whether it should land in Slack, Teams, email, or a webhook, adapts the format for that surface, and applies fallback routing without cloning the business logic for each tool.",
+      "category": "platform-enablement",
+      "trigger": "Webhook / Sub-workflow                               |",
+      "output": "Delivered insight payload across Slack, Teams, Email, or webhook",
+      "credentials": [
+        "Routing config store — Account, team, user, or segment to destination mapping",
+        "Delivery credentials — Slack, Microsoft Teams, SMTP, webhook, or queue access",
+        "Optional LLM API (Claude, OpenAI, Gemini, etc.) — Reformatting content safely for each delivery surface",
+        "Fallback sink — Secondary channel, email, or webhook for delivery failures"
+      ],
+      "node_flow": [
+        {
+          "step": 1,
+          "name": "Receive Insight Payload",
+          "description": "Accepts a formatted message plus routing metadata from another workflow, application, or queue.",
+          "type": "trigger",
+          "color": "green"
+        },
+        {
+          "step": 2,
+          "name": "Resolve Destination",
+          "description": "Looks up the correct target surface based on account, owner, role, region, or customer segment.",
+          "type": "data",
+          "color": "blue"
+        },
+        {
+          "step": 3,
+          "name": "Adapt Message Format",
+          "description": "Transforms the same insight into Slack-safe markdown, Teams-safe copy/cards, email HTML/plain text, or webhook-safe JSON envelopes.",
+          "type": "ai",
+          "color": "purple"
+        },
+        {
+          "step": 4,
+          "name": "Deliver to Preferred Channel",
+          "description": "Sends the adapted payload to the chosen channel using the first-party connector or generic webhook/SMTP action.",
+          "type": "output",
+          "color": "orange"
+        },
+        {
+          "step": 5,
+          "name": "Apply Fallback Route",
+          "description": "If delivery fails, routes the message to a backup surface and logs the original failure reason.",
+          "type": "output",
+          "color": "orange"
+        }
+      ],
+      "configuration": [
+        "Routing precedence: account, owner, role, team, region, or customer tier",
+        "Destination templates: Slack markdown, Teams card/chat, email HTML/plain text, webhook JSON",
+        "Fallback order: Teams -> Email, Slack -> Teams, or webhook -> queue",
+        "Quiet hours and escalation windows",
+        "Delivery logging and retry policy"
+      ],
+      "quick_start_vs_full": "",
+      "sample_output": {
+        "mockup": "slack",
+        "bot_name": "Router",
+        "bot_app": true,
+        "content": "📬 **Multi-Channel Delivery Router** — 12 payloads processed\n\n**ROUTING SUMMARY:**\n- 5 insights sent to Slack deal rooms\n- 4 insights delivered to Teams account channels\n- 2 executive briefs delivered via email\n- 1 payload failed Slack delivery and fell back to Teams\n\n**FORMAT ADAPTATIONS:**\n- Slack bullets converted to Teams-safe line breaks for Microsoft-first accounts\n- QBR summaries wrapped with subject lines and HTML body for email destinations\n- Webhook payloads preserved as structured JSON for downstream systems\n\n**FALLBACK EVENT:**\n- **ACME Corp Renewal Brief**\n- Preferred destination: `#acme-renewal-room`\n- Failure: channel permissions missing for service account\n- Fallback: sent to `ACME Account Team` Teams channel\n- 👉 Action: add service account to the Slack private channel before next run\n\n---\n*Routing logic preserved the same business payload across three delivery surfaces*"
+      },
+      "exports": [
+        "full.json"
+      ],
+      "platforms": {
+        "n8n": "full.json",
+        "langgraph": "langgraph_multi_channel_delivery_router.py",
+        "claude-agent": "claude_agent_multi_channel_delivery_router.py",
+        "openai-agent": "openai_agent_multi_channel_delivery_router.py",
         "recipe-card": "recipe-card.md"
       }
     }
