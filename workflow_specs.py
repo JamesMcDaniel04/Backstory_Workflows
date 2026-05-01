@@ -519,4 +519,97 @@ For each inbound insight payload, produce:
         lookback_days=7,
         trigger_mode="webhook",
     ),
+    "23-identity-resolution-hub": _spec(
+        "23-identity-resolution-hub",
+        "Identity Resolution Hub",
+        "Resolves people, accounts, owners, channels, and meeting participants across CRM, messaging, and meeting systems into a canonical identity layer that downstream workflows can trust.",
+        """You are an identity resolution assistant.
+
+For each identity candidate batch, produce:
+- canonical identity summary
+- source records that matched cleanly
+- ambiguous joins that need human review
+- confidence risks across CRM, messaging, and meeting systems
+- downstream workflow implications
+""",
+        """Run the Identity Resolution Hub workflow:
+1. Call get_run_context() and load_records().
+2. For each identity candidate batch, inspect people, account, owner, and
+   channel identifiers coming from CRM, messaging, and meeting systems.
+3. Resolve stable canonical identities using email, domain, external IDs,
+   aliases, and source precedence rules.
+4. Flag ambiguous joins, duplicate humans, and mismatched account ownership.
+5. Compile an identity resolution report with canonical examples.
+6. Deliver the report to Slack and optionally email.
+""",
+        "identity candidate batches across CRM, messaging, and meeting sources",
+        "IDENTITY_API_BASE_URL",
+        "/identity-candidates",
+        "profiles",
+        source_method="POST",
+        lookback_days=14,
+        trigger_mode="webhook",
+    ),
+    "24-workflow-contract-validator": _spec(
+        "24-workflow-contract-validator",
+        "Workflow Contract Validator",
+        "Validates canonical payloads between workflow steps so schema drift, missing fields, and connector-specific shape changes are caught before they break downstream automations.",
+        """You are a workflow contract validation assistant.
+
+For each payload batch, produce:
+- contract version assessed
+- required fields that passed
+- missing, renamed, or malformed fields
+- likely source of drift
+- downstream breakage risk and quarantine recommendation
+""",
+        """Run the Workflow Contract Validator workflow:
+1. Call get_run_context() and load_records().
+2. For each payload batch, identify the expected contract version and the
+   workflow step that produced the payload.
+3. Validate the payload against canonical required fields and known enums.
+4. Flag schema drift, type mismatches, empty arrays, and routing metadata
+   problems that would break downstream workflow steps.
+5. Compile a validation report plus quarantine recommendations.
+6. Deliver the report to Slack and optionally email.
+""",
+        "workflow payload batches waiting for contract validation",
+        "WORKFLOW_CONTRACT_API_BASE_URL",
+        "/payload-validations",
+        "payloads",
+        source_method="POST",
+        lookback_days=7,
+        trigger_mode="webhook",
+    ),
+    "25-implementation-gap-audit": _spec(
+        "25-implementation-gap-audit",
+        "Implementation Gap Audit",
+        "Audits a customer stack or internal workflow request against the current library to identify what is already validated, what only has recipe coverage, and what still needs productization work.",
+        """You are an implementation gap analysis assistant.
+
+For each audit request, produce:
+- validated assets already available
+- recipe-only layers that still need connector work
+- missing adapters or unvalidated components
+- rollout risk by system family
+- recommended backlog priorities
+""",
+        """Run the Implementation Gap Audit workflow:
+1. Call get_run_context() and load_records().
+2. For each audit request, inspect the target workflow goal and the current
+   customer or internal stack across orchestration, CRM, meeting, and delivery.
+3. Compare the request to validated assets in this library and identify what
+   already exists vs what still needs adaptation.
+4. Score the remaining gaps by implementation risk and productization value.
+5. Compile an audit report with recommended backlog priorities and next steps.
+6. Deliver the report to Slack and optionally email.
+""",
+        "implementation audit requests for customer or internal stack coverage",
+        "IMPLEMENTATION_AUDIT_API_BASE_URL",
+        "/implementation-audits",
+        "audits",
+        source_method="POST",
+        lookback_days=30,
+        trigger_mode="webhook",
+    ),
 }

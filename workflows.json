@@ -1,5 +1,5 @@
 {
-  "_generated": "2026-04-30T18:00:00.000Z",
+  "_generated": "2026-05-01T18:00:00.000Z",
   "_generator": "docs/build-catalog.py",
   "categories": [
     {
@@ -1596,6 +1596,231 @@
         "langgraph": "langgraph_multi_channel_delivery_router.py",
         "claude-agent": "claude_agent_multi_channel_delivery_router.py",
         "openai-agent": "openai_agent_multi_channel_delivery_router.py",
+        "recipe-card": "recipe-card.md"
+      }
+    },
+    {
+      "id": "23-identity-resolution-hub",
+      "name": "Identity Resolution Hub",
+      "description": "Resolves people, account, owner, and channel identities across CRM, messaging, and meeting systems into a canonical identity layer so downstream workflows stop breaking on duplicate humans, alias drift, and ambiguous account ownership.",
+      "category": "platform-enablement",
+      "trigger": "Webhook / CDC / Sub-workflow                         |",
+      "output": "Canonical identity graph update + ambiguity alert",
+      "credentials": [
+        "Identity source access — CRM, messaging directory, meeting system, or warehouse exports",
+        "Canonical identity store — database, graph, queue, or document store for stable person/account keys",
+        "Matching rules or config store — source precedence, alias handling, confidence thresholds, and merge policy",
+        "Optional LLM API (Claude, OpenAI, Gemini, etc.) — explains ambiguous matches and downstream risks"
+      ],
+      "node_flow": [
+        {
+          "step": 1,
+          "name": "Receive Identity Candidates",
+          "description": "Accepts person, account, owner, participant, or channel records from CRM, messaging, or meeting systems.",
+          "type": "trigger",
+          "color": "green"
+        },
+        {
+          "step": 2,
+          "name": "Normalize Identifiers",
+          "description": "Extracts stable identifiers such as email, domain, external IDs, aliases, and source-system metadata.",
+          "type": "data",
+          "color": "blue"
+        },
+        {
+          "step": 3,
+          "name": "Match Canonical Entities",
+          "description": "Groups records into canonical people, account, owner, and channel entities using precedence rules and confidence thresholds.",
+          "type": "data",
+          "color": "blue"
+        },
+        {
+          "step": 4,
+          "name": "AI Ambiguity Review",
+          "description": "AI Agent explains duplicate humans, merged subsidiaries, or alias conflicts before the identity graph is updated broadly.",
+          "type": "ai",
+          "color": "purple"
+        },
+        {
+          "step": 5,
+          "name": "Publish Canonical Identity Update",
+          "description": "Writes the resolved identity layer to the target store and routes ambiguous matches to a review queue.",
+          "type": "output",
+          "color": "orange"
+        }
+      ],
+      "configuration": [
+        "Identity precedence: CRM owner IDs, email, domain, SSO ID, calendar identity, messaging handle",
+        "Confidence thresholds for auto-merge vs manual review",
+        "Alias handling for merged companies, contractors, and multiple email domains",
+        "Canonical entity types: person, account, owner, channel, and meeting participant",
+        "Review queue destination for ambiguous matches"
+      ],
+      "quick_start_vs_full": "",
+      "sample_output": {
+        "mockup": "slack",
+        "bot_name": "Identity Hub",
+        "bot_app": true,
+        "content": "🪪 **Identity Resolution Hub** — 94 candidate records processed\n\n**MATCH SUMMARY:**\n- 81 records auto-resolved into canonical people and account entities\n- 9 records merged through alias/domain rules\n- 4 records routed for manual review before downstream workflows consume them\n\n**KEY RESOLUTIONS:**\n- `maria.santos@contoso.com` and `m.santos@contoso.onmicrosoft.com` resolved to the same champion\n- Teams channel `Enterprise West` matched to CRM pod owner `West Strategic`\n- Subsidiary domain `fabrikam.co.uk` attached to parent account `Fabrikam Global`\n\n**AMBIGUITY RISKS:**\n- 2 contractors share the same display name but belong to different buying centers\n- 1 EMEA account uses a shared support alias that should not map to an executive sponsor\n- 1 meeting participant lacks stable email and should not be auto-linked to CRM ownership\n\n👉 **NEXT ACTIONS:**\n- Review the 4 ambiguous identities before Renewal Prep and Executive Inbox run\n- Add the new subsidiary-domain rule for Fabrikam acquisitions\n- Block shared mailbox identities from sponsor-tracking workflows\n\n---\n*Canonical identity graph updated to `identity-v1`*"
+      },
+      "exports": [
+        "full.json"
+      ],
+      "platforms": {
+        "n8n": "full.json",
+        "langgraph": "langgraph_identity_resolution_hub.py",
+        "claude-agent": "claude_agent_identity_resolution_hub.py",
+        "openai-agent": "openai_agent_identity_resolution_hub.py",
+        "recipe-card": "recipe-card.md"
+      }
+    },
+    {
+      "id": "24-workflow-contract-validator",
+      "name": "Workflow Contract Validator",
+      "description": "Validates canonical payloads between workflow steps so schema drift, missing fields, enum changes, and connector-specific shape changes are caught before they break downstream automations.",
+      "category": "platform-enablement",
+      "trigger": "Webhook / Sub-workflow                               |",
+      "output": "Contract validation report + quarantine decision",
+      "credentials": [
+        "Payload source — upstream workflow, queue, API, or webhook",
+        "Contract registry — required fields, enum values, payload version, and routing metadata rules",
+        "Quarantine sink — queue, webhook, database, or review channel for invalid payloads",
+        "Optional LLM API (Claude, OpenAI, Gemini, etc.) — explains likely source of contract drift and downstream risk"
+      ],
+      "node_flow": [
+        {
+          "step": 1,
+          "name": "Receive Payload Batch",
+          "description": "Captures payloads emitted by upstream workflow steps before they are passed to downstream automations.",
+          "type": "trigger",
+          "color": "green"
+        },
+        {
+          "step": 2,
+          "name": "Load Expected Contract",
+          "description": "Looks up the required schema version, required fields, enums, and routing metadata for the named workflow step.",
+          "type": "data",
+          "color": "blue"
+        },
+        {
+          "step": 3,
+          "name": "Validate Payload Shape",
+          "description": "Checks required fields, types, arrays, timestamps, and nested objects against the canonical contract.",
+          "type": "data",
+          "color": "blue"
+        },
+        {
+          "step": 4,
+          "name": "AI Drift Analysis",
+          "description": "AI Agent explains whether the failure was likely caused by a connector change, naming drift, or an upstream workflow regression.",
+          "type": "ai",
+          "color": "purple"
+        },
+        {
+          "step": 5,
+          "name": "Pass or Quarantine",
+          "description": "Routes valid payloads forward and sends invalid ones to a quarantine sink with validation context attached.",
+          "type": "output",
+          "color": "orange"
+        }
+      ],
+      "configuration": [
+        "Contract registry location and versioning policy",
+        "Required fields, optional fields, and accepted enum values by workflow step",
+        "Severity thresholds for warn-only vs quarantine behavior",
+        "Drift alert destinations for engineering, solutions, or RevOps",
+        "Replay strategy for invalid payloads after fixes"
+      ],
+      "quick_start_vs_full": "",
+      "sample_output": {
+        "mockup": "slack",
+        "bot_name": "Contract Guard",
+        "bot_app": true,
+        "content": "🧪 **Workflow Contract Validator** — `meeting-intelligence-v1` batch checked\n\n**VALIDATION RESULT:**\n- 27 payloads passed contract validation\n- 3 payloads quarantined\n- Contract version expected: `meeting-intelligence-v1`\n\n**DRIFT DETECTED:**\n- `accountId` missing in 2 payloads after transcript-source connector update\n- `actionItems.ownerEmail` changed from string to array in 1 payload\n- `sourceSystem` enum received `ms_teams_native` which is not yet registered\n\n**DOWNSTREAM IMPACT:**\n- QBR Auto Prep can continue for 27 records\n- Executive Inbox should ignore the 3 quarantined payloads until replay\n- Meeting Source Adapter rules need a patch for the new Teams exporter\n\n👉 **NEXT ACTIONS:**\n- Register `ms_teams_native` in the contract registry\n- Restore string normalization for `ownerEmail`\n- Replay the 3 quarantined payloads after patching the connector\n\n---\n*Invalid payloads routed to `workflow-quarantine-v1`*"
+      },
+      "exports": [
+        "full.json"
+      ],
+      "platforms": {
+        "n8n": "full.json",
+        "langgraph": "langgraph_workflow_contract_validator.py",
+        "claude-agent": "claude_agent_workflow_contract_validator.py",
+        "openai-agent": "openai_agent_workflow_contract_validator.py",
+        "recipe-card": "recipe-card.md"
+      }
+    },
+    {
+      "id": "25-implementation-gap-audit",
+      "name": "Implementation Gap Audit",
+      "description": "Audits a customer stack or internal workflow request against the current library to identify what is already validated, what only has recipe coverage, and what still needs productization work before rollout.",
+      "category": "platform-enablement",
+      "trigger": "Webhook / Manual Intake                              |",
+      "output": "Gap report + recommended productization backlog",
+      "credentials": [
+        "Audit intake source — form, ticket, CRM request, or solutions brief",
+        "Workflow library knowledge — validated assets, recipes, connector coverage, and known constraints",
+        "LLM API (Claude, OpenAI, Gemini, etc.) — synthesizes gaps, risk, and backlog priority",
+        "Delivery or backlog surface — Slack, Teams, email, Jira, Linear, or Asana"
+      ],
+      "node_flow": [
+        {
+          "step": 1,
+          "name": "Receive Audit Request",
+          "description": "Accepts a workflow goal plus current stack details for a customer, pilot, or internal rollout request.",
+          "type": "trigger",
+          "color": "green"
+        },
+        {
+          "step": 2,
+          "name": "Normalize Coverage Request",
+          "description": "Turns the request into canonical fields for workflow family, orchestrator, CRM, meeting sources, delivery, and nonfunctional constraints.",
+          "type": "data",
+          "color": "blue"
+        },
+        {
+          "step": 3,
+          "name": "Compare Against Library",
+          "description": "Checks the request against validated implementations, recipe-only layers, and generic adaptation guidance already in the library.",
+          "type": "data",
+          "color": "blue"
+        },
+        {
+          "step": 4,
+          "name": "AI Gap Scoring",
+          "description": "AI Agent scores missing adapters, rollout risk, and productization value so the team knows what to build next.",
+          "type": "ai",
+          "color": "purple"
+        },
+        {
+          "step": 5,
+          "name": "Deliver Backlog Recommendation",
+          "description": "Routes the audit summary and prioritized backlog items to solutions, product, or engineering.",
+          "type": "output",
+          "color": "orange"
+        }
+      ],
+      "configuration": [
+        "Coverage scoring model: validated, recipe-only, generic-only, or missing",
+        "System families assessed: orchestration, CRM, meeting, delivery, identity, storage",
+        "Priority weighting: implementation risk, customer demand, and repeatability potential",
+        "Backlog destination: Slack, Teams, Jira, Linear, Asana, or email",
+        "Review cadence for recurring portfolio audits"
+      ],
+      "quick_start_vs_full": "",
+      "sample_output": {
+        "mockup": "slack",
+        "bot_name": "Gap Audit",
+        "bot_app": true,
+        "content": "📊 **Implementation Gap Audit** — Northwind expansion-monitoring request\n\n**COVERAGE SCORECARD:**\n- Workflow pattern: **validated** via Account Monitoring family\n- Orchestration: **recipe-only** for Power Automate\n- CRM: **adapter needed** for HubSpot deal + company fields\n- Delivery: **validated** for Teams and email\n- Meeting intelligence: **generic-only** for Fathom exports\n- Identity layer: **missing** shared rule set for regional aliases\n\n**TOP GAPS TO CLOSE:**\n1. HubSpot -> canonical opportunity mapping\n2. Fathom transcript normalization contract\n3. Regional alias-resolution rules for EMEA teams\n\n**ROLLOUT RISK:**\n- Medium if launched with manual identity review\n- High if Fathom payloads are consumed directly without normalization\n\n👉 **RECOMMENDED BACKLOG:**\n- Build HubSpot normalization once for reuse across multiple workflows\n- Add Fathom to the Meeting Intelligence Normalizer\n- Reuse Multi-Channel Delivery Router as-is for Teams delivery\n\n---\n*Audit converts a custom request into a productization backlog instead of a one-off build plan*"
+      },
+      "exports": [
+        "full.json"
+      ],
+      "platforms": {
+        "n8n": "full.json",
+        "langgraph": "langgraph_implementation_gap_audit.py",
+        "claude-agent": "claude_agent_implementation_gap_audit.py",
+        "openai-agent": "openai_agent_implementation_gap_audit.py",
         "recipe-card": "recipe-card.md"
       }
     }
