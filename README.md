@@ -23,6 +23,7 @@ The site requires no build step and is designed to deploy directly from the repo
 - `#/guides/google-chat-setup`
 - `#/guides/email-setup`
 - `#/workflow/<id>`
+- `opp-insights-guide/#overview`
 - `skills/#/`
 - `skills/#/about`
 - `skills/#/guides`
