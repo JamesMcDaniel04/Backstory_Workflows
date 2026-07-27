@@ -4,6 +4,7 @@ import { ArrowRight } from 'lucide-react';
 import { useData } from '../lib/useData';
 import { SectionHero } from '../components/SectionHero';
 import { Dropdown } from '../components/ui/Dropdown';
+import { SearchInput } from '../components/ui/SearchInput';
 import { Pagination } from '../components/ui/Pagination';
 import { ROLES, skillRoles } from '../lib/roles';
 
@@ -101,6 +102,12 @@ export function Skills() {
 
       <div className="surface-card mb-6 p-5">
         <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+          <SearchInput
+            value={query}
+            onChange={setQuery}
+            label="Search signals"
+            placeholder="Search signals by name, use case, or audience…"
+          />
           <Dropdown label="Category" value={filter} onChange={setFilter} options={categoryOptions} />
           <Dropdown label="Role" value={role} onChange={setRole} options={roleOptions} />
         </div>

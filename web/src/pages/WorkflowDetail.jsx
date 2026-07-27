@@ -332,7 +332,7 @@ export function WorkflowDetail() {
     <div className="container-page">
       {/* Back nav */}
       <Link
-        to="/"
+        to={fromAssistant ? '/' : '/flows'}
         className="mb-5 inline-flex items-center gap-1.5 font-mono text-[12px] font-medium uppercase tracking-[0.1em] text-ac-coral-dark no-underline hover:text-ac-coral"
       >
         <ArrowLeft size={14} /> {fromAssistant ? 'Back to Assistant' : 'Back to Library'}

@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { ClipboardList, Loader2 } from 'lucide-react';
-import { Dialog, DialogContent, DialogTrigger } from './ui/Dialog';
+import { ClipboardList, Loader2, X } from 'lucide-react';
+import { Dialog, DialogClose, DialogContent, DialogTrigger } from './ui/Dialog';
 import { CopyButton } from './ui/CopyButton';
 import { assetUrl } from '../lib/cn';
 
@@ -69,11 +69,19 @@ const markdownComponents = {
 export function ProjectInstructionsDialog({ workflowId, file, title, note, children }) {
   const [open, setOpen] = useState(false);
   const [state, setState] = useState({ status: 'idle', body: '', preamble: '' });
+  // Which file we have already kicked off a fetch for. Kept in a ref rather
+  // than in `state` so that setting `loading` does not re-run this effect and
+  // trip its own cleanup, which would cancel the request it just started.
+  const requestedRef = useRef(null);
 
   useEffect(() => {
-    if (!open || state.status !== 'idle') return;
+    if (!open) return undefined;
+    const key = `${workflowId}/${file}`;
+    if (requestedRef.current === key) return undefined;
+    requestedRef.current = key;
+
     let cancelled = false;
-    setState((s) => ({ ...s, status: 'loading' }));
+    setState({ status: 'loading', body: '', preamble: '' });
 
     fetch(assetUrl(`downloads/${workflowId}/${file}`))
       .then((res) => {
@@ -85,20 +93,23 @@ export function ProjectInstructionsDialog({ workflowId, file, title, note, child
         setState({ status: 'ready', ...splitInstructions(text) });
       })
       .catch(() => {
-        if (!cancelled) setState({ status: 'error', body: '', preamble: '' });
+        if (cancelled) return;
+        // Allow a retry the next time the dialog is opened.
+        requestedRef.current = null;
+        setState({ status: 'error', body: '', preamble: '' });
       });
 
     return () => {
       cancelled = true;
     };
-  }, [open, state.status, workflowId, file]);
+  }, [open, workflowId, file]);
 
   const where = fieldLocation(state.preamble);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="w-[min(880px,calc(100vw-32px))] p-0">
+      <DialogContent className="w-[min(880px,calc(100vw-32px))]" padded={false} hideClose>
         <div className="sticky top-0 z-10 rounded-t-2xl border-b border-ac-light-gray bg-ac-card px-7 pb-4 pt-6">
           <div className="flex flex-wrap items-start justify-between gap-3 pr-10">
             <div>
@@ -108,14 +119,16 @@ export function ProjectInstructionsDialog({ workflowId, file, title, note, child
               ) : null}
             </div>
             {state.status === 'ready' ? (
-              <CopyButton
-                text={state.body}
-                label="Copy instructions"
-                className="shrink-0 border-ac-coral bg-ac-coral px-3 py-1.5 text-[11px] uppercase tracking-[0.06em] text-white hover:bg-ac-coral-dark hover:text-white"
-              />
+              <CopyButton text={state.body} label="Copy instructions" variant="primary" className="shrink-0" />
             ) : null}
           </div>
           {note ? <p className="mt-2 text-[12px] leading-5 text-ac-dark-secondary">{note}</p> : null}
+          <DialogClose
+            className="absolute right-4 top-4 grid h-8 w-8 place-items-center rounded-lg text-ac-med-gray hover:bg-ac-cream hover:text-ac-dark"
+            aria-label="Close"
+          >
+            <X size={18} />
+          </DialogClose>
         </div>
 
         <div className="px-7 pb-7 pt-5">
