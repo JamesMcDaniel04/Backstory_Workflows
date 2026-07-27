@@ -108,6 +108,14 @@ mkdirSync(dlRoot, { recursive: true });
 let copied = 0;
 for (const wf of workflows) {
   const files = new Set(Object.values(wf.platforms || {}).filter(Boolean));
+  // Some platforms ship a rendered PDF but are authored in Markdown. The detail
+  // page previews the Markdown source in a copyable dialog (a PDF cannot be
+  // rendered or copied there), so ship the source alongside the PDF.
+  for (const f of [...files]) {
+    if (!f.endsWith('.pdf')) continue;
+    const source = f.replace(/\.pdf$/, '.md');
+    if (existsSync(resolve(repo, wf.id, source))) files.add(source);
+  }
   for (const f of files) {
     const from = resolve(repo, wf.id, f);
     if (existsSync(from)) {

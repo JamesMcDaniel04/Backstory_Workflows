@@ -1,10 +1,10 @@
 import { Link, useLocation, useParams } from 'react-router-dom';
-import { ArrowLeft, ClipboardList, Download } from 'lucide-react';
+import { ArrowLeft, ClipboardList } from 'lucide-react';
 import { useData } from '../lib/useData';
 import { SectionHero } from '../components/SectionHero';
 import { DeliveryPreview } from '../components/DeliveryPreview';
-import { ProjectInstructionsDialog } from '../components/ProjectInstructionsDialog';
-import { cn, assetUrl } from '../lib/cn';
+import { AssetViewerDialog } from '../components/AssetViewerDialog';
+import { cn } from '../lib/cn';
 
 // Platforms that should never appear on this page
 const HIDDEN_PLATFORMS = new Set(['recipe-card', 'n8n-starter']);
@@ -40,9 +40,6 @@ const PLATFORM_BASE_META = {
   },
 };
 
-// Read-and-copy assets rather than downloads — these open in a dialog.
-const PROJECT_PLATFORMS = new Set(['claude-project', 'openai-project']);
-
 const PLATFORM_STATUS_META = {
   public: { label: 'Public release', shortLabel: 'Public' },
   pilot: { label: 'Pilot only', shortLabel: 'Pilot' },
@@ -58,14 +55,6 @@ const NODE_TYPE_BADGE = {
   ai: 'bg-ac-coral/12 text-ac-coral-dark',
   output: 'bg-[rgba(210,168,120,0.15)] text-ac-warning',
 };
-
-function downloadLabel(file) {
-  if (!file) return 'Download';
-  if (file.endsWith('.pdf')) return 'Download PDF';
-  if (file.endsWith('.py')) return 'Download Script';
-  if (file.endsWith('.md')) return 'Download Guide';
-  return 'Download Workflow';
-}
 
 function platformTitle(platformId, status) {
   const sm = PLATFORM_STATUS_META[status] || { shortLabel: status };
@@ -192,33 +181,11 @@ function WorkflowAssets({ wf }) {
           const base = PLATFORM_BASE_META[pid] || { label: pid, note: '' };
           const sm = PLATFORM_STATUS_META[status] || { label: status || 'Unknown' };
           const variant = (wf.template_variants || []).find((v) => v.platform === pid || v.id === pid);
-          const url = assetUrl(`downloads/${wf.id}/${file}`);
           const isGuideOnly = status === 'guide-only';
-          const isProject = PROJECT_PLATFORMS.has(pid);
-
-          const action = isProject ? (
-            <ProjectInstructionsDialog
-              workflowId={wf.id}
-              file={file}
-              title={`${wf.name} — ${base.label}`}
-              note={base.note}
-            >
-              <button
-                type="button"
-                className="inline-flex items-center gap-1.5 rounded-lg bg-ac-coral px-3 py-1.5 font-mono text-[11px] font-semibold uppercase tracking-[0.06em] text-white transition-colors hover:bg-ac-coral-dark"
-              >
-                <ClipboardList size={12} /> View &amp; Copy
-              </button>
-            </ProjectInstructionsDialog>
-          ) : (
-            <a
-              href={url}
-              download
-              className="inline-flex items-center gap-1.5 rounded-lg bg-ac-coral px-3 py-1.5 font-mono text-[11px] font-semibold uppercase tracking-[0.06em] text-white no-underline transition-colors hover:bg-ac-coral-dark"
-            >
-              <Download size={12} /> {downloadLabel(file)}
-            </a>
-          );
+          // PDF guides are authored in Markdown; preview the source, download
+          // the rendered PDF. Everything else previews the file itself.
+          const viewFile = file.endsWith('.pdf') ? file.replace(/\.pdf$/, '.md') : file;
+          const downloadFile = viewFile === file ? null : file;
 
           return (
             <div key={pid} className="rounded-xl border border-ac-light-gray bg-ac-warm-white p-4">
@@ -227,11 +194,22 @@ function WorkflowAssets({ wf }) {
                   <div className="font-display text-[14px] font-bold text-ac-dark">
                     {platformTitle(pid, status)}
                   </div>
-                  <div className="mt-0.5 font-mono text-[11px] text-ac-med-gray">
-                    {isProject ? 'Opens in a window — copy straight into your project' : file}
-                  </div>
+                  <div className="mt-0.5 font-mono text-[11px] text-ac-med-gray">{file}</div>
                 </div>
-                {action}
+                <AssetViewerDialog
+                  workflowId={wf.id}
+                  viewFile={viewFile}
+                  downloadFile={downloadFile || file}
+                  title={`${wf.name} — ${base.label}`}
+                  note={base.note}
+                >
+                  <button
+                    type="button"
+                    className="inline-flex items-center gap-1.5 rounded-lg bg-ac-coral px-3 py-1.5 font-mono text-[11px] font-semibold uppercase tracking-[0.06em] text-white transition-colors hover:bg-ac-coral-dark"
+                  >
+                    <ClipboardList size={12} /> View &amp; Copy
+                  </button>
+                </AssetViewerDialog>
               </div>
               <div className="mt-2 flex items-center gap-2">
                 <span
