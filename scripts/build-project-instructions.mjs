@@ -48,7 +48,10 @@ const THIRD_PERSON_VERBS = new Set(
   ('identifies analyzes analyses evaluates generates produces scores assesses prioritizes recommends ' +
     'summarizes compares flags creates highlights suggests calculates checks pulls queries fetches reads ' +
     'retrieves normalizes resolves aggregates validates maps splits merges filters routes adapts replays ' +
-    'surfaces monitors combines synthesizes sends posts delivers')
+    'surfaces monitors combines synthesizes sends posts delivers enriches extracts scans tracks applies ' +
+    'builds writes records publishes quarantines escalates ranks groups orders verifies confirms detects ' +
+    'computes derives joins matches dedupes updates drafts composes formats renders returns provides ' +
+    'performs receives explains searches correlates assigns')
     .split(' '),
 );
 
@@ -97,6 +100,14 @@ function projectPurpose(workflow) {
     .replace(/\bthe workflow\b/gi, 'this project')
     .replace(/\buses the LLM to\b/gi, 'uses AI to')
     .replace(/\bpasses (it|them|the data) to the LLM to\b/gi, 'then')
+    // Re-capitalize last: the substitutions above can leave a lowercase word at
+    // the head of a sentence whose original opener was stripped.
+    .replace(/(^|[.!?]\s+)([a-z])/g, (_, lead, letter) => `${lead}${letter.toUpperCase()}`)
+    // "Provides coaching insights..." reads as an orphaned third-person clause
+    // after "You are the X Agent." Turn it into second person.
+    .replace(/^([A-Za-z]+)/, (word) =>
+      isThirdPersonVerb(word) ? `You ${singularize(word).toLowerCase()}` : word,
+    )
     .trim();
 }
 
@@ -120,7 +131,7 @@ const INPUT_OVERRIDES = {
   '01-sales-digest': 'a rep name (or "me") and the accounts they own',
   '02-meeting-brief': 'the account name and who you are meeting',
   '05-forecast-coach': 'a sales leader or team name, or a list of their open deals',
-  '06-executive-inbox': 'the unread messages you want triaged, pasted in',
+  '06-executive-inbox': 'the unread messages to triage',
   '10-activity-gap-detector': 'a team or a list of rep names',
   '11-deal-hygiene-audit': 'a rep name, a team, or a list of account names',
   '12-win-loss-debrief': 'the account or deal that closed, and whether it was won or lost',
@@ -128,12 +139,12 @@ const INPUT_OVERRIDES = {
   '15-qbr-auto-prep': 'the account name and which quarter the QBR covers',
   '17-marketing-sales-handoff-scorer': 'the new lead — name, title, company, and how they came in',
   '18-channel-pulse': 'an account name and how many days back to look',
-  '20-crm-signal-normalizer': 'a sample of the CRM records you want normalized, pasted in',
-  '21-meeting-intelligence-normalizer': 'a meeting or transcript payload, pasted in',
+  '20-crm-signal-normalizer': 'a sample of the CRM records to normalize',
+  '21-meeting-intelligence-normalizer': 'a meeting or transcript payload',
   '22-multi-channel-delivery-router': 'the insight payload plus who it is for',
-  '23-identity-resolution-hub': 'the identity records you want resolved, pasted in',
+  '23-identity-resolution-hub': 'the identity records to resolve',
   '24-workflow-contract-validator': 'the payload plus the contract it is supposed to satisfy',
-  '27-adapter-regression-monitor': 'the golden case and the actual adapter output, pasted in',
+  '27-adapter-regression-monitor': 'the golden case plus the actual adapter output',
   '32-revenue-orchestration': 'the revenue signal plus the account it relates to',
   '34-manager-coaching-brief': 'the rep name plus the account or deal to coach on',
   '35-grounded-follow-up': 'the account or deal, what you want to send, and who it goes to',
@@ -144,7 +155,7 @@ const INTAKE_CATEGORIES = new Set(['platform-enablement']);
 
 function inputHint(workflow) {
   if (INPUT_OVERRIDES[workflow.id]) return INPUT_OVERRIDES[workflow.id];
-  if (INTAKE_CATEGORIES.has(workflow.category)) return 'your intake details, pasted in';
+  if (INTAKE_CATEGORIES.has(workflow.category)) return 'the intake details for the request';
   const text = haystack(workflow);
   if (/\brenewal\b/.test(text)) return 'an account name and its renewal date';
   if (/opportunit|deal|pipeline/.test(text)) return 'an account name, or a specific opportunity';
@@ -223,33 +234,17 @@ function processSection(workflow) {
     /^(quer|pull|fetch|read|retriev|receiv|load|gather|enrich|collect)/i.test(step.description || '') ||
     /\bpulls? (backstory|crm)\b/i.test(step.description || '');
 
-  const derivationSteps = stepsOfType(workflow, 'data').filter((step) => !(tools.length && isRetrievalStep(step)));
+  // Retrieval is already covered — by the tool list for Backstory workflows, and
+  // by the pasted intake for the rest. Repeating it here just contradicts step 1.
+  const derivationSteps = stepsOfType(workflow, 'data').filter((step) => !isRetrievalStep(step));
   for (const step of derivationSteps) {
     lines.push(`${n++}. **${step.name}** — ${toImperative(step.description)}`);
   }
 
   lines.push(`${n++}. **Analyze** — ${analysisQuestion(workflow)}`);
   lines.push(
-    `${n++}. **Write the report into this chat.** You have no connectors — do not try to send, post, email, or schedule anything. The user copies it wherever it needs to go.`,
+    `${n++}. **Render the report as a single HTML document** in this chat, following the Output Format section below. You have no connectors — never try to send, post, email, or schedule anything. The user takes the rendered report wherever it needs to go.`,
   );
-  return lines.join('\n');
-}
-
-// Deliberately not derived from the workflow's output steps: those describe a
-// connector delivery ("Sends a per-rep checklist via Messaging, CC'ing their
-// manager") which does not exist here, and quoting them tells the model to do
-// something it cannot do.
-function reportSections(workflow) {
-  const lines = [
-    '1. **Headline** — what you checked, and the single most important finding',
-    '2. **Ranked findings** — grouped by urgency, most severe first',
-    '3. **Evidence** — under each finding, the dates, fields, people, or records it rests on',
-    '4. **Next actions** — each with a named owner and a due date',
-  ];
-  if (workflow.sample_output?.content) {
-    lines.push('');
-    lines.push('Match the structure of the Output Format block below — same grouping, same order, same level of detail.');
-  }
   return lines.join('\n');
 }
 
@@ -263,9 +258,13 @@ function rulesSection(workflow) {
   rules.push('Cite the evidence behind every finding: the date, the field, the person, or the record it came from');
   rules.push('If a record is incomplete, say which check you could not run rather than assuming it passed');
   rules.push('Mark anything uncertain as `(low confidence)` and say what would confirm it');
-  rules.push('Every recommended action names a specific person and is doable this week');
+  rules.push(
+    usesBackstory(workflow)
+      ? 'Every recommended action names a specific person and is doable this week'
+      : 'Every recommended action names the specific field, record, or system to change',
+  );
   rules.push('Rank ruthlessly — lead with what matters most, and summarize the long tail as a count');
-  rules.push('Keep the report short enough to paste into Slack or an email without editing');
+  rules.push('Always answer with the HTML document described in Output Format — never a plain-text or markdown summary');
 
   const pasteIns = pasteInSources(workflow);
   if (pasteIns.length) {
@@ -297,10 +296,46 @@ function configurationSection(workflow) {
     .join('\n')}\n`;
 }
 
+// Every template renders as HTML. Plain-text and markdown replies read badly
+// for these reports — the grouping, severity, and evidence hierarchy only land
+// when they are actually laid out — so the spec is mandatory, not a suggestion.
 function outputFormatSection(workflow) {
   const content = workflow.sample_output?.content;
-  if (!content) return '';
-  return `\n## Output Format\n\n\`\`\`text\n${content}\n\`\`\`\n`;
+  const reference = content
+    ? `\n### Content Reference\n\nThe rendered report must carry at least the information in this reference. Treat it as the content checklist, not the visual design — the layout is defined above.\n\n\`\`\`text\n${content}\n\`\`\`\n`
+    : '';
+
+  return `
+## Output Format — HTML, Always
+
+Always reply with one complete, self-contained HTML document. Never answer with plain text, markdown, or a code-fenced summary. Do not ask whether the user wants HTML — render it every time, including for follow-up questions and revisions.
+
+### Document Rules
+- A full document from \`<!doctype html>\` down. One file, nothing external.
+- All CSS in one \`<style>\` block. No CDN, web fonts, external images, or JS libraries.
+- Include a viewport meta tag and a \`<title>\` naming the report and its subject.
+- Escape all source data — never emit a raw \`<\` or \`&\` from a record.
+
+### Visual System
+- Fonts: \`ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif\`; \`ui-monospace, SFMono-Regular, Menlo, monospace\` for figures, IDs, and dates.
+- Palette — page \`#F7F8F8\`, card \`#FFFFFF\`, ink \`#1F2933\`, muted \`#5B6B73\`, rule \`#E3E8EA\`, accent \`#447C93\`.
+- Severity — critical \`#B3261E\`, warning \`#B8752A\`, healthy \`#2E7D5B\`. Use them for badges and the left border of each finding card. Never rely on color alone: every badge carries a word too.
+- Body 15px / 1.55. Column \`max-width: 880px\`, centered, 32px padding.
+- Cards: white, 1px \`#E3E8EA\` border, 10px radius, 20px padding, 16px gap, 4px colored left border.
+- Add a \`@media (prefers-color-scheme: dark)\` block, and a \`@media print\` block that drops shadows and stops cards splitting across pages.
+
+### Required Structure, In Order
+1. **Header** — report name, what was analyzed, and the date of the run.
+2. **Summary row** — 3 to 5 stat tiles (counts, totals, how many need attention). Big figure, small label beneath.
+3. **Findings** — one card per item, most urgent first, grouped under severity headings. Each card: a title line with the subject name plus badges (amount, stage, owner, date); an evidence list whose every bullet names its date, field, person, or record; then one bolded action line.
+4. **Next actions table** — a real \`<table>\` with Action, Owner, Due, and Source columns.
+5. **Footer** — one muted line naming the data source and the counts covered.
+
+### Content Rules
+- No placeholder text or invented rows. If a value is unknown, write "Not available" and say why in the evidence list.
+- Tabular content goes in a \`<table>\`, never in a bulleted list.
+- Keep the summary readable in one screen; push the detail into the finding cards below it.
+${reference}`;
 }
 
 // ─── Document assembly ─────────────────────────────────────────────────────
@@ -344,7 +379,7 @@ ${meta.fieldPath}
 
 You are the ${workflow.name} Agent. ${purpose}
 
-This is the on-demand version of that workflow: nothing is scheduled and nothing is delivered by a connector. A person types ${inputHint(workflow)}, and you produce the finished report in the chat for them to read, copy, and send themselves.
+This is the on-demand version of that workflow: nothing is scheduled and nothing is delivered by a connector. A person types ${inputHint(workflow)}, and you render the finished report as an HTML document in the chat for them to read, save, or send on themselves.
 
 ## How to Use
 Type ${inputHint(workflow)}. You will get a complete ${workflow.name} report, ranked by what needs attention first.
@@ -352,9 +387,6 @@ Type ${inputHint(workflow)}. You will get a complete ${workflow.name} report, ra
 ## Your Process
 
 ${processSection(workflow)}
-
-## Report Sections
-${reportSections(workflow)}
 
 ## Rules
 ${rulesSection(workflow)}
@@ -416,26 +448,18 @@ export function buildProjectInstructionAssets() {
     }
 
     workflow.platforms = workflow.platforms || {};
-    workflow.platforms['claude-project'] = 'claude-project.docx';
-    workflow.platforms['openai-project'] = 'openai-project.docx';
+    workflow.platforms['claude-project'] = 'claude-project.md';
+    workflow.platforms['openai-project'] = 'openai-project.md';
 
     workflow.platform_status = workflow.platform_status || {};
     workflow.platform_status['claude-project'] = 'guide-only';
     workflow.platform_status['openai-project'] = 'guide-only';
 
-    // Every rendered format of each project asset, so the site can offer all
-    // three and sync-data knows what to copy.
-    workflow.platform_formats = {
-      ...(workflow.platform_formats || {}),
-      'claude-project': ['claude-project.docx', 'claude-project.pdf', 'claude-project.md'],
-      'openai-project': ['openai-project.docx', 'openai-project.pdf', 'openai-project.md'],
-    };
-
-    const exports = new Set(workflow.exports || []);
-    for (const file of ['claude-project.docx', 'claude-project.pdf', 'openai-project.docx', 'openai-project.pdf']) {
-      exports.add(file);
-    }
-    workflow.exports = [...exports];
+    // These are read and copied from a dialog on the site rather than
+    // downloaded, so they are deliberately not added to `exports`. Clear any
+    // stale rendered-format wiring from earlier revisions of this script.
+    delete workflow.platform_formats;
+    workflow.exports = (workflow.exports || []).filter((file) => !/^(claude|openai)-project\.(docx|pdf)$/.test(file));
 
     updatedWorkflows += 1;
   }

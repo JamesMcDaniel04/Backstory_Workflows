@@ -101,11 +101,7 @@
         "full.json",
         "starter.json",
         "workato-guide.pdf",
-        "zapier-guide.pdf",
-        "claude-project.docx",
-        "claude-project.pdf",
-        "openai-project.docx",
-        "openai-project.pdf"
+        "zapier-guide.pdf"
       ],
       "platforms": {
         "recipe-card": "recipe-card.md",
@@ -115,8 +111,8 @@
         "zapier": "zapier-guide.pdf",
         "claude-workflow": "claude-workflow-instructions.md",
         "openai-workflow": "openai-workflow-instructions.md",
-        "claude-project": "claude-project.docx",
-        "openai-project": "openai-project.docx"
+        "claude-project": "claude-project.md",
+        "openai-project": "openai-project.md"
       },
       "template_variants": [
         {
@@ -155,19 +151,7 @@
         "claude-project": "guide-only",
         "openai-project": "guide-only"
       },
-      "rollout_blockers": [],
-      "platform_formats": {
-        "claude-project": [
-          "claude-project.docx",
-          "claude-project.pdf",
-          "claude-project.md"
-        ],
-        "openai-project": [
-          "openai-project.docx",
-          "openai-project.pdf",
-          "openai-project.md"
-        ]
-      }
+      "rollout_blockers": []
     },
     {
       "id": "02-meeting-brief",
@@ -224,11 +208,7 @@
         "full.json",
         "starter.json",
         "workato-guide.pdf",
-        "zapier-guide.pdf",
-        "claude-project.docx",
-        "claude-project.pdf",
-        "openai-project.docx",
-        "openai-project.pdf"
+        "zapier-guide.pdf"
       ],
       "platforms": {
         "recipe-card": "recipe-card.md",
@@ -238,8 +218,8 @@
         "zapier": "zapier-guide.pdf",
         "claude-workflow": "claude-workflow-instructions.md",
         "openai-workflow": "openai-workflow-instructions.md",
-        "claude-project": "claude-project.docx",
-        "openai-project": "openai-project.docx"
+        "claude-project": "claude-project.md",
+        "openai-project": "openai-project.md"
       },
       "template_variants": [
         {
@@ -278,19 +258,7 @@
         "claude-project": "guide-only",
         "openai-project": "guide-only"
       },
-      "rollout_blockers": [],
-      "platform_formats": {
-        "claude-project": [
-          "claude-project.docx",
-          "claude-project.pdf",
-          "claude-project.md"
-        ],
-        "openai-project": [
-          "openai-project.docx",
-          "openai-project.pdf",
-          "openai-project.md"
-        ]
-      }
+      "rollout_blockers": []
     },
     {
       "id": "03-silence-contract-monitor",
@@ -354,11 +322,7 @@
         "full.json",
         "starter.json",
         "workato-guide.pdf",
-        "zapier-guide.pdf",
-        "claude-project.docx",
-        "claude-project.pdf",
-        "openai-project.docx",
-        "openai-project.pdf"
+        "zapier-guide.pdf"
       ],
       "platforms": {
         "recipe-card": "recipe-card.md",
@@ -368,8 +332,8 @@
         "zapier": "zapier-guide.pdf",
         "claude-workflow": "claude-workflow-instructions.md",
         "openai-workflow": "openai-workflow-instructions.md",
-        "claude-project": "claude-project.docx",
-        "openai-project": "openai-project.docx"
+        "claude-project": "claude-project.md",
+        "openai-project": "openai-project.md"
       },
       "template_variants": [
         {
@@ -408,19 +372,7 @@
         "claude-project": "guide-only",
         "openai-project": "guide-only"
       },
-      "rollout_blockers": [],
-      "platform_formats": {
-        "claude-project": [
-          "claude-project.docx",
-          "claude-project.pdf",
-          "claude-project.md"
-        ],
-        "openai-project": [
-          "openai-project.docx",
-          "openai-project.pdf",
-          "openai-project.md"
-        ]
-      }
+      "rollout_blockers": []
     },
     {
       "id": "04-opportunity-discovery",
@@ -484,11 +436,7 @@
         "full.json",
         "starter.json",
         "workato-guide.pdf",
-        "zapier-guide.pdf",
-        "claude-project.docx",
-        "claude-project.pdf",
-        "openai-project.docx",
-        "openai-project.pdf"
+        "zapier-guide.pdf"
       ],
       "platforms": {
         "n8n": "full.json",
@@ -498,8 +446,8 @@
         "zapier": "zapier-guide.pdf",
         "claude-workflow": "claude-workflow-instructions.md",
         "openai-workflow": "openai-workflow-instructions.md",
-        "claude-project": "claude-project.docx",
-        "openai-project": "openai-project.docx"
+        "claude-project": "claude-project.md",
+        "openai-project": "openai-project.md"
       },
       "template_variants": [
         {
@@ -538,19 +486,7 @@
         "claude-project": "guide-only",
         "openai-project": "guide-only"
       },
-      "rollout_blockers": [],
-      "platform_formats": {
-        "claude-project": [
-          "claude-project.docx",
-          "claude-project.pdf",
-          "claude-project.md"
-        ],
-        "openai-project": [
-          "openai-project.docx",
-          "openai-project.pdf",
-          "openai-project.md"
-        ]
-      }
+      "rollout_blockers": []
     },
     {
       "id": "05-forecast-coach",
@@ -613,11 +549,7 @@
         "full.json",
         "starter.json",
         "workato-guide.pdf",
-        "zapier-guide.pdf",
-        "claude-project.docx",
-        "claude-project.pdf",
-        "openai-project.docx",
-        "openai-project.pdf"
+        "zapier-guide.pdf"
       ],
       "platforms": {
         "n8n": "full.json",
@@ -627,8 +559,8 @@
         "zapier": "zapier-guide.pdf",
         "claude-workflow": "claude-workflow-instructions.md",
         "openai-workflow": "openai-workflow-instructions.md",
-        "claude-project": "claude-project.docx",
-        "openai-project": "openai-project.docx"
+        "claude-project": "claude-project.md",
+        "openai-project": "openai-project.md"
       },
       "template_variants": [
         {
@@ -667,19 +599,7 @@
         "claude-project": "guide-only",
         "openai-project": "guide-only"
       },
-      "rollout_blockers": [],
-      "platform_formats": {
-        "claude-project": [
-          "claude-project.docx",
-          "claude-project.pdf",
-          "claude-project.md"
-        ],
-        "openai-project": [
-          "openai-project.docx",
-          "openai-project.pdf",
-          "openai-project.md"
-        ]
-      }
+      "rollout_blockers": []
     },
     {
       "id": "06-executive-inbox",
@@ -751,11 +671,7 @@
         "full.json",
         "starter.json",
         "workato-guide.pdf",
-        "zapier-guide.pdf",
-        "claude-project.docx",
-        "claude-project.pdf",
-        "openai-project.docx",
-        "openai-project.pdf"
+        "zapier-guide.pdf"
       ],
       "platforms": {
         "n8n": "full.json",
@@ -765,8 +681,8 @@
         "zapier": "zapier-guide.pdf",
         "claude-workflow": "claude-workflow-instructions.md",
         "openai-workflow": "openai-workflow-instructions.md",
-        "claude-project": "claude-project.docx",
-        "openai-project": "openai-project.docx"
+        "claude-project": "claude-project.md",
+        "openai-project": "openai-project.md"
       },
       "template_variants": [
         {
@@ -805,19 +721,7 @@
         "claude-project": "guide-only",
         "openai-project": "guide-only"
       },
-      "rollout_blockers": [],
-      "platform_formats": {
-        "claude-project": [
-          "claude-project.docx",
-          "claude-project.pdf",
-          "claude-project.md"
-        ],
-        "openai-project": [
-          "openai-project.docx",
-          "openai-project.pdf",
-          "openai-project.md"
-        ]
-      }
+      "rollout_blockers": []
     },
     {
       "id": "07-churn-risk-scorecard",
@@ -888,11 +792,7 @@
         "full.json",
         "starter.json",
         "workato-guide.pdf",
-        "zapier-guide.pdf",
-        "claude-project.docx",
-        "claude-project.pdf",
-        "openai-project.docx",
-        "openai-project.pdf"
+        "zapier-guide.pdf"
       ],
       "platforms": {
         "n8n": "full.json",
@@ -902,8 +802,8 @@
         "zapier": "zapier-guide.pdf",
         "claude-workflow": "claude-workflow-instructions.md",
         "openai-workflow": "openai-workflow-instructions.md",
-        "claude-project": "claude-project.docx",
-        "openai-project": "openai-project.docx"
+        "claude-project": "claude-project.md",
+        "openai-project": "openai-project.md"
       },
       "template_variants": [
         {
@@ -942,19 +842,7 @@
         "claude-project": "guide-only",
         "openai-project": "guide-only"
       },
-      "rollout_blockers": [],
-      "platform_formats": {
-        "claude-project": [
-          "claude-project.docx",
-          "claude-project.pdf",
-          "claude-project.md"
-        ],
-        "openai-project": [
-          "openai-project.docx",
-          "openai-project.pdf",
-          "openai-project.md"
-        ]
-      }
+      "rollout_blockers": []
     },
     {
       "id": "08-renewal-prep-brief",
@@ -1018,11 +906,7 @@
         "full.json",
         "starter.json",
         "workato-guide.pdf",
-        "zapier-guide.pdf",
-        "claude-project.docx",
-        "claude-project.pdf",
-        "openai-project.docx",
-        "openai-project.pdf"
+        "zapier-guide.pdf"
       ],
       "platforms": {
         "n8n": "full.json",
@@ -1032,8 +916,8 @@
         "zapier": "zapier-guide.pdf",
         "claude-workflow": "claude-workflow-instructions.md",
         "openai-workflow": "openai-workflow-instructions.md",
-        "claude-project": "claude-project.docx",
-        "openai-project": "openai-project.docx"
+        "claude-project": "claude-project.md",
+        "openai-project": "openai-project.md"
       },
       "template_variants": [
         {
@@ -1072,19 +956,7 @@
         "claude-project": "guide-only",
         "openai-project": "guide-only"
       },
-      "rollout_blockers": [],
-      "platform_formats": {
-        "claude-project": [
-          "claude-project.docx",
-          "claude-project.pdf",
-          "claude-project.md"
-        ],
-        "openai-project": [
-          "openai-project.docx",
-          "openai-project.pdf",
-          "openai-project.md"
-        ]
-      }
+      "rollout_blockers": []
     },
     {
       "id": "09-onboarding-pulse",
@@ -1148,11 +1020,7 @@
         "full.json",
         "starter.json",
         "workato-guide.pdf",
-        "zapier-guide.pdf",
-        "claude-project.docx",
-        "claude-project.pdf",
-        "openai-project.docx",
-        "openai-project.pdf"
+        "zapier-guide.pdf"
       ],
       "platforms": {
         "n8n": "full.json",
@@ -1162,8 +1030,8 @@
         "zapier": "zapier-guide.pdf",
         "claude-workflow": "claude-workflow-instructions.md",
         "openai-workflow": "openai-workflow-instructions.md",
-        "claude-project": "claude-project.docx",
-        "openai-project": "openai-project.docx"
+        "claude-project": "claude-project.md",
+        "openai-project": "openai-project.md"
       },
       "template_variants": [
         {
@@ -1202,19 +1070,7 @@
         "claude-project": "guide-only",
         "openai-project": "guide-only"
       },
-      "rollout_blockers": [],
-      "platform_formats": {
-        "claude-project": [
-          "claude-project.docx",
-          "claude-project.pdf",
-          "claude-project.md"
-        ],
-        "openai-project": [
-          "openai-project.docx",
-          "openai-project.pdf",
-          "openai-project.md"
-        ]
-      }
+      "rollout_blockers": []
     },
     {
       "id": "10-activity-gap-detector",
@@ -1277,11 +1133,7 @@
         "full.json",
         "starter.json",
         "workato-guide.pdf",
-        "zapier-guide.pdf",
-        "claude-project.docx",
-        "claude-project.pdf",
-        "openai-project.docx",
-        "openai-project.pdf"
+        "zapier-guide.pdf"
       ],
       "platforms": {
         "n8n": "full.json",
@@ -1291,8 +1143,8 @@
         "zapier": "zapier-guide.pdf",
         "claude-workflow": "claude-workflow-instructions.md",
         "openai-workflow": "openai-workflow-instructions.md",
-        "claude-project": "claude-project.docx",
-        "openai-project": "openai-project.docx"
+        "claude-project": "claude-project.md",
+        "openai-project": "openai-project.md"
       },
       "template_variants": [
         {
@@ -1331,19 +1183,7 @@
         "claude-project": "guide-only",
         "openai-project": "guide-only"
       },
-      "rollout_blockers": [],
-      "platform_formats": {
-        "claude-project": [
-          "claude-project.docx",
-          "claude-project.pdf",
-          "claude-project.md"
-        ],
-        "openai-project": [
-          "openai-project.docx",
-          "openai-project.pdf",
-          "openai-project.md"
-        ]
-      }
+      "rollout_blockers": []
     },
     {
       "id": "11-deal-hygiene-audit",
@@ -1407,11 +1247,7 @@
         "full.json",
         "starter.json",
         "workato-guide.pdf",
-        "zapier-guide.pdf",
-        "claude-project.docx",
-        "claude-project.pdf",
-        "openai-project.docx",
-        "openai-project.pdf"
+        "zapier-guide.pdf"
       ],
       "platforms": {
         "n8n": "full.json",
@@ -1421,8 +1257,8 @@
         "zapier": "zapier-guide.pdf",
         "claude-workflow": "claude-workflow-instructions.md",
         "openai-workflow": "openai-workflow-instructions.md",
-        "claude-project": "claude-project.docx",
-        "openai-project": "openai-project.docx"
+        "claude-project": "claude-project.md",
+        "openai-project": "openai-project.md"
       },
       "template_variants": [
         {
@@ -1461,19 +1297,7 @@
         "claude-project": "guide-only",
         "openai-project": "guide-only"
       },
-      "rollout_blockers": [],
-      "platform_formats": {
-        "claude-project": [
-          "claude-project.docx",
-          "claude-project.pdf",
-          "claude-project.md"
-        ],
-        "openai-project": [
-          "openai-project.docx",
-          "openai-project.pdf",
-          "openai-project.md"
-        ]
-      }
+      "rollout_blockers": []
     },
     {
       "id": "12-win-loss-debrief",
@@ -1530,11 +1354,7 @@
         "full.json",
         "starter.json",
         "workato-guide.pdf",
-        "zapier-guide.pdf",
-        "claude-project.docx",
-        "claude-project.pdf",
-        "openai-project.docx",
-        "openai-project.pdf"
+        "zapier-guide.pdf"
       ],
       "platforms": {
         "n8n": "full.json",
@@ -1544,8 +1364,8 @@
         "zapier": "zapier-guide.pdf",
         "claude-workflow": "claude-workflow-instructions.md",
         "openai-workflow": "openai-workflow-instructions.md",
-        "claude-project": "claude-project.docx",
-        "openai-project": "openai-project.docx"
+        "claude-project": "claude-project.md",
+        "openai-project": "openai-project.md"
       },
       "template_variants": [
         {
@@ -1584,19 +1404,7 @@
         "claude-project": "guide-only",
         "openai-project": "guide-only"
       },
-      "rollout_blockers": [],
-      "platform_formats": {
-        "claude-project": [
-          "claude-project.docx",
-          "claude-project.pdf",
-          "claude-project.md"
-        ],
-        "openai-project": [
-          "openai-project.docx",
-          "openai-project.pdf",
-          "openai-project.md"
-        ]
-      }
+      "rollout_blockers": []
     },
     {
       "id": "13-competitive-displacement-alert",
@@ -1660,11 +1468,7 @@
         "full.json",
         "starter.json",
         "workato-guide.pdf",
-        "zapier-guide.pdf",
-        "claude-project.docx",
-        "claude-project.pdf",
-        "openai-project.docx",
-        "openai-project.pdf"
+        "zapier-guide.pdf"
       ],
       "platforms": {
         "n8n": "full.json",
@@ -1674,8 +1478,8 @@
         "zapier": "zapier-guide.pdf",
         "claude-workflow": "claude-workflow-instructions.md",
         "openai-workflow": "openai-workflow-instructions.md",
-        "claude-project": "claude-project.docx",
-        "openai-project": "openai-project.docx"
+        "claude-project": "claude-project.md",
+        "openai-project": "openai-project.md"
       },
       "template_variants": [
         {
@@ -1714,19 +1518,7 @@
         "claude-project": "guide-only",
         "openai-project": "guide-only"
       },
-      "rollout_blockers": [],
-      "platform_formats": {
-        "claude-project": [
-          "claude-project.docx",
-          "claude-project.pdf",
-          "claude-project.md"
-        ],
-        "openai-project": [
-          "openai-project.docx",
-          "openai-project.pdf",
-          "openai-project.md"
-        ]
-      }
+      "rollout_blockers": []
     },
     {
       "id": "14-territory-heat-map",
@@ -1789,11 +1581,7 @@
         "full.json",
         "starter.json",
         "workato-guide.pdf",
-        "zapier-guide.pdf",
-        "claude-project.docx",
-        "claude-project.pdf",
-        "openai-project.docx",
-        "openai-project.pdf"
+        "zapier-guide.pdf"
       ],
       "platforms": {
         "n8n": "full.json",
@@ -1803,8 +1591,8 @@
         "zapier": "zapier-guide.pdf",
         "claude-workflow": "claude-workflow-instructions.md",
         "openai-workflow": "openai-workflow-instructions.md",
-        "claude-project": "claude-project.docx",
-        "openai-project": "openai-project.docx"
+        "claude-project": "claude-project.md",
+        "openai-project": "openai-project.md"
       },
       "template_variants": [
         {
@@ -1843,19 +1631,7 @@
         "claude-project": "guide-only",
         "openai-project": "guide-only"
       },
-      "rollout_blockers": [],
-      "platform_formats": {
-        "claude-project": [
-          "claude-project.docx",
-          "claude-project.pdf",
-          "claude-project.md"
-        ],
-        "openai-project": [
-          "openai-project.docx",
-          "openai-project.pdf",
-          "openai-project.md"
-        ]
-      }
+      "rollout_blockers": []
     },
     {
       "id": "15-qbr-auto-prep",
@@ -1920,11 +1696,7 @@
         "full.json",
         "starter.json",
         "workato-guide.pdf",
-        "zapier-guide.pdf",
-        "claude-project.docx",
-        "claude-project.pdf",
-        "openai-project.docx",
-        "openai-project.pdf"
+        "zapier-guide.pdf"
       ],
       "platforms": {
         "n8n": "full.json",
@@ -1934,8 +1706,8 @@
         "zapier": "zapier-guide.pdf",
         "claude-workflow": "claude-workflow-instructions.md",
         "openai-workflow": "openai-workflow-instructions.md",
-        "claude-project": "claude-project.docx",
-        "openai-project": "openai-project.docx"
+        "claude-project": "claude-project.md",
+        "openai-project": "openai-project.md"
       },
       "template_variants": [
         {
@@ -1974,19 +1746,7 @@
         "claude-project": "guide-only",
         "openai-project": "guide-only"
       },
-      "rollout_blockers": [],
-      "platform_formats": {
-        "claude-project": [
-          "claude-project.docx",
-          "claude-project.pdf",
-          "claude-project.md"
-        ],
-        "openai-project": [
-          "openai-project.docx",
-          "openai-project.pdf",
-          "openai-project.md"
-        ]
-      }
+      "rollout_blockers": []
     },
     {
       "id": "16-executive-sponsor-tracker",
@@ -2050,11 +1810,7 @@
         "full.json",
         "starter.json",
         "workato-guide.pdf",
-        "zapier-guide.pdf",
-        "claude-project.docx",
-        "claude-project.pdf",
-        "openai-project.docx",
-        "openai-project.pdf"
+        "zapier-guide.pdf"
       ],
       "platforms": {
         "n8n": "full.json",
@@ -2064,8 +1820,8 @@
         "zapier": "zapier-guide.pdf",
         "claude-workflow": "claude-workflow-instructions.md",
         "openai-workflow": "openai-workflow-instructions.md",
-        "claude-project": "claude-project.docx",
-        "openai-project": "openai-project.docx"
+        "claude-project": "claude-project.md",
+        "openai-project": "openai-project.md"
       },
       "template_variants": [
         {
@@ -2104,19 +1860,7 @@
         "claude-project": "guide-only",
         "openai-project": "guide-only"
       },
-      "rollout_blockers": [],
-      "platform_formats": {
-        "claude-project": [
-          "claude-project.docx",
-          "claude-project.pdf",
-          "claude-project.md"
-        ],
-        "openai-project": [
-          "openai-project.docx",
-          "openai-project.pdf",
-          "openai-project.md"
-        ]
-      }
+      "rollout_blockers": []
     },
     {
       "id": "17-marketing-sales-handoff-scorer",
@@ -2173,11 +1917,7 @@
         "full.json",
         "starter.json",
         "workato-guide.pdf",
-        "zapier-guide.pdf",
-        "claude-project.docx",
-        "claude-project.pdf",
-        "openai-project.docx",
-        "openai-project.pdf"
+        "zapier-guide.pdf"
       ],
       "platforms": {
         "n8n": "full.json",
@@ -2187,8 +1927,8 @@
         "zapier": "zapier-guide.pdf",
         "claude-workflow": "claude-workflow-instructions.md",
         "openai-workflow": "openai-workflow-instructions.md",
-        "claude-project": "claude-project.docx",
-        "openai-project": "openai-project.docx"
+        "claude-project": "claude-project.md",
+        "openai-project": "openai-project.md"
       },
       "template_variants": [
         {
@@ -2227,19 +1967,7 @@
         "claude-project": "guide-only",
         "openai-project": "guide-only"
       },
-      "rollout_blockers": [],
-      "platform_formats": {
-        "claude-project": [
-          "claude-project.docx",
-          "claude-project.pdf",
-          "claude-project.md"
-        ],
-        "openai-project": [
-          "openai-project.docx",
-          "openai-project.pdf",
-          "openai-project.md"
-        ]
-      }
+      "rollout_blockers": []
     },
     {
       "id": "18-channel-pulse",
@@ -2315,11 +2043,7 @@
         "full.json",
         "starter.json",
         "workato-guide.pdf",
-        "zapier-guide.pdf",
-        "claude-project.docx",
-        "claude-project.pdf",
-        "openai-project.docx",
-        "openai-project.pdf"
+        "zapier-guide.pdf"
       ],
       "platforms": {
         "n8n": "full.json",
@@ -2329,8 +2053,8 @@
         "zapier": "zapier-guide.pdf",
         "claude-workflow": "claude-workflow-instructions.md",
         "openai-workflow": "openai-workflow-instructions.md",
-        "claude-project": "claude-project.docx",
-        "openai-project": "openai-project.docx"
+        "claude-project": "claude-project.md",
+        "openai-project": "openai-project.md"
       },
       "template_variants": [
         {
@@ -2369,19 +2093,7 @@
         "claude-project": "guide-only",
         "openai-project": "guide-only"
       },
-      "rollout_blockers": [],
-      "platform_formats": {
-        "claude-project": [
-          "claude-project.docx",
-          "claude-project.pdf",
-          "claude-project.md"
-        ],
-        "openai-project": [
-          "openai-project.docx",
-          "openai-project.pdf",
-          "openai-project.md"
-        ]
-      }
+      "rollout_blockers": []
     },
     {
       "id": "19-customer-stack-blueprint",
@@ -2451,11 +2163,7 @@
         "full.json",
         "starter.json",
         "workato-guide.pdf",
-        "zapier-guide.pdf",
-        "claude-project.docx",
-        "claude-project.pdf",
-        "openai-project.docx",
-        "openai-project.pdf"
+        "zapier-guide.pdf"
       ],
       "platforms": {
         "n8n": "full.json",
@@ -2465,8 +2173,8 @@
         "zapier": "zapier-guide.pdf",
         "claude-workflow": "claude-workflow-instructions.md",
         "openai-workflow": "openai-workflow-instructions.md",
-        "claude-project": "claude-project.docx",
-        "openai-project": "openai-project.docx"
+        "claude-project": "claude-project.md",
+        "openai-project": "openai-project.md"
       },
       "template_variants": [
         {
@@ -2505,19 +2213,7 @@
         "claude-project": "guide-only",
         "openai-project": "guide-only"
       },
-      "rollout_blockers": [],
-      "platform_formats": {
-        "claude-project": [
-          "claude-project.docx",
-          "claude-project.pdf",
-          "claude-project.md"
-        ],
-        "openai-project": [
-          "openai-project.docx",
-          "openai-project.pdf",
-          "openai-project.md"
-        ]
-      }
+      "rollout_blockers": []
     },
     {
       "id": "20-crm-signal-normalizer",
@@ -2594,11 +2290,7 @@
         "full.json",
         "starter.json",
         "workato-guide.pdf",
-        "zapier-guide.pdf",
-        "claude-project.docx",
-        "claude-project.pdf",
-        "openai-project.docx",
-        "openai-project.pdf"
+        "zapier-guide.pdf"
       ],
       "platforms": {
         "n8n": "full.json",
@@ -2608,8 +2300,8 @@
         "zapier": "zapier-guide.pdf",
         "claude-workflow": "claude-workflow-instructions.md",
         "openai-workflow": "openai-workflow-instructions.md",
-        "claude-project": "claude-project.docx",
-        "openai-project": "openai-project.docx"
+        "claude-project": "claude-project.md",
+        "openai-project": "openai-project.md"
       },
       "template_variants": [
         {
@@ -2648,19 +2340,7 @@
         "claude-project": "guide-only",
         "openai-project": "guide-only"
       },
-      "rollout_blockers": [],
-      "platform_formats": {
-        "claude-project": [
-          "claude-project.docx",
-          "claude-project.pdf",
-          "claude-project.md"
-        ],
-        "openai-project": [
-          "openai-project.docx",
-          "openai-project.pdf",
-          "openai-project.md"
-        ]
-      }
+      "rollout_blockers": []
     },
     {
       "id": "21-meeting-intelligence-normalizer",
@@ -2737,11 +2417,7 @@
         "full.json",
         "starter.json",
         "workato-guide.pdf",
-        "zapier-guide.pdf",
-        "claude-project.docx",
-        "claude-project.pdf",
-        "openai-project.docx",
-        "openai-project.pdf"
+        "zapier-guide.pdf"
       ],
       "platforms": {
         "n8n": "full.json",
@@ -2751,8 +2427,8 @@
         "zapier": "zapier-guide.pdf",
         "claude-workflow": "claude-workflow-instructions.md",
         "openai-workflow": "openai-workflow-instructions.md",
-        "claude-project": "claude-project.docx",
-        "openai-project": "openai-project.docx"
+        "claude-project": "claude-project.md",
+        "openai-project": "openai-project.md"
       },
       "template_variants": [
         {
@@ -2791,19 +2467,7 @@
         "claude-project": "guide-only",
         "openai-project": "guide-only"
       },
-      "rollout_blockers": [],
-      "platform_formats": {
-        "claude-project": [
-          "claude-project.docx",
-          "claude-project.pdf",
-          "claude-project.md"
-        ],
-        "openai-project": [
-          "openai-project.docx",
-          "openai-project.pdf",
-          "openai-project.md"
-        ]
-      }
+      "rollout_blockers": []
     },
     {
       "id": "22-multi-channel-delivery-router",
@@ -2873,11 +2537,7 @@
         "full.json",
         "starter.json",
         "workato-guide.pdf",
-        "zapier-guide.pdf",
-        "claude-project.docx",
-        "claude-project.pdf",
-        "openai-project.docx",
-        "openai-project.pdf"
+        "zapier-guide.pdf"
       ],
       "platforms": {
         "n8n": "full.json",
@@ -2887,8 +2547,8 @@
         "zapier": "zapier-guide.pdf",
         "claude-workflow": "claude-workflow-instructions.md",
         "openai-workflow": "openai-workflow-instructions.md",
-        "claude-project": "claude-project.docx",
-        "openai-project": "openai-project.docx"
+        "claude-project": "claude-project.md",
+        "openai-project": "openai-project.md"
       },
       "template_variants": [
         {
@@ -2927,19 +2587,7 @@
         "claude-project": "guide-only",
         "openai-project": "guide-only"
       },
-      "rollout_blockers": [],
-      "platform_formats": {
-        "claude-project": [
-          "claude-project.docx",
-          "claude-project.pdf",
-          "claude-project.md"
-        ],
-        "openai-project": [
-          "openai-project.docx",
-          "openai-project.pdf",
-          "openai-project.md"
-        ]
-      }
+      "rollout_blockers": []
     },
     {
       "id": "23-identity-resolution-hub",
@@ -3009,11 +2657,7 @@
         "full.json",
         "starter.json",
         "workato-guide.pdf",
-        "zapier-guide.pdf",
-        "claude-project.docx",
-        "claude-project.pdf",
-        "openai-project.docx",
-        "openai-project.pdf"
+        "zapier-guide.pdf"
       ],
       "platforms": {
         "n8n": "full.json",
@@ -3023,8 +2667,8 @@
         "zapier": "zapier-guide.pdf",
         "claude-workflow": "claude-workflow-instructions.md",
         "openai-workflow": "openai-workflow-instructions.md",
-        "claude-project": "claude-project.docx",
-        "openai-project": "openai-project.docx"
+        "claude-project": "claude-project.md",
+        "openai-project": "openai-project.md"
       },
       "template_variants": [
         {
@@ -3063,19 +2707,7 @@
         "claude-project": "guide-only",
         "openai-project": "guide-only"
       },
-      "rollout_blockers": [],
-      "platform_formats": {
-        "claude-project": [
-          "claude-project.docx",
-          "claude-project.pdf",
-          "claude-project.md"
-        ],
-        "openai-project": [
-          "openai-project.docx",
-          "openai-project.pdf",
-          "openai-project.md"
-        ]
-      }
+      "rollout_blockers": []
     },
     {
       "id": "24-workflow-contract-validator",
@@ -3145,11 +2777,7 @@
         "full.json",
         "starter.json",
         "workato-guide.pdf",
-        "zapier-guide.pdf",
-        "claude-project.docx",
-        "claude-project.pdf",
-        "openai-project.docx",
-        "openai-project.pdf"
+        "zapier-guide.pdf"
       ],
       "platforms": {
         "n8n": "full.json",
@@ -3159,8 +2787,8 @@
         "zapier": "zapier-guide.pdf",
         "claude-workflow": "claude-workflow-instructions.md",
         "openai-workflow": "openai-workflow-instructions.md",
-        "claude-project": "claude-project.docx",
-        "openai-project": "openai-project.docx"
+        "claude-project": "claude-project.md",
+        "openai-project": "openai-project.md"
       },
       "template_variants": [
         {
@@ -3199,19 +2827,7 @@
         "claude-project": "guide-only",
         "openai-project": "guide-only"
       },
-      "rollout_blockers": [],
-      "platform_formats": {
-        "claude-project": [
-          "claude-project.docx",
-          "claude-project.pdf",
-          "claude-project.md"
-        ],
-        "openai-project": [
-          "openai-project.docx",
-          "openai-project.pdf",
-          "openai-project.md"
-        ]
-      }
+      "rollout_blockers": []
     },
     {
       "id": "25-implementation-gap-audit",
@@ -3281,11 +2897,7 @@
         "full.json",
         "starter.json",
         "workato-guide.pdf",
-        "zapier-guide.pdf",
-        "claude-project.docx",
-        "claude-project.pdf",
-        "openai-project.docx",
-        "openai-project.pdf"
+        "zapier-guide.pdf"
       ],
       "platforms": {
         "n8n": "full.json",
@@ -3295,8 +2907,8 @@
         "zapier": "zapier-guide.pdf",
         "claude-workflow": "claude-workflow-instructions.md",
         "openai-workflow": "openai-workflow-instructions.md",
-        "claude-project": "claude-project.docx",
-        "openai-project": "openai-project.docx"
+        "claude-project": "claude-project.md",
+        "openai-project": "openai-project.md"
       },
       "template_variants": [
         {
@@ -3335,19 +2947,7 @@
         "claude-project": "guide-only",
         "openai-project": "guide-only"
       },
-      "rollout_blockers": [],
-      "platform_formats": {
-        "claude-project": [
-          "claude-project.docx",
-          "claude-project.pdf",
-          "claude-project.md"
-        ],
-        "openai-project": [
-          "openai-project.docx",
-          "openai-project.pdf",
-          "openai-project.md"
-        ]
-      }
+      "rollout_blockers": []
     },
     {
       "id": "26-orchestrator-migration-planner",
@@ -3417,11 +3017,7 @@
         "full.json",
         "starter.json",
         "workato-guide.pdf",
-        "zapier-guide.pdf",
-        "claude-project.docx",
-        "claude-project.pdf",
-        "openai-project.docx",
-        "openai-project.pdf"
+        "zapier-guide.pdf"
       ],
       "platforms": {
         "n8n": "full.json",
@@ -3431,8 +3027,8 @@
         "zapier": "zapier-guide.pdf",
         "claude-workflow": "claude-workflow-instructions.md",
         "openai-workflow": "openai-workflow-instructions.md",
-        "claude-project": "claude-project.docx",
-        "openai-project": "openai-project.docx"
+        "claude-project": "claude-project.md",
+        "openai-project": "openai-project.md"
       },
       "template_variants": [
         {
@@ -3471,19 +3067,7 @@
         "claude-project": "guide-only",
         "openai-project": "guide-only"
       },
-      "rollout_blockers": [],
-      "platform_formats": {
-        "claude-project": [
-          "claude-project.docx",
-          "claude-project.pdf",
-          "claude-project.md"
-        ],
-        "openai-project": [
-          "openai-project.docx",
-          "openai-project.pdf",
-          "openai-project.md"
-        ]
-      }
+      "rollout_blockers": []
     },
     {
       "id": "27-adapter-regression-monitor",
@@ -3553,11 +3137,7 @@
         "full.json",
         "starter.json",
         "workato-guide.pdf",
-        "zapier-guide.pdf",
-        "claude-project.docx",
-        "claude-project.pdf",
-        "openai-project.docx",
-        "openai-project.pdf"
+        "zapier-guide.pdf"
       ],
       "platforms": {
         "n8n": "full.json",
@@ -3567,8 +3147,8 @@
         "zapier": "zapier-guide.pdf",
         "claude-workflow": "claude-workflow-instructions.md",
         "openai-workflow": "openai-workflow-instructions.md",
-        "claude-project": "claude-project.docx",
-        "openai-project": "openai-project.docx"
+        "claude-project": "claude-project.md",
+        "openai-project": "openai-project.md"
       },
       "template_variants": [
         {
@@ -3607,19 +3187,7 @@
         "claude-project": "guide-only",
         "openai-project": "guide-only"
       },
-      "rollout_blockers": [],
-      "platform_formats": {
-        "claude-project": [
-          "claude-project.docx",
-          "claude-project.pdf",
-          "claude-project.md"
-        ],
-        "openai-project": [
-          "openai-project.docx",
-          "openai-project.pdf",
-          "openai-project.md"
-        ]
-      }
+      "rollout_blockers": []
     },
     {
       "id": "28-rollout-readiness-scorecard",
@@ -3689,11 +3257,7 @@
         "full.json",
         "starter.json",
         "workato-guide.pdf",
-        "zapier-guide.pdf",
-        "claude-project.docx",
-        "claude-project.pdf",
-        "openai-project.docx",
-        "openai-project.pdf"
+        "zapier-guide.pdf"
       ],
       "platforms": {
         "n8n": "full.json",
@@ -3703,8 +3267,8 @@
         "zapier": "zapier-guide.pdf",
         "claude-workflow": "claude-workflow-instructions.md",
         "openai-workflow": "openai-workflow-instructions.md",
-        "claude-project": "claude-project.docx",
-        "openai-project": "openai-project.docx"
+        "claude-project": "claude-project.md",
+        "openai-project": "openai-project.md"
       },
       "template_variants": [
         {
@@ -3743,19 +3307,7 @@
         "claude-project": "guide-only",
         "openai-project": "guide-only"
       },
-      "rollout_blockers": [],
-      "platform_formats": {
-        "claude-project": [
-          "claude-project.docx",
-          "claude-project.pdf",
-          "claude-project.md"
-        ],
-        "openai-project": [
-          "openai-project.docx",
-          "openai-project.pdf",
-          "openai-project.md"
-        ]
-      }
+      "rollout_blockers": []
     },
     {
       "id": "29-digital-chief-of-staff",
@@ -3840,11 +3392,7 @@
         "full.json",
         "starter.json",
         "workato-guide.pdf",
-        "zapier-guide.pdf",
-        "claude-project.docx",
-        "claude-project.pdf",
-        "openai-project.docx",
-        "openai-project.pdf"
+        "zapier-guide.pdf"
       ],
       "platforms": {
         "n8n": "full.json",
@@ -3854,8 +3402,8 @@
         "zapier": "zapier-guide.pdf",
         "claude-workflow": "claude-workflow-instructions.md",
         "openai-workflow": "openai-workflow-instructions.md",
-        "claude-project": "claude-project.docx",
-        "openai-project": "openai-project.docx"
+        "claude-project": "claude-project.md",
+        "openai-project": "openai-project.md"
       },
       "template_variants": [
         {
@@ -3894,19 +3442,7 @@
         "claude-project": "guide-only",
         "openai-project": "guide-only"
       },
-      "rollout_blockers": [],
-      "platform_formats": {
-        "claude-project": [
-          "claude-project.docx",
-          "claude-project.pdf",
-          "claude-project.md"
-        ],
-        "openai-project": [
-          "openai-project.docx",
-          "openai-project.pdf",
-          "openai-project.md"
-        ]
-      }
+      "rollout_blockers": []
     },
     {
       "id": "30-market-research-brief",
@@ -3980,18 +3516,14 @@
         "zapier": "zapier-guide.pdf",
         "claude-workflow": "claude-workflow-instructions.md",
         "openai-workflow": "openai-workflow-instructions.md",
-        "claude-project": "claude-project.docx",
-        "openai-project": "openai-project.docx"
+        "claude-project": "claude-project.md",
+        "openai-project": "openai-project.md"
       },
       "exports": [
         "full.json",
         "starter.json",
         "workato-guide.pdf",
-        "zapier-guide.pdf",
-        "claude-project.docx",
-        "claude-project.pdf",
-        "openai-project.docx",
-        "openai-project.pdf"
+        "zapier-guide.pdf"
       ],
       "template_variants": [
         {
@@ -4030,19 +3562,7 @@
         "claude-project": "guide-only",
         "openai-project": "guide-only"
       },
-      "rollout_blockers": [],
-      "platform_formats": {
-        "claude-project": [
-          "claude-project.docx",
-          "claude-project.pdf",
-          "claude-project.md"
-        ],
-        "openai-project": [
-          "openai-project.docx",
-          "openai-project.pdf",
-          "openai-project.md"
-        ]
-      }
+      "rollout_blockers": []
     },
     {
       "id": "31-deal-inspection",
@@ -4114,18 +3634,14 @@
         "zapier": "zapier-guide.pdf",
         "claude-workflow": "claude-workflow-instructions.md",
         "openai-workflow": "openai-workflow-instructions.md",
-        "claude-project": "claude-project.docx",
-        "openai-project": "openai-project.docx"
+        "claude-project": "claude-project.md",
+        "openai-project": "openai-project.md"
       },
       "exports": [
         "full.json",
         "starter.json",
         "workato-guide.pdf",
-        "zapier-guide.pdf",
-        "claude-project.docx",
-        "claude-project.pdf",
-        "openai-project.docx",
-        "openai-project.pdf"
+        "zapier-guide.pdf"
       ],
       "template_variants": [
         {
@@ -4164,19 +3680,7 @@
         "claude-project": "guide-only",
         "openai-project": "guide-only"
       },
-      "rollout_blockers": [],
-      "platform_formats": {
-        "claude-project": [
-          "claude-project.docx",
-          "claude-project.pdf",
-          "claude-project.md"
-        ],
-        "openai-project": [
-          "openai-project.docx",
-          "openai-project.pdf",
-          "openai-project.md"
-        ]
-      }
+      "rollout_blockers": []
     },
     {
       "id": "32-revenue-orchestration",
@@ -4256,18 +3760,14 @@
         "zapier": "zapier-guide.pdf",
         "claude-workflow": "claude-workflow-instructions.md",
         "openai-workflow": "openai-workflow-instructions.md",
-        "claude-project": "claude-project.docx",
-        "openai-project": "openai-project.docx"
+        "claude-project": "claude-project.md",
+        "openai-project": "openai-project.md"
       },
       "exports": [
         "full.json",
         "starter.json",
         "workato-guide.pdf",
-        "zapier-guide.pdf",
-        "claude-project.docx",
-        "claude-project.pdf",
-        "openai-project.docx",
-        "openai-project.pdf"
+        "zapier-guide.pdf"
       ],
       "template_variants": [
         {
@@ -4306,19 +3806,7 @@
         "claude-project": "guide-only",
         "openai-project": "guide-only"
       },
-      "rollout_blockers": [],
-      "platform_formats": {
-        "claude-project": [
-          "claude-project.docx",
-          "claude-project.pdf",
-          "claude-project.md"
-        ],
-        "openai-project": [
-          "openai-project.docx",
-          "openai-project.pdf",
-          "openai-project.md"
-        ]
-      }
+      "rollout_blockers": []
     },
     {
       "id": "33-prospecting-brief",
@@ -4389,18 +3877,14 @@
         "zapier": "zapier-guide.pdf",
         "claude-workflow": "claude-workflow-instructions.md",
         "openai-workflow": "openai-workflow-instructions.md",
-        "claude-project": "claude-project.docx",
-        "openai-project": "openai-project.docx"
+        "claude-project": "claude-project.md",
+        "openai-project": "openai-project.md"
       },
       "exports": [
         "full.json",
         "starter.json",
         "workato-guide.pdf",
-        "zapier-guide.pdf",
-        "claude-project.docx",
-        "claude-project.pdf",
-        "openai-project.docx",
-        "openai-project.pdf"
+        "zapier-guide.pdf"
       ],
       "template_variants": [
         {
@@ -4439,19 +3923,7 @@
         "claude-project": "guide-only",
         "openai-project": "guide-only"
       },
-      "rollout_blockers": [],
-      "platform_formats": {
-        "claude-project": [
-          "claude-project.docx",
-          "claude-project.pdf",
-          "claude-project.md"
-        ],
-        "openai-project": [
-          "openai-project.docx",
-          "openai-project.pdf",
-          "openai-project.md"
-        ]
-      }
+      "rollout_blockers": []
     },
     {
       "id": "34-manager-coaching-brief",
@@ -4522,18 +3994,14 @@
         "zapier": "zapier-guide.pdf",
         "claude-workflow": "claude-workflow-instructions.md",
         "openai-workflow": "openai-workflow-instructions.md",
-        "claude-project": "claude-project.docx",
-        "openai-project": "openai-project.docx"
+        "claude-project": "claude-project.md",
+        "openai-project": "openai-project.md"
       },
       "exports": [
         "full.json",
         "starter.json",
         "workato-guide.pdf",
-        "zapier-guide.pdf",
-        "claude-project.docx",
-        "claude-project.pdf",
-        "openai-project.docx",
-        "openai-project.pdf"
+        "zapier-guide.pdf"
       ],
       "template_variants": [
         {
@@ -4572,19 +4040,7 @@
         "claude-project": "guide-only",
         "openai-project": "guide-only"
       },
-      "rollout_blockers": [],
-      "platform_formats": {
-        "claude-project": [
-          "claude-project.docx",
-          "claude-project.pdf",
-          "claude-project.md"
-        ],
-        "openai-project": [
-          "openai-project.docx",
-          "openai-project.pdf",
-          "openai-project.md"
-        ]
-      }
+      "rollout_blockers": []
     },
     {
       "id": "35-grounded-follow-up",
@@ -4655,18 +4111,14 @@
         "zapier": "zapier-guide.pdf",
         "claude-workflow": "claude-workflow-instructions.md",
         "openai-workflow": "openai-workflow-instructions.md",
-        "claude-project": "claude-project.docx",
-        "openai-project": "openai-project.docx"
+        "claude-project": "claude-project.md",
+        "openai-project": "openai-project.md"
       },
       "exports": [
         "full.json",
         "starter.json",
         "workato-guide.pdf",
-        "zapier-guide.pdf",
-        "claude-project.docx",
-        "claude-project.pdf",
-        "openai-project.docx",
-        "openai-project.pdf"
+        "zapier-guide.pdf"
       ],
       "template_variants": [
         {
@@ -4705,19 +4157,7 @@
         "claude-project": "guide-only",
         "openai-project": "guide-only"
       },
-      "rollout_blockers": [],
-      "platform_formats": {
-        "claude-project": [
-          "claude-project.docx",
-          "claude-project.pdf",
-          "claude-project.md"
-        ],
-        "openai-project": [
-          "openai-project.docx",
-          "openai-project.pdf",
-          "openai-project.md"
-        ]
-      }
+      "rollout_blockers": []
     },
     {
       "id": "36-pipeline-forecast-digest",
@@ -4795,18 +4235,14 @@
         "zapier": "zapier-guide.pdf",
         "claude-workflow": "claude-workflow-instructions.md",
         "openai-workflow": "openai-workflow-instructions.md",
-        "claude-project": "claude-project.docx",
-        "openai-project": "openai-project.docx"
+        "claude-project": "claude-project.md",
+        "openai-project": "openai-project.md"
       },
       "exports": [
         "full.json",
         "starter.json",
         "workato-guide.pdf",
-        "zapier-guide.pdf",
-        "claude-project.docx",
-        "claude-project.pdf",
-        "openai-project.docx",
-        "openai-project.pdf"
+        "zapier-guide.pdf"
       ],
       "template_variants": [
         {
@@ -4845,19 +4281,7 @@
         "claude-project": "guide-only",
         "openai-project": "guide-only"
       },
-      "rollout_blockers": [],
-      "platform_formats": {
-        "claude-project": [
-          "claude-project.docx",
-          "claude-project.pdf",
-          "claude-project.md"
-        ],
-        "openai-project": [
-          "openai-project.docx",
-          "openai-project.pdf",
-          "openai-project.md"
-        ]
-      }
+      "rollout_blockers": []
     },
     {
       "id": "37-deal-risk-next-actions",
@@ -4928,18 +4352,14 @@
         "zapier": "zapier-guide.pdf",
         "claude-workflow": "claude-workflow-instructions.md",
         "openai-workflow": "openai-workflow-instructions.md",
-        "claude-project": "claude-project.docx",
-        "openai-project": "openai-project.docx"
+        "claude-project": "claude-project.md",
+        "openai-project": "openai-project.md"
       },
       "exports": [
         "full.json",
         "starter.json",
         "workato-guide.pdf",
-        "zapier-guide.pdf",
-        "claude-project.docx",
-        "claude-project.pdf",
-        "openai-project.docx",
-        "openai-project.pdf"
+        "zapier-guide.pdf"
       ],
       "template_variants": [
         {
@@ -4978,19 +4398,7 @@
         "claude-project": "guide-only",
         "openai-project": "guide-only"
       },
-      "rollout_blockers": [],
-      "platform_formats": {
-        "claude-project": [
-          "claude-project.docx",
-          "claude-project.pdf",
-          "claude-project.md"
-        ],
-        "openai-project": [
-          "openai-project.docx",
-          "openai-project.pdf",
-          "openai-project.md"
-        ]
-      }
+      "rollout_blockers": []
     },
     {
       "id": "38-account-planning-strategy",
@@ -5061,18 +4469,14 @@
         "zapier": "zapier-guide.pdf",
         "claude-workflow": "claude-workflow-instructions.md",
         "openai-workflow": "openai-workflow-instructions.md",
-        "claude-project": "claude-project.docx",
-        "openai-project": "openai-project.docx"
+        "claude-project": "claude-project.md",
+        "openai-project": "openai-project.md"
       },
       "exports": [
         "full.json",
         "starter.json",
         "workato-guide.pdf",
-        "zapier-guide.pdf",
-        "claude-project.docx",
-        "claude-project.pdf",
-        "openai-project.docx",
-        "openai-project.pdf"
+        "zapier-guide.pdf"
       ],
       "template_variants": [
         {
@@ -5111,19 +4515,7 @@
         "claude-project": "guide-only",
         "openai-project": "guide-only"
       },
-      "rollout_blockers": [],
-      "platform_formats": {
-        "claude-project": [
-          "claude-project.docx",
-          "claude-project.pdf",
-          "claude-project.md"
-        ],
-        "openai-project": [
-          "openai-project.docx",
-          "openai-project.pdf",
-          "openai-project.md"
-        ]
-      }
+      "rollout_blockers": []
     }
   ]
 }

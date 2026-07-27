@@ -1,8 +1,9 @@
 import { Link, useLocation, useParams } from 'react-router-dom';
-import { ArrowLeft, Download } from 'lucide-react';
+import { ArrowLeft, ClipboardList, Download } from 'lucide-react';
 import { useData } from '../lib/useData';
 import { SectionHero } from '../components/SectionHero';
 import { DeliveryPreview } from '../components/DeliveryPreview';
+import { ProjectInstructionsDialog } from '../components/ProjectInstructionsDialog';
 import { cn, assetUrl } from '../lib/cn';
 
 // Platforms that should never appear on this page
@@ -29,7 +30,18 @@ const PLATFORM_BASE_META = {
     label: 'OpenAI Workflow Instructions',
     note: 'Instructions for OpenAI workflow/orchestrator tools. Configure Backstory MCP and native connectors in the orchestrator UI.',
   },
+  'claude-project': {
+    label: 'Claude Project Instructions',
+    note: 'The on-demand version: paste into a Claude.ai Project and ask for the report instead of scheduling it. Renders an HTML report in the chat.',
+  },
+  'openai-project': {
+    label: 'OpenAI Project Instructions',
+    note: 'The on-demand version: paste into a ChatGPT Project or Custom GPT and ask for the report instead of scheduling it. Renders an HTML report in the chat.',
+  },
 };
+
+// Read-and-copy assets rather than downloads — these open in a dialog.
+const PROJECT_PLATFORMS = new Set(['claude-project', 'openai-project']);
 
 const PLATFORM_STATUS_META = {
   public: { label: 'Public release', shortLabel: 'Public' },
@@ -182,6 +194,31 @@ function WorkflowAssets({ wf }) {
           const variant = (wf.template_variants || []).find((v) => v.platform === pid || v.id === pid);
           const url = assetUrl(`downloads/${wf.id}/${file}`);
           const isGuideOnly = status === 'guide-only';
+          const isProject = PROJECT_PLATFORMS.has(pid);
+
+          const action = isProject ? (
+            <ProjectInstructionsDialog
+              workflowId={wf.id}
+              file={file}
+              title={`${wf.name} — ${base.label}`}
+              note={base.note}
+            >
+              <button
+                type="button"
+                className="inline-flex items-center gap-1.5 rounded-lg bg-ac-coral px-3 py-1.5 font-mono text-[11px] font-semibold uppercase tracking-[0.06em] text-white transition-colors hover:bg-ac-coral-dark"
+              >
+                <ClipboardList size={12} /> View &amp; Copy
+              </button>
+            </ProjectInstructionsDialog>
+          ) : (
+            <a
+              href={url}
+              download
+              className="inline-flex items-center gap-1.5 rounded-lg bg-ac-coral px-3 py-1.5 font-mono text-[11px] font-semibold uppercase tracking-[0.06em] text-white no-underline transition-colors hover:bg-ac-coral-dark"
+            >
+              <Download size={12} /> {downloadLabel(file)}
+            </a>
+          );
 
           return (
             <div key={pid} className="rounded-xl border border-ac-light-gray bg-ac-warm-white p-4">
@@ -190,15 +227,11 @@ function WorkflowAssets({ wf }) {
                   <div className="font-display text-[14px] font-bold text-ac-dark">
                     {platformTitle(pid, status)}
                   </div>
-                  <div className="mt-0.5 font-mono text-[11px] text-ac-med-gray">{file}</div>
+                  <div className="mt-0.5 font-mono text-[11px] text-ac-med-gray">
+                    {isProject ? 'Opens in a window — copy straight into your project' : file}
+                  </div>
                 </div>
-                <a
-                  href={url}
-                  download
-                  className="inline-flex items-center gap-1.5 rounded-lg bg-ac-coral px-3 py-1.5 font-mono text-[11px] font-semibold uppercase tracking-[0.06em] text-white no-underline transition-colors hover:bg-ac-coral-dark"
-                >
-                  <Download size={12} /> {downloadLabel(file)}
-                </a>
+                {action}
               </div>
               <div className="mt-2 flex items-center gap-2">
                 <span
