@@ -18,7 +18,7 @@ run('rebuild-sales-digest-parity.mjs');
 run('rebuild-meeting-brief-parity.mjs');
 run('rebuild-executive-inbox-parity.mjs');
 run('rebuild-legacy-parity.mjs');
-run('build-orchestrator-instructions.mjs');
+run('build-project-instructions.mjs');
 run('apply-rollout-metadata.mjs');
 run('render-platform-guide-pdfs.mjs');
 run('wire-adaptation-workflows.mjs');

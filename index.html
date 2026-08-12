@@ -4760,8 +4760,8 @@ const PLATFORM_BASE_META = {
   'n8n-starter':  { label: 'Demo Starter',      icon: '🧪', logo: 'assets/logos/n8n.webp', note: 'Sandbox-safe starter asset for walkthroughs and customer-specific adaptation before hardening.' },
   'workato':      { label: 'Workato Instructions', icon: '🟠', logo: 'assets/logos/workato.png', note: 'Copyable on-page instructions covering Recipe Functions, custom connectors, native connectors, and package deployment steps.' },
   'zapier':       { label: 'Zapier Instructions',  icon: '🟣', logo: 'assets/logos/zapier.png', note: 'Copyable on-page instructions covering custom apps, Zap templates, native actions, and platform-constraint decisions.' },
-  'claude-workflow': { label: 'Claude Workflow Instructions',  icon: '🤖', logo: 'assets/logos/claude.svg', note: 'Copyable instructions for Claude workflow/orchestrator tools. Configure Backstory MCP and native connectors in the orchestrator UI.' },
-  'openai-workflow': { label: 'OpenAI Workflow Instructions', icon: '🧠', logo: 'assets/logos/openai.jpeg', note: 'Copyable instructions for OpenAI workflow/orchestrator tools. Configure Backstory MCP and native connectors in the orchestrator UI.' },
+  'claude-project': { label: 'Claude Project Instructions',  icon: '🤖', logo: 'assets/logos/claude.svg', note: 'The on-demand version: paste into a Claude.ai Project and ask for the report instead of scheduling it.' },
+  'openai-project': { label: 'OpenAI Project Instructions', icon: '🧠', logo: 'assets/logos/openai.jpeg', note: 'The on-demand version: paste into a ChatGPT Project or Custom GPT and ask for the report instead of scheduling it.' },
   'recipe-card':  { label: 'Recipe Card',       icon: '📋', note: 'Step-by-step rebuild guide for Make, Power Automate, Zapier, and other platforms without native MCP support.' },
 };
 const HIDDEN_PLATFORM_IDS = new Set(['n8n-starter']);
@@ -4769,8 +4769,8 @@ const PREVIEW_PLATFORM_META = {
   'workato':      { type: 'markdown', sourceFile: 'workato-guide.md', buttonLabel: 'Preview & Copy', copyLabel: 'Copy Instructions' },
   'zapier':       { type: 'markdown', sourceFile: 'zapier-guide.md', buttonLabel: 'Preview & Copy', copyLabel: 'Copy Instructions' },
   'recipe-card':  { type: 'markdown', buttonLabel: 'Preview & Copy', copyLabel: 'Copy Recipe Card' },
-  'claude-workflow': { type: 'markdown', buttonLabel: 'Preview & Copy', copyLabel: 'Copy Instructions' },
-  'openai-workflow': { type: 'markdown', buttonLabel: 'Preview & Copy', copyLabel: 'Copy Instructions' },
+  'claude-project': { type: 'markdown', buttonLabel: 'Preview & Copy', copyLabel: 'Copy Instructions' },
+  'openai-project': { type: 'markdown', buttonLabel: 'Preview & Copy', copyLabel: 'Copy Instructions' },
 };
 const PLATFORM_STATUS_META = {
   public:       { label: 'Public release', shortLabel: 'Public', description: 'Ready for public rollout on the supported path.' },
@@ -4803,7 +4803,7 @@ function getPreviewAssetSource(workflow, platformId) {
 }
 
 function getWorkflowRolloutStatus(workflow) {
-  const priority = ['n8n', 'workato', 'zapier', 'recipe-card', 'claude-workflow', 'openai-workflow'];
+  const priority = ['n8n', 'workato', 'zapier', 'recipe-card', 'claude-project', 'openai-project'];
   for (const platformId of priority) {
     const status = getPlatformStatus(workflow, platformId);
     if (status && workflow?.platforms?.[platformId] && !HIDDEN_PLATFORM_IDS.has(platformId)) {
@@ -4821,10 +4821,6 @@ function getPlatformPresentation(workflow, platformId) {
 
   if (platformId === 'n8n') {
     label = `${statusMeta.shortLabel} n8n Template`;
-  } else if (platformId === 'claude-workflow') {
-    label = `${statusMeta.shortLabel} Claude Workflow Instructions`;
-  } else if (platformId === 'openai-workflow') {
-    label = `${statusMeta.shortLabel} OpenAI Workflow Instructions`;
   }
 
   return {
@@ -6416,7 +6412,7 @@ function renderCards() {
     const triggerShort = w.trigger.replace(/\s*\|.*$/, '').trim();
     const visiblePlatforms = getVisiblePlatforms(w);
     const platformCount = visiblePlatforms.length;
-    const orchestratorCount = ['claude-workflow', 'openai-workflow'].filter(platform => visiblePlatforms.includes(platform)).length;
+    const orchestratorCount = ['claude-project', 'openai-project'].filter(platform => visiblePlatforms.includes(platform)).length;
     const rolloutStatus = getWorkflowRolloutStatus(w);
     return `
       <div class="card" onclick="navigate('#/workflow/${w.id}')">
@@ -6438,7 +6434,7 @@ function renderCards() {
           <span class="metric-chip"><strong>${w.node_flow.length}</strong> steps</span>
           <span class="metric-chip"><strong>${w.credentials.length}</strong> credentials</span>
           <span class="metric-chip"><strong>${platformCount}</strong> assets</span>
-          ${orchestratorCount ? `<span class="metric-chip"><strong>${orchestratorCount}</strong> orchestrator assets</span>` : ''}
+          ${orchestratorCount ? `<span class="metric-chip"><strong>${orchestratorCount}</strong> project assets</span>` : ''}
         </div>
         <div class="card-footer">
           <span class="card-link">Open workflow</span>

@@ -229,8 +229,8 @@ for (const workflowId of workflowDirs) {
   const zapierPath = path.join(repoRoot, workflowId, 'zapier-guide.md');
   const workatoPdfPath = path.join(repoRoot, workflowId, 'workato-guide.pdf');
   const zapierPdfPath = path.join(repoRoot, workflowId, 'zapier-guide.pdf');
-  const claudeInstructionsPath = path.join(repoRoot, workflowId, 'claude-workflow-instructions.md');
-  const openAiInstructionsPath = path.join(repoRoot, workflowId, 'openai-workflow-instructions.md');
+  const claudeProjectPath = path.join(repoRoot, workflowId, 'claude-project.md');
+  const openAiProjectPath = path.join(repoRoot, workflowId, 'openai-project.md');
 
   if (fs.existsSync(workatoPath)) {
     issues.push(...validatePlatformGuide(workatoPath, 'workato', metadata || { id: workflowId }));
@@ -468,17 +468,20 @@ for (const workflowId of workflowDirs) {
     if (metadata.platforms?.['claude-agent'] || metadata.platforms?.['openai-agent']) {
       issues.push('workflows.json still exposes Claude/OpenAI Python SDK platform ids');
     }
-    if (metadata.platforms?.['claude-workflow'] !== 'claude-workflow-instructions.md') {
-      issues.push('workflows.json claude-workflow platform is not mapped to claude-workflow-instructions.md');
+    if (metadata.platforms?.['claude-workflow'] || metadata.platforms?.['openai-workflow']) {
+      issues.push('workflows.json still exposes retired Claude/OpenAI workflow instruction platform ids');
     }
-    if (metadata.platforms?.['openai-workflow'] !== 'openai-workflow-instructions.md') {
-      issues.push('workflows.json openai-workflow platform is not mapped to openai-workflow-instructions.md');
+    if (metadata.platforms?.['claude-project'] !== 'claude-project.md') {
+      issues.push('workflows.json claude-project platform is not mapped to claude-project.md');
     }
-    if (!fs.existsSync(claudeInstructionsPath)) {
-      issues.push('missing claude-workflow-instructions.md');
+    if (metadata.platforms?.['openai-project'] !== 'openai-project.md') {
+      issues.push('workflows.json openai-project platform is not mapped to openai-project.md');
     }
-    if (!fs.existsSync(openAiInstructionsPath)) {
-      issues.push('missing openai-workflow-instructions.md');
+    if (!fs.existsSync(claudeProjectPath)) {
+      issues.push('missing claude-project.md');
+    }
+    if (!fs.existsSync(openAiProjectPath)) {
+      issues.push('missing openai-project.md');
     }
     const sdkEntrypoints = fs
       .readdirSync(path.join(repoRoot, workflowId))

@@ -22,14 +22,6 @@ const PLATFORM_BASE_META = {
     label: 'Zapier Guide',
     note: 'Implementation guide covering custom apps, Zap templates, native actions, and platform-constraint decisions.',
   },
-  'claude-workflow': {
-    label: 'Claude Workflow Instructions',
-    note: 'Instructions for Claude workflow/orchestrator tools. Configure Backstory MCP and native connectors in the orchestrator UI.',
-  },
-  'openai-workflow': {
-    label: 'OpenAI Workflow Instructions',
-    note: 'Instructions for OpenAI workflow/orchestrator tools. Configure Backstory MCP and native connectors in the orchestrator UI.',
-  },
   'claude-project': {
     label: 'Claude Project Instructions',
     note: 'The on-demand version: paste into a Claude.ai Project and ask for the report instead of scheduling it. Renders an HTML report in the chat.',
@@ -59,8 +51,6 @@ const NODE_TYPE_BADGE = {
 function platformTitle(platformId, status) {
   const sm = PLATFORM_STATUS_META[status] || { shortLabel: status };
   if (platformId === 'n8n') return `${sm.shortLabel} n8n Template`;
-  if (platformId === 'claude-workflow') return `${sm.shortLabel} Claude Workflow Instructions`;
-  if (platformId === 'openai-workflow') return `${sm.shortLabel} OpenAI Workflow Instructions`;
   return (PLATFORM_BASE_META[platformId] || { label: platformId }).label;
 }
 

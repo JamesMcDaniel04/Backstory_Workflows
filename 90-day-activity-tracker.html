@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>90 Day Activity Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:#f0f2f5;color:#1a1d23;font-size:14px}
+
+/* HEADER */
+.hdr{background:#0c0e14;padding:14px 28px;display:flex;align-items:center;justify-content:space-between}
+.hdr-brand{color:#fff;font-size:20px;font-weight:800;letter-spacing:-.01em}
+.hdr-r{display:flex;align-items:center;gap:14px}
+.hdr-date{color:#9aa0ab;font-size:13px;font-weight:500}
+.pill{background:#7c3aed;color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;letter-spacing:.04em;text-transform:uppercase}
+
+/* HERO */
+.hero{background:#0c0e14;border-top:1px solid #1e2130;padding:24px 28px 28px}
+.hero-title{color:#fff;font-size:22px;font-weight:800;margin-bottom:4px}
+.hero-sub-line{color:#6b7280;font-size:13px;margin-bottom:20px}
+.hero-stats{display:flex;gap:32px;flex-wrap:wrap}
+.hero-num{color:#fff;font-size:28px;font-weight:800;line-height:1}
+.hero-s1{color:#60a5fa}
+.hero-s2{color:#a78bfa}
+.hero-sub-val{color:#4b83f7;font-size:12px;font-weight:600;margin-top:3px}
+.hero-lbl{color:#6b7280;font-size:11px;font-weight:500;margin-top:2px;text-transform:uppercase;letter-spacing:.05em}
+.hero-divider{width:1px;background:#1e2130;align-self:stretch;margin:0 8px}
+
+/* BODY */
+.body{max-width:1120px;margin:0 auto;padding:24px 20px 60px}
+
+.note-banner{background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;padding:12px 16px;font-size:13px;color:#0c4a6e;margin-bottom:20px;line-height:1.6}
+
+.legend{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:20px;font-size:12px;color:#6b7280;align-items:center}
+.legend strong{color:#374151;font-size:11px}
+
+/* GROUP BLOCKS */
+.group-block{margin-bottom:32px;border-radius:10px;overflow:hidden;border:1px solid #e5e7eb}
+.group-hd{display:flex;align-items:center;gap:10px;padding:14px 18px;background:var(--group-color);color:#fff}
+.group-icon{font-size:18px}
+.group-title{font-size:15px;font-weight:800;letter-spacing:-.01em}
+.group-count{font-size:12px;opacity:.7;margin-left:auto}
+.group-note{background:#fffbeb;border-bottom:1px solid #fcd34d;padding:10px 16px;font-size:13px;color:#92400e;line-height:1.6}
+.avg-row{display:flex;align-items:center;gap:8px;padding:8px 16px;background:#f9fafb;border-bottom:1px solid #e5e7eb;font-size:12px;flex-wrap:wrap}
+.avg-label{font-weight:700;color:#374151}
+.avg-val{color:#6b7280}
+.avg-sep{color:#d1d5db}
+
+/* COLUMN HEADERS */
+.col-header-row{display:grid;grid-template-columns:170px 150px 92px 68px 62px 50px 68px 62px 48px 48px 80px 24px;column-gap:6px;align-items:center;padding:5px 14px;font-size:10px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.06em;background:#f9fafb;border-bottom:1px solid #e5e7eb}
+.ch.right{text-align:right}
+
+/* CARDS */
+.rep-card{background:#fff;border-bottom:1px solid #f3f4f6;cursor:pointer;transition:background .1s}
+.rep-card:hover{background:#fafafa}
+.rep-card:last-child{border-bottom:none}
+
+.card-hd{display:grid;grid-template-columns:170px 150px 92px 68px 62px 50px 68px 62px 48px 48px 80px 24px;column-gap:6px;align-items:center;padding:10px 14px;}
+
+.col-name{display:flex;flex-direction:column;gap:3px;min-width:0;padding-right:8px}
+.rname{font-size:13px;font-weight:700;color:#1a1d23;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.badges-row{display:flex;gap:4px;flex-wrap:wrap}
+.role-badge{font-size:9px;font-weight:700;padding:1px 6px;border-radius:8px;white-space:nowrap}
+.badge-transition{background:#dbeafe;color:#1d4ed8}
+.badge-leave{background:#fef3c7;color:#92400e}
+.badge-new{background:#dcfce7;color:#166534}
+
+.col-spark{padding:0 4px}
+.tb{font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;white-space:nowrap;cursor:help}
+.tb-up{background:#dcfce7;color:#166534}.tb-dn{background:#fee2e2;color:#991b1b}
+.tb-flat{background:#f3f4f6;color:#6b7280}.tb-new{background:#fef3c7;color:#92400e}
+
+.col-stat{text-align:right;font-size:13px;font-weight:700;padding-right:6px}
+.tc-total{color:#1a1d23}.tc-email{color:#2563eb}.tc-call{color:#7c3aed}
+.tc-mtg{color:#059669}.tc-uacct{color:#0891b2}.tc-wks{color:#9ca3af;font-size:12px}
+
+.col-pipe{text-align:right;padding-right:4px}
+.pipe-acv{font-size:13px;font-weight:800;color:#059669}
+.pipe-none{color:#d1d5db;font-weight:400;font-size:12px}
+
+.chev{color:#c4c9d4;font-size:11px;transition:transform .2s;text-align:center}
+.rep-card.open .chev{transform:rotate(180deg)}
+
+/* CARD BODY */
+.card-bd{display:none;border-top:1px solid #f3f4f6;padding:16px 18px 20px;background:#fff}
+.rep-card.open .card-bd{display:block}
+
+/* HIGHLIGHT BOXES */
+.hl-box,.hl-box-warn,.hl-box-info,.hl-box-new{border-radius:7px;padding:13px 15px;margin-bottom:14px;font-size:13px;line-height:1.7}
+.hl-box{background:#f0fdf4;border:1px solid #bbf7d0;color:#166534}
+.hl-box-warn{background:#fff7ed;border:1px solid #fed7aa;color:#92400e}
+.hl-box-info{background:#eff6ff;border:1px solid #bfdbfe;color:#1e40af}
+.hl-box-new{background:#f0fdf4;border:1px solid #bbf7d0;color:#166534}
+
+/* BARS */
+.act-bar-wrap{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.act-bar-track{flex:1;background:#f3f4f6;border-radius:4px;height:6px}
+.act-bar-fill{height:6px;border-radius:4px;background:#2563eb}
+.act-bar-pct{font-size:11px;color:#9ca3af;white-space:nowrap;min-width:110px}
+
+.peer-bar-wrap{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.peer-bar-lbl{font-size:11px;color:#6b7280;white-space:nowrap;min-width:160px}
+.peer-bar-track{flex:1;background:#f3f4f6;border-radius:4px;height:6px;position:relative}
+.peer-bar-fill{height:6px;border-radius:4px}
+.peer-bar-marker{position:absolute;top:-3px;left:calc(100%/1.5);width:2px;height:12px;background:#94a3b8;border-radius:1px}
+.peer-bar-pct{font-size:11px;font-weight:700;white-space:nowrap;min-width:36px}
+
+/* SUB SECTIONS */
+.sub-section{margin-bottom:14px;padding:12px 14px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:7px}
+.sub-title{font-size:11px;font-weight:700;color:#374151;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.sub-note{font-size:10px;color:#9ca3af;font-weight:400;text-transform:none;letter-spacing:0}
+.prog-chips-row{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.prog-chip{font-size:11px;font-weight:700;padding:3px 10px;border-radius:12px;white-space:nowrap}
+.chip-created{background:#dcfce7;color:#166534}
+.chip-s1{background:#dbeafe;color:#1e40af}
+.chip-s2{background:#ede9fe;color:#5b21b6}
+
+/* TABLES */
+.wk-table{width:100%;border-collapse:collapse;font-size:13px}
+.wk-table th{text-align:left;padding:5px 8px;background:#f9fafb;font-size:10px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.04em;border-bottom:1px solid #e5e7eb}
+.wk-table th.num,.wk-table td.num{text-align:right}
+.wk-table td{padding:5px 8px;border-bottom:1px solid #f3f4f6;color:#374151}
+.wk-table tr:last-child td{border-bottom:none}
+.wk-table td.em{color:#2563eb;font-weight:600}.wk-table td.cl{color:#7c3aed;font-weight:600}
+.wk-table td.mt{color:#059669;font-weight:600}
+.empty-note{font-size:13px;color:#9ca3af;font-style:italic;padding:8px 0}
+
+/* FOOTER */
+.report-footer{background:#0c0e14;border-top:1px solid #1e2130;padding:16px 28px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.footer-label{color:#4b5563;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.footer-link{color:#60a5fa;font-size:12px;font-weight:500;text-decoration:none}
+.footer-link:hover{color:#93c5fd;text-decoration:underline}
+.footer-sep{color:#374151}
+.footer-meta{margin-left:auto;color:#4b5563;font-size:11px}
+
+@media(max-width:800px){
+  .col-header-row,.card-hd{grid-template-columns:1fr auto auto auto 24px}
+  .col-spark,.col-trend,.tc-email,.tc-call,.tc-mtg,.tc-uacct,.tc-wks{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-brand">90 Day Activity Tracker</div>
+  <div class="hdr-r">
+    <span class="hdr-date" data-report-range>Mar 15, 2026 – Jun 12, 2026</span>
+    <span class="pill">90 Day Activity Tracker</span>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="hero-title">90 Day Activity Tracker</div>
+  <div class="hero-sub-line">14 weeks · 20 reps across 4 groups · Pipeline dual-credited: creator + owner</div>
+  <div class="hero-stats">
+    <div><div class="hero-num">44,335</div><div class="hero-lbl">Total Actions</div></div>
+    <div><div class="hero-num">2,573</div><div class="hero-lbl">Accounts Touched</div></div>
+    <div><div class="hero-num">646</div><div class="hero-lbl">Meetings Booked</div></div>
+    <div class="hero-divider"></div>
+    <div>
+      <div class="hero-num">$5.3M</div>
+      <div class="hero-sub-val">41 opps</div>
+      <div class="hero-lbl">Pipeline Created</div>
+    </div>
+    <div>
+      <div class="hero-num hero-s1">$5.3M</div>
+      <div class="hero-sub-val">37 opps</div>
+      <div class="hero-lbl">Reached Stage 1</div>
+    </div>
+    <div>
+      <div class="hero-num hero-s2">$3.2M</div>
+      <div class="hero-sub-val">19 opps</div>
+      <div class="hero-lbl">Reached Stage 2</div>
+    </div>
+  </div>
+</div>
+
+<div class="body">
+
+  <div class="note-banner">
+    ℹ️ Reps are grouped by role. Each expanded card includes a <strong>peer comparison bar</strong> showing activity relative to their group average (not org-wide). <strong>Pipeline</strong> is credited to the "Created By" field — BDRs get full credit for opps they source for AEs. Click any row to expand.
+  </div>
+
+  <div class="legend">
+    <strong>WEEKLY TREND</strong> (last wk vs. prior 3-wk avg):
+    <span class="tb tb-up">↑ Improving</span> last wk above prior 3-wk avg&nbsp;&nbsp;
+    <span class="tb tb-dn">↓ Declining</span> last wk below prior 3-wk avg&nbsp;&nbsp;
+    <span class="tb tb-flat">→ Steady</span> similar to prior 3-wk avg
+  </div>
+
+  
+<div class="group-block" style="--group-color:#2563eb">
+  <div class="group-hd">
+    <span class="group-icon">📣</span>
+    <span class="group-title">BDR Team</span>
+    <span class="group-count">3 reps</span>
+  </div>
+  <div class="group-note">Peer averages shown are based on Evan Porter and Grayson Cole.</div>
+  <div class="avg-row">
+      <span class="avg-label">📣 BDR Team — 90-Day Totals</span>
+      <span class="avg-val">18,575 actions</span>
+      <span class="avg-sep">·</span>
+      <span class="avg-val">1,600 accounts touched</span>
+      <span class="avg-sep">·</span>
+      <span class="avg-val">33 meetings booked</span>
+      <span class="avg-sep">·</span>
+      <span class="avg-val">$1.7M pipeline created</span>
+    </div>
+  <div class="col-header-row">
+    <div class="ch">Rep</div><div class="ch">14-Wk Trend</div><div class="ch">Weekly Trend</div>
+    <div class="ch right">Activities</div><div class="ch right">Emails</div>
+    <div class="ch right">Calls</div><div class="ch right">Booked Mtgs</div>
+    <div class="ch right">Uniq Accts</div><div class="ch right">Active Wks</div>
+    <div class="ch right">Opps</div><div class="ch right">Pipeline</div><div></div>
+    </div>
+  
+<div class="rep-card" onclick="toggleCard(this)">
+  <div class="card-hd">
+    <div class="col-name">
+      <span class="rname">Evan Porter</span>
+      <div class="badges-row"></div>
+    </div>
+    <div class="col-spark"><svg width="142" height="34" xmlns="http://www.w3.org/2000/svg"><path d="M 0.0,30.0 L 10.9,27.7 L 21.8,20.6 L 32.8,27.2 L 43.7,20.2 L 54.6,27.1 L 65.5,25.2 L 76.5,22.7 L 87.4,21.7 L 98.3,16.5 L 109.2,4.0 L 120.2,10.5 L 131.1,5.1 L 142.0,19.1 L 142.0,34 L 0.0,34 Z" fill="#dc2626" opacity="0.1"/><path d="M 0.0,30.0 L 10.9,27.7 L 21.8,20.6 L 32.8,27.2 L 43.7,20.2 L 54.6,27.1 L 65.5,25.2 L 76.5,22.7 L 87.4,21.7 L 98.3,16.5 L 109.2,4.0 L 120.2,10.5 L 131.1,5.1 L 142.0,19.1" fill="none" stroke="#dc2626" stroke-width="1.8" stroke-linejoin="round"/><circle cx="142.0" cy="19.1" r="3" fill="#dc2626"/></svg></div>
+    <div class="col-trend"><span class="tb tb-dn" title="Last week was below the prior 3-week average">↓ Declining</span></div>
+    <div class="col-stat tc-total">9,491</div>
+    <div class="col-stat tc-email">8,996</div>
+    <div class="col-stat tc-call">487</div>
+    <div class="col-stat tc-mtg">8</div>
+    <div class="col-stat tc-uacct">854</div>
+    <div class="col-stat tc-wks">13</div>
+    <div class="col-stat tc-opps">4</div>
+    <div class="col-pipe"><span class="pipe-acv">$616K</span></div>
+    <span class="chev">▼</span>
+  </div>
+  <div class="card-bd">
+    <div class="hl-box-warn"><strong>Volume leader and pipeline expanding — 4 opps, 2 at Stage 2:</strong> Joel leads the org in total activity with 9,491 actions and 854 unique accounts — the broadest outreach coverage in the company. His $616K in credited pipeline (4 opps, 4 at Stage 1, 2 at Stage 2) reflects real conversion on that volume. Last week was 727 activities — a strong close to the period. The coaching focus is converting the two Stage 1 opps to Stage 2 while continuing to open new opportunities. The volume is there and the pipeline is responding.<div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(0,0,0,.07);font-size:12px;color:#6b7280;line-height:1.6">📬 Reached <strong>854 unique accounts</strong> over the 90-day period &nbsp;·&nbsp; 🗓 Logged <strong>8 booked meetings</strong> in Salesforce</div></div>
+    <div class="act-bar-wrap"><div class="act-bar-track"><div class="act-bar-fill" style="width:100%"></div></div><span class="act-bar-pct">100% of org top volume</span></div>
+    <div class="peer-bar-wrap"><div class="peer-bar-lbl">vs. peer group avg (7,092 acts):</div><div class="peer-bar-track"><div class="peer-bar-fill" style="width:100%;background:#16a34a"></div><div class="peer-bar-marker"></div></div><span class="peer-bar-pct" style="color:#16a34a">134%</span></div>
+    <div class="sub-section"><div class="sub-title" style="color:#059669">💰 Pipeline — $616K ACV <span class="sub-note">credited to creator (Created By)</span></div><div class="prog-chips-row"><span class="prog-chip chip-created">Created: 4</span><span class="prog-chip chip-s1">S1 Reached: 4</span><span class="prog-chip chip-s2">S2 Reached: 2</span></div><table class="wk-table"><thead><tr><th>Account</th><th class="num">ACV</th><th>Stage</th><th>Created</th><th style="color:#0891b2">S1 Reached</th><th style="color:#7c3aed">S2 Reached</th><th style="color:#7c3aed">Account Owner</th></tr></thead><tbody><tr style=""><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="Canva - Land">Canva</td><td class="num" style="color:#059669;font-weight:700">$250K</td><td style="font-size:11px;color:#6b7280">2</td><td style="font-size:11px;color:#6b7280">2026-05-28</td><td style="font-size:11px;color:#0891b2">2026-05-28</td><td style="font-size:11px;color:#7c3aed">2026-06-11</td><td style="font-size:11px;color:#7c3aed;font-weight:600">Owen Carter</td></tr><tr style=""><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="Aptean II 220 users II Forensics and Forecasting (Clari takeout)">Aptean</td><td class="num" style="color:#059669;font-weight:700">$242K</td><td style="font-size:11px;color:#6b7280">1</td><td style="font-size:11px;color:#6b7280">2026-04-02</td><td style="font-size:11px;color:#0891b2">2026-04-03</td><td style="font-size:11px;color:#7c3aed">—</td><td style="font-size:11px;color:#7c3aed;font-weight:600">Ethan Walker</td></tr><tr style=""><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="Postman">Postman</td><td class="num" style="color:#059669;font-weight:700">$72K</td><td style="font-size:11px;color:#6b7280">2</td><td style="font-size:11px;color:#6b7280">2026-04-22</td><td style="font-size:11px;color:#0891b2">2026-04-29</td><td style="font-size:11px;color:#7c3aed">2026-04-29</td><td style="font-size:11px;color:#7c3aed;font-weight:600">Owen Carter</td></tr><tr style=""><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="Komodor">Komodor</td><td class="num" style="color:#059669;font-weight:700">$51K</td><td style="font-size:11px;color:#6b7280">1</td><td style="font-size:11px;color:#6b7280">2026-05-13</td><td style="font-size:11px;color:#0891b2">2026-05-26</td><td style="font-size:11px;color:#7c3aed">—</td><td style="font-size:11px;color:#7c3aed;font-weight:600">Owen Carter</td></tr></tbody></table></div>
+    <div class="sub-title" style="margin-top:16px">Week-by-Week Activity Breakdown</div>
+    <table class="wk-table"><thead><tr><th>Week of</th><th class="num">Activities</th><th class="num em">Emails</th><th class="num cl">Calls</th><th class="num mt">Booked Mtgs</th></tr></thead><tbody><tr><td>Mar 16–22</td><td class="num">151</td><td class="num em">151</td><td class="num cl">0</td><td class="num mt">0</td></tr><tr><td>Mar 23–29</td><td class="num">629</td><td class="num em">629</td><td class="num cl">0</td><td class="num mt">0</td></tr><tr><td>Mar 30–Apr 05</td><td class="num">186</td><td class="num em">185</td><td class="num cl">0</td><td class="num mt">1</td></tr><tr><td>Apr 06–12</td><td class="num">653</td><td class="num em">652</td><td class="num cl">0</td><td class="num mt">1</td></tr><tr><td>Apr 13–19</td><td class="num">191</td><td class="num em">191</td><td class="num cl">0</td><td class="num mt">0</td></tr><tr><td>Apr 20–26</td><td class="num">321</td><td class="num em">319</td><td class="num cl">0</td><td class="num mt">2</td></tr><tr><td>Apr 27–May 03</td><td class="num">488</td><td class="num em">460</td><td class="num cl">28</td><td class="num mt">0</td></tr><tr><td>May 04–10</td><td class="num">556</td><td class="num em">526</td><td class="num cl">30</td><td class="num mt">0</td></tr><tr><td>May 11–17</td><td class="num">898</td><td class="num em">817</td><td class="num cl">79</td><td class="num mt">2</td></tr><tr><td>May 18–24</td><td class="num">1,733</td><td class="num em">1,583</td><td class="num cl">150</td><td class="num mt">0</td></tr><tr><td>May 25–31</td><td class="num">1,300</td><td class="num em">1,232</td><td class="num cl">67</td><td class="num mt">1</td></tr><tr><td>Jun 01–07</td><td class="num">1,658</td><td class="num em">1,623</td><td class="num cl">35</td><td class="num mt">0</td></tr><tr><td>Jun 08–14</td><td class="num">727</td><td class="num em">628</td><td class="num cl">98</td><td class="num mt">1</td></tr></tbody></table>
+  </div>
+</div>
+<div class="rep-card" onclick="toggleCard(this)">
+  <div class="card-hd">
+    <div class="col-name">
+      <span class="rname">Grayson Cole</span>
+      <div class="badges-row"></div>
+    </div>
+    <div class="col-spark"><svg width="142" height="34" xmlns="http://www.w3.org/2000/svg"><path d="M 0.0,30.0 L 10.9,25.3 L 21.8,27.6 L 32.8,27.1 L 43.7,24.1 L 54.6,12.3 L 65.5,26.1 L 76.5,22.2 L 87.4,12.3 L 98.3,10.3 L 109.2,18.4 L 120.2,16.9 L 131.1,9.7 L 142.0,4.0 L 142.0,34 L 0.0,34 Z" fill="#16a34a" opacity="0.1"/><path d="M 0.0,30.0 L 10.9,25.3 L 21.8,27.6 L 32.8,27.1 L 43.7,24.1 L 54.6,12.3 L 65.5,26.1 L 76.5,22.2 L 87.4,12.3 L 98.3,10.3 L 109.2,18.4 L 120.2,16.9 L 131.1,9.7 L 142.0,4.0" fill="none" stroke="#16a34a" stroke-width="1.8" stroke-linejoin="round"/><circle cx="142.0" cy="4.0" r="3" fill="#16a34a"/></svg></div>
+    <div class="col-trend"><span class="tb tb-up" title="Last week was above the prior 3-week average">↑ Improving</span></div>
+    <div class="col-stat tc-total">4,693</div>
+    <div class="col-stat tc-email">4,531</div>
+    <div class="col-stat tc-call">148</div>
+    <div class="col-stat tc-mtg">14</div>
+    <div class="col-stat tc-uacct">476</div>
+    <div class="col-stat tc-wks">13</div>
+    <div class="col-stat tc-opps">3</div>
+    <div class="col-pipe"><span class="pipe-acv">$130K</span></div>
+    <span class="chev">▼</span>
+  </div>
+  <div class="card-bd">
+    <div class="hl-box"><strong>Strongest finish of the period — 794 activities last week:</strong> Tim's 794 activities in the final week of the window is his highest single-week output this period and one of the strongest in the BDR group. His $130K in pipeline (3 opps, 3 at Stage 1, 1 at Stage 2) reflects steady deal progression. 4,693 total activities and 476 unique accounts show consistent territory coverage. His 148 calls are among the highest in BDR. The momentum entering the next period is strong. The priority is converting the Stage 1 pipeline — all three opps are in play.<div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(0,0,0,.07);font-size:12px;color:#6b7280;line-height:1.6">📬 Reached <strong>476 unique accounts</strong> over the 90-day period &nbsp;·&nbsp; 🗓 Logged <strong>14 booked meetings</strong> in Salesforce</div></div>
+    <div class="act-bar-wrap"><div class="act-bar-track"><div class="act-bar-fill" style="width:49%"></div></div><span class="act-bar-pct">49% of org top volume</span></div>
+    <div class="peer-bar-wrap"><div class="peer-bar-lbl">vs. peer group avg (7,092 acts):</div><div class="peer-bar-track"><div class="peer-bar-fill" style="width:66%;background:#dc2626"></div><div class="peer-bar-marker"></div></div><span class="peer-bar-pct" style="color:#dc2626">66%</span></div>
+    <div class="sub-section"><div class="sub-title" style="color:#059669">💰 Pipeline — $130K ACV <span class="sub-note">credited to creator (Created By)</span></div><div class="prog-chips-row"><span class="prog-chip chip-created">Created: 3</span><span class="prog-chip chip-s1">S1 Reached: 3</span><span class="prog-chip chip-s2">S2 Reached: 1</span></div><table class="wk-table"><thead><tr><th>Account</th><th class="num">ACV</th><th>Stage</th><th>Created</th><th style="color:#0891b2">S1 Reached</th><th style="color:#7c3aed">S2 Reached</th><th style="color:#7c3aed">Account Owner</th></tr></thead><tbody><tr style=""><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="Altimetrik - Net new">Altimetrik</td><td class="num" style="color:#059669;font-weight:700">$82K</td><td style="font-size:11px;color:#6b7280">2</td><td style="font-size:11px;color:#6b7280">2026-05-07</td><td style="font-size:11px;color:#0891b2">2026-05-12</td><td style="font-size:11px;color:#7c3aed">2026-06-11</td><td style="font-size:11px;color:#7c3aed;font-weight:600">Ethan Walker</td></tr><tr style=""><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="CN (new logo land)">Consortium Networks</td><td class="num" style="color:#059669;font-weight:700">$30K</td><td style="font-size:11px;color:#6b7280">1</td><td style="font-size:11px;color:#6b7280">2026-05-18</td><td style="font-size:11px;color:#0891b2">2026-05-18</td><td style="font-size:11px;color:#7c3aed">—</td><td style="font-size:11px;color:#7c3aed;font-weight:600">Avery Collins</td></tr><tr style=""><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="everspring net new logo land">Everspring, Inc.</td><td class="num" style="color:#059669;font-weight:700">$18K</td><td style="font-size:11px;color:#6b7280">1</td><td style="font-size:11px;color:#6b7280">2026-05-14</td><td style="font-size:11px;color:#0891b2">2026-05-21</td><td style="font-size:11px;color:#7c3aed">—</td><td style="font-size:11px;color:#7c3aed;font-weight:600">Ethan Walker</td></tr></tbody></table></div>
+    <div class="sub-title" style="margin-top:16px">Week-by-Week Activity Breakdown</div>
+    <table class="wk-table"><thead><tr><th>Week of</th><th class="num">Activities</th><th class="num em">Emails</th><th class="num cl">Calls</th><th class="num mt">Booked Mtgs</th></tr></thead><tbody><tr><td>Mar 16–22</td><td class="num">143</td><td class="num em">142</td><td class="num cl">0</td><td class="num mt">1</td></tr><tr><td>Mar 23–29</td><td class="num">73</td><td class="num em">72</td><td class="num cl">0</td><td class="num mt">1</td></tr><tr><td>Mar 30–Apr 05</td><td class="num">90</td><td class="num em">89</td><td class="num cl">0</td><td class="num mt">1</td></tr><tr><td>Apr 06–12</td><td class="num">180</td><td class="num em">180</td><td class="num cl">0</td><td class="num mt">0</td></tr><tr><td>Apr 13–19</td><td class="num">541</td><td class="num em">477</td><td class="num cl">63</td><td class="num mt">1</td></tr><tr><td>Apr 20–26</td><td class="num">118</td><td class="num em">117</td><td class="num cl">0</td><td class="num mt">1</td></tr><tr><td>Apr 27–May 03</td><td class="num">238</td><td class="num em">238</td><td class="num cl">0</td><td class="num mt">0</td></tr><tr><td>May 04–10</td><td class="num">540</td><td class="num em">467</td><td class="num cl">69</td><td class="num mt">4</td></tr><tr><td>May 11–17</td><td class="num">603</td><td class="num em">598</td><td class="num cl">3</td><td class="num mt">2</td></tr><tr><td>May 18–24</td><td class="num">353</td><td class="num em">352</td><td class="num cl">0</td><td class="num mt">1</td></tr><tr><td>May 25–31</td><td class="num">399</td><td class="num em">395</td><td class="num cl">4</td><td class="num mt">0</td></tr><tr><td>Jun 01–07</td><td class="num">621</td><td class="num em">620</td><td class="num cl">0</td><td class="num mt">1</td></tr><tr><td>Jun 08–14</td><td class="num">794</td><td class="num em">784</td><td class="num cl">9</td><td class="num mt">1</td></tr></tbody></table>
+  </div>
+</div>
+<div class="rep-card" onclick="toggleCard(this)">
+  <div class="card-hd">
+    <div class="col-name">
+      <span class="rname">Hunter Lawson</span>
+      <div class="badges-row"></div>
+    </div>
+    <div class="col-spark"><svg width="142" height="34" xmlns="http://www.w3.org/2000/svg"><path d="M 0.0,30.0 L 10.9,22.7 L 21.8,19.3 L 32.8,14.5 L 43.7,4.0 L 54.6,20.7 L 65.5,13.7 L 76.5,7.6 L 87.4,6.3 L 98.3,19.9 L 109.2,6.1 L 120.2,23.1 L 131.1,24.5 L 142.0,20.3 L 142.0,34 L 0.0,34 Z" fill="#2563eb" opacity="0.1"/><path d="M 0.0,30.0 L 10.9,22.7 L 21.8,19.3 L 32.8,14.5 L 43.7,4.0 L 54.6,20.7 L 65.5,13.7 L 76.5,7.6 L 87.4,6.3 L 98.3,19.9 L 109.2,6.1 L 120.2,23.1 L 131.1,24.5 L 142.0,20.3" fill="none" stroke="#2563eb" stroke-width="1.8" stroke-linejoin="round"/><circle cx="142.0" cy="20.3" r="3" fill="#2563eb"/></svg></div>
+    <div class="col-trend"><span class="tb tb-flat" title="Last week was similar to the prior 3-week average">→ Steady</span></div>
+    <div class="col-stat tc-total">4,391</div>
+    <div class="col-stat tc-email">3,887</div>
+    <div class="col-stat tc-call">493</div>
+    <div class="col-stat tc-mtg">11</div>
+    <div class="col-stat tc-uacct">442</div>
+    <div class="col-stat tc-wks">13</div>
+    <div class="col-stat tc-opps">4</div>
+    <div class="col-pipe"><span class="pipe-acv">$994K</span></div>
+    <span class="chev">▼</span>
+  </div>
+  <div class="card-bd">
+    <div class="hl-box"><strong>BDR pipeline leader — $994K with 2 deals at Stage 2:</strong> Tommy leads the BDR group with $994K in credited pipeline (4 opps, 3 at Stage 1, 2 at Stage 2). His 4,391 total activities and 493 calls across 442 unique accounts reflect all-in territory coverage. Last week was 228 activities. With 2 opps at Stage 2 and a third advancing, the pipeline quality is strong. The priority is protecting those deals and driving them to close while sustaining top-of-funnel sourcing.<div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(0,0,0,.07);font-size:12px;color:#6b7280;line-height:1.6">📬 Reached <strong>442 unique accounts</strong> over the 90-day period &nbsp;·&nbsp; 🗓 Logged <strong>11 booked meetings</strong> in Salesforce</div></div>
+    <div class="act-bar-wrap"><div class="act-bar-track"><div class="act-bar-fill" style="width:46%"></div></div><span class="act-bar-pct">46% of org top volume</span></div>
+    <div class="peer-bar-wrap"><div class="peer-bar-lbl">vs. peer group avg (7,092 acts):</div><div class="peer-bar-track"><div class="peer-bar-fill" style="width:62%;background:#dc2626"></div><div class="peer-bar-marker"></div></div><span class="peer-bar-pct" style="color:#dc2626">62%</span></div>
+    <div class="sub-section"><div class="sub-title" style="color:#059669">💰 Pipeline — $994K ACV <span class="sub-note">credited to creator (Created By)</span></div><div class="prog-chips-row"><span class="prog-chip chip-created">Created: 4</span><span class="prog-chip chip-s1">S1 Reached: 3</span><span class="prog-chip chip-s2">S2 Reached: 2</span></div><table class="wk-table"><thead><tr><th>Account</th><th class="num">ACV</th><th>Stage</th><th>Created</th><th style="color:#0891b2">S1 Reached</th><th style="color:#7c3aed">S2 Reached</th><th style="color:#7c3aed">Account Owner</th></tr></thead><tbody><tr style="opacity:.5"><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="Cvent - Land- Forensics and Account Execution">Cvent</td><td class="num" style="color:#059669;font-weight:700">$460K</td><td style="font-size:11px;color:#6b7280">3</td><td style="font-size:11px;color:#6b7280">2026-03-09</td><td style="font-size:11px;color:#0891b2">2026-03-11</td><td style="font-size:11px;color:#7c3aed">2026-04-02</td><td style="font-size:11px;color:#7c3aed;font-weight:600">Avery Collins</td></tr><tr style=""><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="NVIDIA - Platform + Credit Expansions">NVIDIA</td><td class="num" style="color:#059669;font-weight:700">$457K</td><td style="font-size:11px;color:#6b7280">1</td><td style="font-size:11px;color:#6b7280">2026-04-30</td><td style="font-size:11px;color:#0891b2">2026-04-30</td><td style="font-size:11px;color:#7c3aed">—</td><td style="font-size:11px;color:#7c3aed;font-weight:600">Lucas Brooks</td></tr><tr style=""><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="HP - Upsell Expansion DF + SalesAI">HP</td><td class="num" style="color:#059669;font-weight:700">$350K</td><td style="font-size:11px;color:#6b7280">Closed Lost</td><td style="font-size:11px;color:#6b7280">2026-04-30</td><td style="font-size:11px;color:#0891b2">2026-04-30</td><td style="font-size:11px;color:#7c3aed;font-style:italic" title="Inferred from S1 or created date">2026-04-30</td><td style="font-size:11px;color:#7c3aed;font-weight:600">Lucas Brooks</td></tr><tr style=""><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="F5 - SalesAI True Forward">F5 Networks</td><td class="num" style="color:#059669;font-weight:700">$188K</td><td style="font-size:11px;color:#6b7280">1</td><td style="font-size:11px;color:#6b7280">2026-04-30</td><td style="font-size:11px;color:#0891b2">2026-04-30</td><td style="font-size:11px;color:#7c3aed">—</td><td style="font-size:11px;color:#7c3aed;font-weight:600">Lucas Brooks</td></tr></tbody></table></div>
+    <div class="sub-title" style="margin-top:16px">Week-by-Week Activity Breakdown</div>
+    <table class="wk-table"><thead><tr><th>Week of</th><th class="num">Activities</th><th class="num em">Emails</th><th class="num cl">Calls</th><th class="num mt">Booked Mtgs</th></tr></thead><tbody><tr><td>Mar 16–22</td><td class="num">171</td><td class="num em">135</td><td class="num cl">35</td><td class="num mt">1</td></tr><tr><td>Mar 23–29</td><td class="num">250</td><td class="num em">248</td><td class="num cl">0</td><td class="num mt">2</td></tr><tr><td>Mar 30–Apr 05</td><td class="num">364</td><td class="num em">308</td><td class="num cl">56</td><td class="num mt">0</td></tr><tr><td>Apr 06–12</td><td class="num">610</td><td class="num em">504</td><td class="num cl">105</td><td class="num mt">1</td></tr><tr><td>Apr 13–19</td><td class="num">218</td><td class="num em">191</td><td class="num cl">27</td><td class="num mt">0</td></tr><tr><td>Apr 20–26</td><td class="num">382</td><td class="num em">327</td><td class="num cl">52</td><td class="num mt">3</td></tr><tr><td>Apr 27–May 03</td><td class="num">526</td><td class="num em">477</td><td class="num cl">48</td><td class="num mt">1</td></tr><tr><td>May 04–10</td><td class="num">555</td><td class="num em">554</td><td class="num cl">0</td><td class="num mt">1</td></tr><tr><td>May 11–17</td><td class="num">237</td><td class="num em">212</td><td class="num cl">25</td><td class="num mt">0</td></tr><tr><td>May 18–24</td><td class="num">561</td><td class="num em">512</td><td class="num cl">47</td><td class="num mt">2</td></tr><tr><td>May 25–31</td><td class="num">161</td><td class="num em">161</td><td class="num cl">0</td><td class="num mt">0</td></tr><tr><td>Jun 01–07</td><td class="num">128</td><td class="num em">99</td><td class="num cl">29</td><td class="num mt">0</td></tr><tr><td>Jun 08–14</td><td class="num">228</td><td class="num em">159</td><td class="num cl">69</td><td class="num mt">0</td></tr></tbody></table>
+  </div>
+</div>
+</div>
+<div class="group-block" style="--group-color:#059669">
+  <div class="group-hd">
+    <span class="group-icon">🎯</span>
+    <span class="group-title">Hunter Reps</span>
+    <span class="group-count">8 reps</span>
+  </div>
+  <div class="group-note">Peer averages are calculated from established Hunters only (Dylan Harper, Owen Carter, Logan Mercer, Avery Collins).</div>
+  <div class="avg-row">
+      <span class="avg-label">🎯 Hunter Reps — 90-Day Totals</span>
+      <span class="avg-val">11,180 actions</span>
+      <span class="avg-sep">·</span>
+      <span class="avg-val">1,007 accounts touched</span>
+      <span class="avg-sep">·</span>
+      <span class="avg-val">151 meetings booked</span>
+      <span class="avg-sep">·</span>
+      <span class="avg-val">$3.6M pipeline created</span>
+    </div>
+  <div class="col-header-row">
+    <div class="ch">Rep</div><div class="ch">14-Wk Trend</div><div class="ch">Weekly Trend</div>
+    <div class="ch right">Activities</div><div class="ch right">Emails</div>
+    <div class="ch right">Calls</div><div class="ch right">Booked Mtgs</div>
+    <div class="ch right">Uniq Accts</div><div class="ch right">Active Wks</div>
+    <div class="ch right">Opps</div><div class="ch right">Pipeline</div><div></div>
+    </div>
+  
+<div class="rep-card" onclick="toggleCard(this)">
+  <div class="card-hd">
+    <div class="col-name">
+      <span class="rname">Ethan Walker</span>
+      <div class="badges-row"></div>
+    </div>
+    <div class="col-spark"><svg width="142" height="34" xmlns="http://www.w3.org/2000/svg"><path d="M 0.0,29.9 L 10.9,9.1 L 21.8,17.4 L 32.8,18.2 L 43.7,4.0 L 54.6,4.7 L 65.5,15.1 L 76.5,6.9 L 87.4,19.6 L 98.3,21.0 L 109.2,29.1 L 120.2,24.8 L 131.1,27.8 L 142.0,28.0 L 142.0,34 L 0.0,34 Z" fill="#2563eb" opacity="0.1"/><path d="M 0.0,29.9 L 10.9,9.1 L 21.8,17.4 L 32.8,18.2 L 43.7,4.0 L 54.6,4.7 L 65.5,15.1 L 76.5,6.9 L 87.4,19.6 L 98.3,21.0 L 109.2,29.1 L 120.2,24.8 L 131.1,27.8 L 142.0,28.0" fill="none" stroke="#2563eb" stroke-width="1.8" stroke-linejoin="round"/><circle cx="142.0" cy="28.0" r="3" fill="#2563eb"/></svg></div>
+    <div class="col-trend"><span class="tb tb-dn" title="Last week was below the prior 3-week average">↓ Declining</span></div>
+    <div class="col-stat tc-total">2,970</div>
+    <div class="col-stat tc-email">2,457</div>
+    <div class="col-stat tc-call">501</div>
+    <div class="col-stat tc-mtg">12</div>
+    <div class="col-stat tc-uacct">229</div>
+    <div class="col-stat tc-wks">14</div>
+    <div class="col-stat tc-opps">3</div>
+    <div class="col-pipe"><span class="pipe-acv">$343K</span></div>
+    <span class="chev">▼</span>
+  </div>
+  <div class="card-bd">
+    <div class="hl-box"><strong>$343K in pipeline and call volume leader — ramp producing results:</strong> Bob has $343K in credited pipeline (3 opps, 3 at Stage 1, 1 at Stage 2 — includes BDR-sourced deals on his accounts). His 2,970 activities and 501 calls make him the call volume leader for the entire org. His 229 unique accounts show broad territory coverage. Last week was 36 activities — a lighter close to the period. The BDR collaboration is producing pipeline on his accounts. The coaching focus is converting his call and email volume into first meetings and self-sourced pipeline to complement what's coming in from BDR.<div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(0,0,0,.07);font-size:12px;color:#6b7280;line-height:1.6">📬 Reached <strong>229 unique accounts</strong> over the 90-day period &nbsp;·&nbsp; 🗓 Logged <strong>12 booked meetings</strong> in Salesforce</div></div>
+    <div class="act-bar-wrap"><div class="act-bar-track"><div class="act-bar-fill" style="width:31%"></div></div><span class="act-bar-pct">31% of org top volume</span></div>
+    <div class="peer-bar-wrap"><div class="peer-bar-lbl">vs. peer group avg (1,420 acts):</div><div class="peer-bar-track"><div class="peer-bar-fill" style="width:100%;background:#16a34a"></div><div class="peer-bar-marker"></div></div><span class="peer-bar-pct" style="color:#16a34a">150%</span></div>
+    <div class="sub-section"><div class="sub-title" style="color:#059669">💰 Pipeline — $343K ACV <span class="sub-note">credited to creator (Created By)</span></div><div class="prog-chips-row"><span class="prog-chip chip-created">Created: 3</span><span class="prog-chip chip-s1">S1 Reached: 3</span><span class="prog-chip chip-s2">S2 Reached: 1</span></div><table class="wk-table"><thead><tr><th>Account</th><th class="num">ACV</th><th>Stage</th><th>Created</th><th style="color:#0891b2">S1 Reached</th><th style="color:#7c3aed">S2 Reached</th><th style="color:#7c3aed">Account Owner</th></tr></thead><tbody><tr style=""><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="Aptean II 220 users II Forensics and Forecasting (Clari takeout)">Aptean</td><td class="num" style="color:#059669;font-weight:700">$242K</td><td style="font-size:11px;color:#6b7280">1</td><td style="font-size:11px;color:#6b7280">2026-04-02</td><td style="font-size:11px;color:#0891b2">2026-04-03</td><td style="font-size:11px;color:#7c3aed">—</td><td style="font-size:11px;color:#7c3aed;font-weight:600">Ethan Walker</td></tr><tr style=""><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="Altimetrik - Net new">Altimetrik</td><td class="num" style="color:#059669;font-weight:700">$82K</td><td style="font-size:11px;color:#6b7280">2</td><td style="font-size:11px;color:#6b7280">2026-05-07</td><td style="font-size:11px;color:#0891b2">2026-05-12</td><td style="font-size:11px;color:#7c3aed">2026-06-11</td><td style="font-size:11px;color:#7c3aed;font-weight:600">Ethan Walker</td></tr><tr style=""><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="everspring net new logo land">Everspring, Inc.</td><td class="num" style="color:#059669;font-weight:700">$18K</td><td style="font-size:11px;color:#6b7280">1</td><td style="font-size:11px;color:#6b7280">2026-05-14</td><td style="font-size:11px;color:#0891b2">2026-05-21</td><td style="font-size:11px;color:#7c3aed">—</td><td style="font-size:11px;color:#7c3aed;font-weight:600">Ethan Walker</td></tr></tbody></table></div>
+    <div class="sub-title" style="margin-top:16px">Week-by-Week Activity Breakdown</div>
+    <table class="wk-table"><thead><tr><th>Week of</th><th class="num">Activities</th><th class="num em">Emails</th><th class="num cl">Calls</th><th class="num mt">Booked Mtgs</th></tr></thead><tbody><tr><td>Mar 09–15</td><td class="num">2</td><td class="num em">2</td><td class="num cl">0</td><td class="num mt">0</td></tr><tr><td>Mar 16–22</td><td class="num">377</td><td class="num em">311</td><td class="num cl">65</td><td class="num mt">1</td></tr><tr><td>Mar 23–29</td><td class="num">228</td><td class="num em">195</td><td class="num cl">32</td><td class="num mt">1</td></tr><tr><td>Mar 30–Apr 05</td><td class="num">214</td><td class="num em">213</td><td class="num cl">0</td><td class="num mt">1</td></tr><tr><td>Apr 06–12</td><td class="num">470</td><td class="num em">379</td><td class="num cl">89</td><td class="num mt">2</td></tr><tr><td>Apr 13–19</td><td class="num">457</td><td class="num em">308</td><td class="num cl">149</td><td class="num mt">0</td></tr><tr><td>Apr 20–26</td><td class="num">269</td><td class="num em">237</td><td class="num cl">32</td><td class="num mt">0</td></tr><tr><td>Apr 27–May 03</td><td class="num">417</td><td class="num em">370</td><td class="num cl">47</td><td class="num mt">0</td></tr><tr><td>May 04–10</td><td class="num">188</td><td class="num em">169</td><td class="num cl">17</td><td class="num mt">2</td></tr><tr><td>May 11–17</td><td class="num">163</td><td class="num em">114</td><td class="num cl">48</td><td class="num mt">1</td></tr><tr><td>May 18–24</td><td class="num">16</td><td class="num em">15</td><td class="num cl">0</td><td class="num mt">1</td></tr><tr><td>May 25–31</td><td class="num">94</td><td class="num em">92</td><td class="num cl">0</td><td class="num mt">2</td></tr><tr><td>Jun 01–07</td><td class="num">39</td><td class="num em">17</td><td class="num cl">22</td><td class="num mt">0</td></tr><tr><td>Jun 08–14</td><td class="num">36</td><td class="num em">35</td><td class="num cl">0</td><td class="num mt">1</td></tr></tbody></table>
+  </div>
+</div>
+<div class="rep-card" onclick="toggleCard(this)">
+  <div class="card-hd">
+    <div class="col-name">
+      <span class="rname">Dylan Harper</span>
+      <div class="badges-row"></div>
+    </div>
+    <div class="col-spark"><svg width="142" height="34" xmlns="http://www.w3.org/2000/svg"><path d="M 0.0,29.9 L 10.9,20.3 L 21.8,24.8 L 32.8,19.3 L 43.7,9.9 L 54.6,4.0 L 65.5,21.9 L 76.5,21.9 L 87.4,25.2 L 98.3,21.0 L 109.2,20.8 L 120.2,14.4 L 131.1,14.3 L 142.0,17.6 L 142.0,34 L 0.0,34 Z" fill="#2563eb" opacity="0.1"/><path d="M 0.0,29.9 L 10.9,20.3 L 21.8,24.8 L 32.8,19.3 L 43.7,9.9 L 54.6,4.0 L 65.5,21.9 L 76.5,21.9 L 87.4,25.2 L 98.3,21.0 L 109.2,20.8 L 120.2,14.4 L 131.1,14.3 L 142.0,17.6" fill="none" stroke="#2563eb" stroke-width="1.8" stroke-linejoin="round"/><circle cx="142.0" cy="17.6" r="3" fill="#2563eb"/></svg></div>
+    <div class="col-trend"><span class="tb tb-flat" title="Last week was similar to the prior 3-week average">→ Steady</span></div>
+    <div class="col-stat tc-total">2,036</div>
+    <div class="col-stat tc-email">1,931</div>
+    <div class="col-stat tc-call">81</div>
+    <div class="col-stat tc-mtg">24</div>
+    <div class="col-stat tc-uacct">228</div>
+    <div class="col-stat tc-wks">14</div>
+    <div class="col-stat tc-opps">7</div>
+    <div class="col-pipe"><span class="pipe-acv">$490K</span></div>
+    <span class="chev">▼</span>
+  </div>
+  <div class="card-bd">
+    <div class="hl-box"><strong>Hunter pipeline leader — $490K across 7 opps, all at Stage 1:</strong> Peter leads the Hunter group with $490K in credited pipeline and 7 opps — the widest deal coverage in the group. His 2,036 activities, 24 meetings, and 228 unique accounts show sustained territory engagement. Last week was 163 activities — solid pace. With 7 opps at Stage 1 and only 1 at Stage 2, the near-term priority is clear: advancing pipeline to Stage 2 is the focus. The deal flow is real — conversion to later stages is the next move.<div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(0,0,0,.07);font-size:12px;color:#6b7280;line-height:1.6">📬 Reached <strong>228 unique accounts</strong> over the 90-day period &nbsp;·&nbsp; 🗓 Logged <strong>24 booked meetings</strong> in Salesforce</div></div>
+    <div class="act-bar-wrap"><div class="act-bar-track"><div class="act-bar-fill" style="width:21%"></div></div><span class="act-bar-pct">21% of org top volume</span></div>
+    <div class="peer-bar-wrap"><div class="peer-bar-lbl">vs. peer group avg (1,420 acts):</div><div class="peer-bar-track"><div class="peer-bar-fill" style="width:100%;background:#16a34a"></div><div class="peer-bar-marker"></div></div><span class="peer-bar-pct" style="color:#16a34a">143%</span></div>
+    <div class="sub-section"><div class="sub-title" style="color:#059669">💰 Pipeline — $490K ACV <span class="sub-note">credited to creator (Created By)</span></div><div class="prog-chips-row"><span class="prog-chip chip-created">Created: 7</span><span class="prog-chip chip-s1">S1 Reached: 7</span><span class="prog-chip chip-s2">S2 Reached: 1</span></div><table class="wk-table"><thead><tr><th>Account</th><th class="num">ACV</th><th>Stage</th><th>Created</th><th style="color:#0891b2">S1 Reached</th><th style="color:#7c3aed">S2 Reached</th><th style="color:#7c3aed">Account Owner</th></tr></thead><tbody><tr style=""><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="Riskonnect Land">Riskonnect</td><td class="num" style="color:#059669;font-weight:700">$150K</td><td style="font-size:11px;color:#6b7280">1</td><td style="font-size:11px;color:#6b7280">2026-05-08</td><td style="font-size:11px;color:#0891b2">2026-05-13</td><td style="font-size:11px;color:#7c3aed">—</td><td style="font-size:11px;color:#7c3aed;font-weight:600">Dylan Harper</td></tr><tr style=""><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="Eliassen full OM premium land Q3">Eliassen Group</td><td class="num" style="color:#059669;font-weight:700">$100K</td><td style="font-size:11px;color:#6b7280">1</td><td style="font-size:11px;color:#6b7280">2026-04-09</td><td style="font-size:11px;color:#0891b2">2026-04-09</td><td style="font-size:11px;color:#7c3aed">—</td><td style="font-size:11px;color:#7c3aed;font-weight:600">Dylan Harper</td></tr><tr style=""><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="Tufin - Backstory and SalesAI Land">Tufin</td><td class="num" style="color:#059669;font-weight:700">$60K</td><td style="font-size:11px;color:#6b7280">1</td><td style="font-size:11px;color:#6b7280">2026-04-16</td><td style="font-size:11px;color:#0891b2">2026-04-16</td><td style="font-size:11px;color:#7c3aed">—</td><td style="font-size:11px;color:#7c3aed;font-weight:600">Dylan Harper</td></tr><tr style=""><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="VleocityEHS Land">VelocityEHS</td><td class="num" style="color:#059669;font-weight:700">$60K</td><td style="font-size:11px;color:#6b7280">1</td><td style="font-size:11px;color:#6b7280">2026-03-19</td><td style="font-size:11px;color:#0891b2">2026-03-19</td><td style="font-size:11px;color:#7c3aed">—</td><td style="font-size:11px;color:#7c3aed;font-weight:600">Dylan Harper</td></tr><tr style=""><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="Eagleview Land">EagleView</td><td class="num" style="color:#059669;font-weight:700">$50K</td><td style="font-size:11px;color:#6b7280">1</td><td style="font-size:11px;color:#6b7280">2026-05-21</td><td style="font-size:11px;color:#0891b2">2026-05-21</td><td style="font-size:11px;color:#7c3aed">—</td><td style="font-size:11px;color:#7c3aed;font-weight:600">Dylan Harper</td></tr><tr style=""><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="Pathlock Land (platform & closeplan) 3 year">PathLock</td><td class="num" style="color:#059669;font-weight:700">$40K</td><td style="font-size:11px;color:#6b7280">Closed Won</td><td style="font-size:11px;color:#6b7280">2026-04-22</td><td style="font-size:11px;color:#0891b2">2026-04-22</td><td style="font-size:11px;color:#7c3aed">2026-04-23</td><td style="font-size:11px;color:#7c3aed;font-weight:600">Dylan Harper</td></tr><tr style=""><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="Disguise Platform rip/replace">Disguise</td><td class="num" style="color:#059669;font-weight:700">$30K</td><td style="font-size:11px;color:#6b7280">1</td><td style="font-size:11px;color:#6b7280">2026-05-28</td><td style="font-size:11px;color:#0891b2">2026-05-28</td><td style="font-size:11px;color:#7c3aed">—</td><td style="font-size:11px;color:#7c3aed;font-weight:600">Dylan Harper</td></tr></tbody></table></div>
+    <div class="sub-title" style="margin-top:16px">Week-by-Week Activity Breakdown</div>
+    <table class="wk-table"><thead><tr><th>Week of</th><th class="num">Activities</th><th class="num em">Emails</th><th class="num cl">Calls</th><th class="num mt">Booked Mtgs</th></tr></thead><tbody><tr><td>Mar 09–15</td><td class="num">1</td><td class="num em">1</td><td class="num cl">0</td><td class="num mt">0</td></tr><tr><td>Mar 16–22</td><td class="num">128</td><td class="num em">124</td><td class="num cl">0</td><td class="num mt">4</td></tr><tr><td>Mar 23–29</td><td class="num">69</td><td class="num em">67</td><td class="num cl">0</td><td class="num mt">2</td></tr><tr><td>Mar 30–Apr 05</td><td class="num">141</td><td class="num em">137</td><td class="num cl">3</td><td class="num mt">1</td></tr><tr><td>Apr 06–12</td><td class="num">264</td><td class="num em">263</td><td class="num cl">1</td><td class="num mt">0</td></tr><tr><td>Apr 13–19</td><td class="num">342</td><td class="num em">334</td><td class="num cl">6</td><td class="num mt">2</td></tr><tr><td>Apr 20–26</td><td class="num">107</td><td class="num em">105</td><td class="num cl">0</td><td class="num mt">2</td></tr><tr><td>Apr 27–May 03</td><td class="num">107</td><td class="num em">97</td><td class="num cl">6</td><td class="num mt">4</td></tr><tr><td>May 04–10</td><td class="num">63</td><td class="num em">25</td><td class="num cl">36</td><td class="num mt">2</td></tr><tr><td>May 11–17</td><td class="num">118</td><td class="num em">114</td><td class="num cl">2</td><td class="num mt">2</td></tr><tr><td>May 18–24</td><td class="num">121</td><td class="num em">101</td><td class="num cl">18</td><td class="num mt">2</td></tr><tr><td>May 25–31</td><td class="num">205</td><td class="num em">203</td><td class="num cl">0</td><td class="num mt">2</td></tr><tr><td>Jun 01–07</td><td class="num">207</td><td class="num em">201</td><td class="num cl">5</td><td class="num mt">1</td></tr><tr><td>Jun 08–14</td><td class="num">163</td><td class="num em">159</td><td class="num cl">4</td><td class="num mt">0</td></tr></tbody></table>
+  </div>
+</div>
+<div class="rep-card" onclick="toggleCard(this)">
+  <div class="card-hd">
+    <div class="col-name">
+      <span class="rname">Avery Collins</span>
+      <div class="badges-row"></div>
+    </div>
+    <div class="col-spark"><svg width="142" height="34" xmlns="http://www.w3.org/2000/svg"><path d="M 0.0,30.0 L 10.9,25.9 L 21.8,18.9 L 32.8,14.7 L 43.7,16.6 L 54.6,13.0 L 65.5,10.9 L 76.5,6.1 L 87.4,11.7 L 98.3,22.0 L 109.2,23.2 L 120.2,4.0 L 131.1,21.8 L 142.0,14.9 L 142.0,34 L 0.0,34 Z" fill="#2563eb" opacity="0.1"/><path d="M 0.0,30.0 L 10.9,25.9 L 21.8,18.9 L 32.8,14.7 L 43.7,16.6 L 54.6,13.0 L 65.5,10.9 L 76.5,6.1 L 87.4,11.7 L 98.3,22.0 L 109.2,23.2 L 120.2,4.0 L 131.1,21.8 L 142.0,14.9" fill="none" stroke="#2563eb" stroke-width="1.8" stroke-linejoin="round"/><circle cx="142.0" cy="14.9" r="3" fill="#2563eb"/></svg></div>
+    <div class="col-trend"><span class="tb tb-flat" title="Last week was similar to the prior 3-week average">→ Steady</span></div>
+    <div class="col-stat tc-total">1,849</div>
+    <div class="col-stat tc-email">1,825</div>
+    <div class="col-stat tc-call">11</div>
+    <div class="col-stat tc-mtg">13</div>
+    <div class="col-stat tc-uacct">232</div>
+    <div class="col-stat tc-wks">13</div>
+    <div class="col-stat tc-opps">3</div>
+    <div class="col-pipe"><span class="pipe-acv">$80K</span></div>
+    <span class="chev">▼</span>
+  </div>
+  <div class="card-bd">
+    <div class="hl-box-warn"><strong>Pipeline building — 3 opps in the window, 1 at Stage 2:</strong> Michael's 1,849 activities across 232 unique accounts — the broadest account coverage in the Hunter group — reflect strong territory coverage. His $80K in credited pipeline (3 opps, 2 at Stage 1, 1 at Stage 2) is building. Last week was 150 activities — consistent pace. The coaching focus is converting his outreach into more first meetings and driving pipeline from his own activity while supporting the advancing Stage 2 deal.<div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(0,0,0,.07);font-size:12px;color:#6b7280;line-height:1.6">📬 Reached <strong>232 unique accounts</strong> over the 90-day period &nbsp;·&nbsp; 🗓 Logged <strong>13 booked meetings</strong> in Salesforce</div></div>
+    <div class="act-bar-wrap"><div class="act-bar-track"><div class="act-bar-fill" style="width:19%"></div></div><span class="act-bar-pct">19% of org top volume</span></div>
+    <div class="peer-bar-wrap"><div class="peer-bar-lbl">vs. peer group avg (1,420 acts):</div><div class="peer-bar-track"><div class="peer-bar-fill" style="width:100%;background:#16a34a"></div><div class="peer-bar-marker"></div></div><span class="peer-bar-pct" style="color:#16a34a">130%</span></div>
+    <div class="sub-section"><div class="sub-title" style="color:#059669">💰 Pipeline — $80K ACV <span class="sub-note">credited to creator (Created By)</span></div><div class="prog-chips-row"><span class="prog-chip chip-created">Created: 3</span><span class="prog-chip chip-s1">S1 Reached: 2</span><span class="prog-chip chip-s2">S2 Reached: 1</span></div><table class="wk-table"><thead><tr><th>Account</th><th class="num">ACV</th><th>Stage</th><th>Created</th><th style="color:#0891b2">S1 Reached</th><th style="color:#7c3aed">S2 Reached</th><th style="color:#7c3aed">Account Owner</th></tr></thead><tbody><tr style="opacity:.5"><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="Cvent - Land- Forensics and Account Execution">Cvent</td><td class="num" style="color:#059669;font-weight:700">$460K</td><td style="font-size:11px;color:#6b7280">3</td><td style="font-size:11px;color:#6b7280">2026-03-09</td><td style="font-size:11px;color:#0891b2">2026-03-11</td><td style="font-size:11px;color:#7c3aed">2026-04-02</td><td style="font-size:11px;color:#7c3aed;font-weight:600">Avery Collins</td></tr><tr style=""><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="LoopMe- Land and expand">LoopMe</td><td class="num" style="color:#059669;font-weight:700">$50K</td><td style="font-size:11px;color:#6b7280">1</td><td style="font-size:11px;color:#6b7280">2026-05-20</td><td style="font-size:11px;color:#0891b2">2026-05-20</td><td style="font-size:11px;color:#7c3aed">—</td><td style="font-size:11px;color:#7c3aed;font-weight:600">Avery Collins</td></tr><tr style=""><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="CN (new logo land)">Consortium Networks</td><td class="num" style="color:#059669;font-weight:700">$30K</td><td style="font-size:11px;color:#6b7280">1</td><td style="font-size:11px;color:#6b7280">2026-05-18</td><td style="font-size:11px;color:#0891b2">2026-05-18</td><td style="font-size:11px;color:#7c3aed">—</td><td style="font-size:11px;color:#7c3aed;font-weight:600">Avery Collins</td></tr></tbody></table></div>
+    <div class="sub-title" style="margin-top:16px">Week-by-Week Activity Breakdown</div>
+    <table class="wk-table"><thead><tr><th>Week of</th><th class="num">Activities</th><th class="num em">Emails</th><th class="num cl">Calls</th><th class="num mt">Booked Mtgs</th></tr></thead><tbody><tr><td>Mar 16–22</td><td class="num">41</td><td class="num em">39</td><td class="num cl">0</td><td class="num mt">2</td></tr><tr><td>Mar 23–29</td><td class="num">110</td><td class="num em">108</td><td class="num cl">0</td><td class="num mt">2</td></tr><tr><td>Mar 30–Apr 05</td><td class="num">152</td><td class="num em">150</td><td class="num cl">0</td><td class="num mt">2</td></tr><tr><td>Apr 06–12</td><td class="num">133</td><td class="num em">131</td><td class="num cl">1</td><td class="num mt">1</td></tr><tr><td>Apr 13–19</td><td class="num">169</td><td class="num em">167</td><td class="num cl">0</td><td class="num mt">2</td></tr><tr><td>Apr 20–26</td><td class="num">190</td><td class="num em">189</td><td class="num cl">0</td><td class="num mt">1</td></tr><tr><td>Apr 27–May 03</td><td class="num">237</td><td class="num em">237</td><td class="num cl">0</td><td class="num mt">0</td></tr><tr><td>May 04–10</td><td class="num">182</td><td class="num em">171</td><td class="num cl">10</td><td class="num mt">1</td></tr><tr><td>May 11–17</td><td class="num">79</td><td class="num em">79</td><td class="num cl">0</td><td class="num mt">0</td></tr><tr><td>May 18–24</td><td class="num">67</td><td class="num em">66</td><td class="num cl">0</td><td class="num mt">1</td></tr><tr><td>May 25–31</td><td class="num">258</td><td class="num em">258</td><td class="num cl">0</td><td class="num mt">0</td></tr><tr><td>Jun 01–07</td><td class="num">81</td><td class="num em">81</td><td class="num cl">0</td><td class="num mt">0</td></tr><tr><td>Jun 08–14</td><td class="num">150</td><td class="num em">149</td><td class="num cl">0</td><td class="num mt">1</td></tr></tbody></table>
+  </div>
+</div>
+<div class="rep-card" onclick="toggleCard(this)">
+  <div class="card-hd">
+    <div class="col-name">
+      <span class="rname">Harper Quinn</span>
+      <div class="badges-row"></div>
+    </div>
+    <div class="col-spark"><svg width="142" height="34" xmlns="http://www.w3.org/2000/svg"><path d="M 0.0,30.0 L 10.9,29.9 L 21.8,22.8 L 32.8,27.7 L 43.7,13.7 L 54.6,8.8 L 65.5,4.0 L 76.5,14.3 L 87.4,26.9 L 98.3,29.6 L 109.2,19.5 L 120.2,14.8 L 131.1,10.0 L 142.0,20.0 L 142.0,34 L 0.0,34 Z" fill="#dc2626" opacity="0.1"/><path d="M 0.0,30.0 L 10.9,29.9 L 21.8,22.8 L 32.8,27.7 L 43.7,13.7 L 54.6,8.8 L 65.5,4.0 L 76.5,14.3 L 87.4,26.9 L 98.3,29.6 L 109.2,19.5 L 120.2,14.8 L 131.1,10.0 L 142.0,20.0" fill="none" stroke="#dc2626" stroke-width="1.8" stroke-linejoin="round"/><circle cx="142.0" cy="20.0" r="3" fill="#dc2626"/></svg></div>
+    <div class="col-trend"><span class="tb tb-dn" title="Last week was below the prior 3-week average">↓ Declining</span></div>
+    <div class="col-stat tc-total">1,515</div>
+    <div class="col-stat tc-email">1,492</div>
+    <div class="col-stat tc-call">21</div>
+    <div class="col-stat tc-mtg">2</div>
+    <div class="col-stat tc-uacct">84</div>
+    <div class="col-stat tc-wks">13</div>
+    <div class="col-stat tc-opps">—</div>
+    <div class="col-pipe"><span class="pipe-acv  pipe-none">—</span></div>
+    <span class="chev">▼</span>
+  </div>
+  <div class="card-bd">
+    <div class="hl-box"><strong>Ramp building consistently — activity and account coverage expanding:</strong> Lia has 1,515 total activities across 84 unique accounts — meaningful coverage growth that continues to build week over week. Her 21 calls and 2 meetings represent early conversion signals. Last week was 102 activities — consistent output. The next milestone is converting outreach into a more regular meeting cadence and building toward first pipeline.<div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(0,0,0,.07);font-size:12px;color:#6b7280;line-height:1.6">📬 Reached <strong>84 unique accounts</strong> over the 90-day period &nbsp;·&nbsp; 🗓 Logged <strong>2 booked meetings</strong> in Salesforce</div></div>
+    <div class="act-bar-wrap"><div class="act-bar-track"><div class="act-bar-fill" style="width:16%"></div></div><span class="act-bar-pct">16% of org top volume</span></div>
+    <div class="peer-bar-wrap"><div class="peer-bar-lbl">vs. peer group avg (1,420 acts):</div><div class="peer-bar-track"><div class="peer-bar-fill" style="width:100%;background:#16a34a"></div><div class="peer-bar-marker"></div></div><span class="peer-bar-pct" style="color:#16a34a">107%</span></div>
+    <div class="sub-section"><div class="sub-title" style="color:#9ca3af">💰 Pipeline</div><p class="empty-note">No pipeline activity in this period</p></div>
+    <div class="sub-title" style="margin-top:16px">Week-by-Week Activity Breakdown</div>
+    <table class="wk-table"><thead><tr><th>Week of</th><th class="num">Activities</th><th class="num em">Emails</th><th class="num cl">Calls</th><th class="num mt">Booked Mtgs</th></tr></thead><tbody><tr><td>Mar 16–22</td><td class="num">1</td><td class="num em">1</td><td class="num cl">0</td><td class="num mt">0</td></tr><tr><td>Mar 23–29</td><td class="num">74</td><td class="num em">72</td><td class="num cl">2</td><td class="num mt">0</td></tr><tr><td>Mar 30–Apr 05</td><td class="num">24</td><td class="num em">23</td><td class="num cl">1</td><td class="num mt">0</td></tr><tr><td>Apr 06–12</td><td class="num">167</td><td class="num em">154</td><td class="num cl">13</td><td class="num mt">0</td></tr><tr><td>Apr 13–19</td><td class="num">217</td><td class="num em">212</td><td class="num cl">5</td><td class="num mt">0</td></tr><tr><td>Apr 20–26</td><td class="num">266</td><td class="num em">266</td><td class="num cl">0</td><td class="num mt">0</td></tr><tr><td>Apr 27–May 03</td><td class="num">161</td><td class="num em">159</td><td class="num cl">0</td><td class="num mt">2</td></tr><tr><td>May 04–10</td><td class="num">32</td><td class="num em">32</td><td class="num cl">0</td><td class="num mt">0</td></tr><tr><td>May 11–17</td><td class="num">4</td><td class="num em">4</td><td class="num cl">0</td><td class="num mt">0</td></tr><tr><td>May 18–24</td><td class="num">107</td><td class="num em">107</td><td class="num cl">0</td><td class="num mt">0</td></tr><tr><td>May 25–31</td><td class="num">155</td><td class="num em">155</td><td class="num cl">0</td><td class="num mt">0</td></tr><tr><td>Jun 01–07</td><td class="num">205</td><td class="num em">205</td><td class="num cl">0</td><td class="num mt">0</td></tr><tr><td>Jun 08–14</td><td class="num">102</td><td class="num em">102</td><td class="num cl">0</td><td class="num mt">0</td></tr></tbody></table>
+  </div>
+</div>
+<div class="rep-card" onclick="toggleCard(this)">
+  <div class="card-hd">
+    <div class="col-name">
+      <span class="rname">Logan Mercer</span>
+      <div class="badges-row"></div>
+    </div>
+    <div class="col-spark"><svg width="142" height="34" xmlns="http://www.w3.org/2000/svg"><path d="M 0.0,29.9 L 10.9,16.0 L 21.8,21.0 L 32.8,20.0 L 43.7,14.5 L 54.6,17.6 L 65.5,4.0 L 76.5,18.3 L 87.4,22.1 L 98.3,26.5 L 109.2,26.2 L 120.2,16.1 L 131.1,17.9 L 142.0,24.8 L 142.0,34 L 0.0,34 Z" fill="#dc2626" opacity="0.1"/><path d="M 0.0,29.9 L 10.9,16.0 L 21.8,21.0 L 32.8,20.0 L 43.7,14.5 L 54.6,17.6 L 65.5,4.0 L 76.5,18.3 L 87.4,22.1 L 98.3,26.5 L 109.2,26.2 L 120.2,16.1 L 131.1,17.9 L 142.0,24.8" fill="none" stroke="#dc2626" stroke-width="1.8" stroke-linejoin="round"/><circle cx="142.0" cy="24.8" r="3" fill="#dc2626"/></svg></div>
+    <div class="col-trend"><span class="tb tb-dn" title="Last week was below the prior 3-week average">↓ Declining</span></div>
+    <div class="col-stat tc-total">1,004</div>
+    <div class="col-stat tc-email">935</div>
+    <div class="col-stat tc-call">0</div>
+    <div class="col-stat tc-mtg">69</div>
+    <div class="col-stat tc-uacct">65</div>
+    <div class="col-stat tc-wks">14</div>
+    <div class="col-stat tc-opps">2</div>
+    <div class="col-pipe"><span class="pipe-acv">$255K</span></div>
+    <span class="chev">▼</span>
+  </div>
+  <div class="card-bd">
+    <div class="hl-box"><strong>69 meetings on 65 accounts — the deepest engagement model in the group:</strong> Georgio's 69 meetings across 65 accounts means he's averaging more than 1 meeting per account — genuine relationship-driven selling. His $255K in pipeline (2 opps, 2 at Stage 1) shows the payoff of deep engagement. Last week was 36 activities. The deals are moving. Adding a handful of new accounts to the rotation would expand pipeline surface area and give his S1 opps more company — the engagement model is proven.<div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(0,0,0,.07);font-size:12px;color:#6b7280;line-height:1.6">📬 Reached <strong>65 unique accounts</strong> over the 90-day period &nbsp;·&nbsp; 🗓 Logged <strong>69 booked meetings</strong> in Salesforce</div></div>
+    <div class="act-bar-wrap"><div class="act-bar-track"><div class="act-bar-fill" style="width:11%"></div></div><span class="act-bar-pct">11% of org top volume</span></div>
+    <div class="peer-bar-wrap"><div class="peer-bar-lbl">vs. peer group avg (1,420 acts):</div><div class="peer-bar-track"><div class="peer-bar-fill" style="width:71%;background:#f59e0b"></div><div class="peer-bar-marker"></div></div><span class="peer-bar-pct" style="color:#f59e0b">71%</span></div>
+    <div class="sub-section"><div class="sub-title" style="color:#059669">💰 Pipeline — $255K ACV <span class="sub-note">credited to creator (Created By)</span></div><div class="prog-chips-row"><span class="prog-chip chip-created">Created: 2</span><span class="prog-chip chip-s1">S1 Reached: 2</span><span class="prog-chip chip-s2">S2 Reached: 0</span></div><table class="wk-table"><thead><tr><th>Account</th><th class="num">ACV</th><th>Stage</th><th>Created</th><th style="color:#0891b2">S1 Reached</th><th style="color:#7c3aed">S2 Reached</th><th style="color:#7c3aed">Account Owner</th></tr></thead><tbody><tr style=""><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="First Citizens RFP">First Citizens Bank</td><td class="num" style="color:#059669;font-weight:700">$155K</td><td style="font-size:11px;color:#6b7280">1</td><td style="font-size:11px;color:#6b7280">2026-04-15</td><td style="font-size:11px;color:#0891b2">2026-04-14</td><td style="font-size:11px;color:#7c3aed">—</td><td style="font-size:11px;color:#7c3aed;font-weight:600">Logan Mercer</td></tr><tr style=""><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="ADP Land 2026 GB">ADP</td><td class="num" style="color:#059669;font-weight:700">$100K</td><td style="font-size:11px;color:#6b7280">1</td><td style="font-size:11px;color:#6b7280">2026-03-26</td><td style="font-size:11px;color:#0891b2">2026-03-25</td><td style="font-size:11px;color:#7c3aed">—</td><td style="font-size:11px;color:#7c3aed;font-weight:600">Logan Mercer</td></tr></tbody></table></div>
+    <div class="sub-title" style="margin-top:16px">Week-by-Week Activity Breakdown</div>
+    <table class="wk-table"><thead><tr><th>Week of</th><th class="num">Activities</th><th class="num em">Emails</th><th class="num cl">Calls</th><th class="num mt">Booked Mtgs</th></tr></thead><tbody><tr><td>Mar 09–15</td><td class="num">1</td><td class="num em">1</td><td class="num cl">0</td><td class="num mt">0</td></tr><tr><td>Mar 16–22</td><td class="num">97</td><td class="num em">93</td><td class="num cl">0</td><td class="num mt">4</td></tr><tr><td>Mar 23–29</td><td class="num">62</td><td class="num em">55</td><td class="num cl">0</td><td class="num mt">7</td></tr><tr><td>Mar 30–Apr 05</td><td class="num">69</td><td class="num em">63</td><td class="num cl">0</td><td class="num mt">6</td></tr><tr><td>Apr 06–12</td><td class="num">107</td><td class="num em">98</td><td class="num cl">0</td><td class="num mt">9</td></tr><tr><td>Apr 13–19</td><td class="num">86</td><td class="num em">82</td><td class="num cl">0</td><td class="num mt">4</td></tr><tr><td>Apr 20–26</td><td class="num">180</td><td class="num em">174</td><td class="num cl">0</td><td class="num mt">6</td></tr><tr><td>Apr 27–May 03</td><td class="num">81</td><td class="num em">73</td><td class="num cl">0</td><td class="num mt">8</td></tr><tr><td>May 04–10</td><td class="num">55</td><td class="num em">51</td><td class="num cl">0</td><td class="num mt">4</td></tr><tr><td>May 11–17</td><td class="num">24</td><td class="num em">19</td><td class="num cl">0</td><td class="num mt">5</td></tr><tr><td>May 18–24</td><td class="num">26</td><td class="num em">20</td><td class="num cl">0</td><td class="num mt">6</td></tr><tr><td>May 25–31</td><td class="num">96</td><td class="num em">94</td><td class="num cl">0</td><td class="num mt">2</td></tr><tr><td>Jun 01–07</td><td class="num">84</td><td class="num em">82</td><td class="num cl">0</td><td class="num mt">2</td></tr><tr><td>Jun 08–14</td><td class="num">36</td><td class="num em">30</td><td class="num cl">0</td><td class="num mt">6</td></tr></tbody></table>
+  </div>
+</div>
+<div class="rep-card" onclick="toggleCard(this)">
+  <div class="card-hd">
+    <div class="col-name">
+      <span class="rname">Owen Carter</span>
+      <div class="badges-row"></div>
+    </div>
+    <div class="col-spark"><svg width="142" height="34" xmlns="http://www.w3.org/2000/svg"><path d="M 0.0,30.0 L 10.9,18.5 L 21.8,23.7 L 32.8,24.8 L 43.7,23.9 L 54.6,18.8 L 65.5,16.9 L 76.5,13.4 L 87.4,4.0 L 98.3,5.2 L 109.2,15.0 L 120.2,12.2 L 131.1,14.3 L 142.0,14.3 L 142.0,34 L 0.0,34 Z" fill="#2563eb" opacity="0.1"/><path d="M 0.0,30.0 L 10.9,18.5 L 21.8,23.7 L 32.8,24.8 L 43.7,23.9 L 54.6,18.8 L 65.5,16.9 L 76.5,13.4 L 87.4,4.0 L 98.3,5.2 L 109.2,15.0 L 120.2,12.2 L 131.1,14.3 L 142.0,14.3" fill="none" stroke="#2563eb" stroke-width="1.8" stroke-linejoin="round"/><circle cx="142.0" cy="14.3" r="3" fill="#2563eb"/></svg></div>
+    <div class="col-trend"><span class="tb tb-flat" title="Last week was similar to the prior 3-week average">→ Steady</span></div>
+    <div class="col-stat tc-total">790</div>
+    <div class="col-stat tc-email">767</div>
+    <div class="col-stat tc-call">0</div>
+    <div class="col-stat tc-mtg">23</div>
+    <div class="col-stat tc-uacct">151</div>
+    <div class="col-stat tc-wks">13</div>
+    <div class="col-stat tc-opps">4</div>
+    <div class="col-pipe"><span class="pipe-acv">$423K</span></div>
+    <span class="chev">▼</span>
+  </div>
+  <div class="card-bd">
+    <div class="hl-box"><strong>Best Stage 2 conversion in the Hunter group — 3 of 4 opps at Stage 2:</strong> David's $423K pipeline (4 opps, 4 at Stage 1, 3 at Stage 2) reflects consistent deal advancement — once he's involved, opps move. His 23 meetings across 151 unique accounts reflect a quality engagement approach. Last week was 67 activities. His S2 conversion rate is the benchmark in the Hunter group. The lever is adding more opps at the top — his conversion makes every Stage 1 deal valuable.<div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(0,0,0,.07);font-size:12px;color:#6b7280;line-height:1.6">📬 Reached <strong>151 unique accounts</strong> over the 90-day period &nbsp;·&nbsp; 🗓 Logged <strong>23 booked meetings</strong> in Salesforce</div></div>
+    <div class="act-bar-wrap"><div class="act-bar-track"><div class="act-bar-fill" style="width:8%"></div></div><span class="act-bar-pct">8% of org top volume</span></div>
+    <div class="peer-bar-wrap"><div class="peer-bar-lbl">vs. peer group avg (1,420 acts):</div><div class="peer-bar-track"><div class="peer-bar-fill" style="width:56%;background:#dc2626"></div><div class="peer-bar-marker"></div></div><span class="peer-bar-pct" style="color:#dc2626">56%</span></div>
+    <div class="sub-section"><div class="sub-title" style="color:#059669">💰 Pipeline — $423K ACV <span class="sub-note">credited to creator (Created By)</span></div><div class="prog-chips-row"><span class="prog-chip chip-created">Created: 4</span><span class="prog-chip chip-s1">S1 Reached: 4</span><span class="prog-chip chip-s2">S2 Reached: 3</span></div><table class="wk-table"><thead><tr><th>Account</th><th class="num">ACV</th><th>Stage</th><th>Created</th><th style="color:#0891b2">S1 Reached</th><th style="color:#7c3aed">S2 Reached</th><th style="color:#7c3aed">Account Owner</th></tr></thead><tbody><tr style=""><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="Canva - Land">Canva</td><td class="num" style="color:#059669;font-weight:700">$250K</td><td style="font-size:11px;color:#6b7280">2</td><td style="font-size:11px;color:#6b7280">2026-05-28</td><td style="font-size:11px;color:#0891b2">2026-05-28</td><td style="font-size:11px;color:#7c3aed">2026-06-11</td><td style="font-size:11px;color:#7c3aed;font-weight:600">Owen Carter</td></tr><tr style=""><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="Postman">Postman</td><td class="num" style="color:#059669;font-weight:700">$72K</td><td style="font-size:11px;color:#6b7280">2</td><td style="font-size:11px;color:#6b7280">2026-04-22</td><td style="font-size:11px;color:#0891b2">2026-04-29</td><td style="font-size:11px;color:#7c3aed">2026-04-29</td><td style="font-size:11px;color:#7c3aed;font-weight:600">Owen Carter</td></tr><tr style=""><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="Komodor">Komodor</td><td class="num" style="color:#059669;font-weight:700">$51K</td><td style="font-size:11px;color:#6b7280">1</td><td style="font-size:11px;color:#6b7280">2026-05-13</td><td style="font-size:11px;color:#0891b2">2026-05-26</td><td style="font-size:11px;color:#7c3aed">—</td><td style="font-size:11px;color:#7c3aed;font-weight:600">Owen Carter</td></tr><tr style=""><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="Cyera - Upsell - Add Users">Cyera</td><td class="num" style="color:#059669;font-weight:700">$50K</td><td style="font-size:11px;color:#6b7280">Closed Lost</td><td style="font-size:11px;color:#6b7280">2026-03-31</td><td style="font-size:11px;color:#0891b2">2026-03-31</td><td style="font-size:11px;color:#7c3aed;font-style:italic" title="Inferred from S1 or created date">2026-03-31</td><td style="font-size:11px;color:#7c3aed;font-weight:600">Owen Carter</td></tr></tbody></table></div>
+    <div class="sub-title" style="margin-top:16px">Week-by-Week Activity Breakdown</div>
+    <table class="wk-table"><thead><tr><th>Week of</th><th class="num">Activities</th><th class="num em">Emails</th><th class="num cl">Calls</th><th class="num mt">Booked Mtgs</th></tr></thead><tbody><tr><td>Mar 16–22</td><td class="num">49</td><td class="num em">49</td><td class="num cl">0</td><td class="num mt">0</td></tr><tr><td>Mar 23–29</td><td class="num">27</td><td class="num em">23</td><td class="num cl">0</td><td class="num mt">4</td></tr><tr><td>Mar 30–Apr 05</td><td class="num">22</td><td class="num em">21</td><td class="num cl">0</td><td class="num mt">1</td></tr><tr><td>Apr 06–12</td><td class="num">26</td><td class="num em">24</td><td class="num cl">0</td><td class="num mt">2</td></tr><tr><td>Apr 13–19</td><td class="num">48</td><td class="num em">47</td><td class="num cl">0</td><td class="num mt">1</td></tr><tr><td>Apr 20–26</td><td class="num">56</td><td class="num em">53</td><td class="num cl">0</td><td class="num mt">3</td></tr><tr><td>Apr 27–May 03</td><td class="num">71</td><td class="num em">70</td><td class="num cl">0</td><td class="num mt">1</td></tr><tr><td>May 04–10</td><td class="num">111</td><td class="num em">111</td><td class="num cl">0</td><td class="num mt">0</td></tr><tr><td>May 11–17</td><td class="num">106</td><td class="num em">103</td><td class="num cl">0</td><td class="num mt">3</td></tr><tr><td>May 18–24</td><td class="num">64</td><td class="num em">61</td><td class="num cl">0</td><td class="num mt">3</td></tr><tr><td>May 25–31</td><td class="num">76</td><td class="num em">76</td><td class="num cl">0</td><td class="num mt">0</td></tr><tr><td>Jun 01–07</td><td class="num">67</td><td class="num em">64</td><td class="num cl">0</td><td class="num mt">3</td></tr><tr><td>Jun 08–14</td><td class="num">67</td><td class="num em">65</td><td class="num cl">0</td><td class="num mt">2</td></tr></tbody></table>
+  </div>
+</div>
+<div class="rep-card" onclick="toggleCard(this)">
+  <div class="card-hd">
+    <div class="col-name">
+      <span class="rname">Cameron Wells</span>
+      <div class="badges-row"></div>
+    </div>
+    <div class="col-spark"><svg width="142" height="34" xmlns="http://www.w3.org/2000/svg"><path d="M 0.0,30.0 L 10.9,29.0 L 21.8,27.2 L 32.8,26.5 L 43.7,15.1 L 54.6,4.0 L 65.5,15.2 L 76.5,16.2 L 87.4,24.8 L 98.3,29.4 L 109.2,30.0 L 120.2,30.0 L 131.1,29.9 L 142.0,27.6 L 142.0,34 L 0.0,34 Z" fill="#16a34a" opacity="0.1"/><path d="M 0.0,30.0 L 10.9,29.0 L 21.8,27.2 L 32.8,26.5 L 43.7,15.1 L 54.6,4.0 L 65.5,15.2 L 76.5,16.2 L 87.4,24.8 L 98.3,29.4 L 109.2,30.0 L 120.2,30.0 L 131.1,29.9 L 142.0,27.6" fill="none" stroke="#16a34a" stroke-width="1.8" stroke-linejoin="round"/><circle cx="142.0" cy="27.6" r="3" fill="#16a34a"/></svg></div>
+    <div class="col-trend"><span class="tb tb-up" title="Last week was above the prior 3-week average">↑ Improving</span></div>
+    <div class="col-stat tc-total">605</div>
+    <div class="col-stat tc-email">601</div>
+    <div class="col-stat tc-call">0</div>
+    <div class="col-stat tc-mtg">4</div>
+    <div class="col-stat tc-uacct">53</div>
+    <div class="col-stat tc-wks">11</div>
+    <div class="col-stat tc-opps">—</div>
+    <div class="col-pipe"><span class="pipe-acv  pipe-none">—</span></div>
+    <span class="chev">▼</span>
+  </div>
+  <div class="card-bd">
+    <div class="hl-box"><strong>Ramp building — outreach is deliberate and consistent:</strong> Sean has been building account coverage with a focused, multi-channel approach. The next milestone is establishing a sustainable weekly cadence above 100 activities per week and converting outreach into a regular meeting cadence.<div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(0,0,0,.07);font-size:12px;color:#6b7280;line-height:1.6">📬 Reached <strong>53 unique accounts</strong> over the 90-day period &nbsp;·&nbsp; 🗓 Logged <strong>4 booked meetings</strong> in Salesforce</div></div>
+    <div class="act-bar-wrap"><div class="act-bar-track"><div class="act-bar-fill" style="width:6%"></div></div><span class="act-bar-pct">6% of org top volume</span></div>
+    <div class="peer-bar-wrap"><div class="peer-bar-lbl">vs. peer group avg (1,420 acts):</div><div class="peer-bar-track"><div class="peer-bar-fill" style="width:43%;background:#dc2626"></div><div class="peer-bar-marker"></div></div><span class="peer-bar-pct" style="color:#dc2626">43%</span></div>
+    <div class="sub-section"><div class="sub-title" style="color:#9ca3af">💰 Pipeline</div><p class="empty-note">No pipeline activity in this period</p></div>
+    <div class="sub-title" style="margin-top:16px">Week-by-Week Activity Breakdown</div>
+    <table class="wk-table"><thead><tr><th>Week of</th><th class="num">Activities</th><th class="num em">Emails</th><th class="num cl">Calls</th><th class="num mt">Booked Mtgs</th></tr></thead><tbody><tr><td>Mar 16–22</td><td class="num">7</td><td class="num em">7</td><td class="num cl">0</td><td class="num mt">0</td></tr><tr><td>Mar 23–29</td><td class="num">20</td><td class="num em">20</td><td class="num cl">0</td><td class="num mt">0</td></tr><tr><td>Mar 30–Apr 05</td><td class="num">25</td><td class="num em">25</td><td class="num cl">0</td><td class="num mt">0</td></tr><tr><td>Apr 06–12</td><td class="num">106</td><td class="num em">106</td><td class="num cl">0</td><td class="num mt">0</td></tr><tr><td>Apr 13–19</td><td class="num">185</td><td class="num em">183</td><td class="num cl">0</td><td class="num mt">2</td></tr><tr><td>Apr 20–26</td><td class="num">105</td><td class="num em">105</td><td class="num cl">0</td><td class="num mt">0</td></tr><tr><td>Apr 27–May 03</td><td class="num">98</td><td class="num em">98</td><td class="num cl">0</td><td class="num mt">0</td></tr><tr><td>May 04–10</td><td class="num">37</td><td class="num em">37</td><td class="num cl">0</td><td class="num mt">0</td></tr><tr><td>May 11–17</td><td class="num">4</td><td class="num em">3</td><td class="num cl">0</td><td class="num mt">1</td></tr><tr><td>Jun 01–07</td><td class="num">1</td><td class="num em">1</td><td class="num cl">0</td><td class="num mt">0</td></tr><tr><td>Jun 08–14</td><td class="num">17</td><td class="num em">16</td><td class="num cl">0</td><td class="num mt">1</td></tr></tbody></table>
+  </div>
+</div>
+<div class="rep-card" onclick="toggleCard(this)">
+  <div class="card-hd">
+    <div class="col-name">
+      <span class="rname">Jordan Hayes</span>
+      <div class="badges-row"></div>
+    </div>
+    <div class="col-spark"><svg width="142" height="34" xmlns="http://www.w3.org/2000/svg"><path d="M 0.0,30.0 L 10.9,30.0 L 21.8,30.0 L 32.8,30.0 L 43.7,29.8 L 54.6,29.8 L 65.5,30.0 L 76.5,27.3 L 87.4,4.0 L 98.3,14.4 L 109.2,21.5 L 120.2,14.1 L 131.1,16.5 L 142.0,25.8 L 142.0,34 L 0.0,34 Z" fill="#dc2626" opacity="0.1"/><path d="M 0.0,30.0 L 10.9,30.0 L 21.8,30.0 L 32.8,30.0 L 43.7,29.8 L 54.6,29.8 L 65.5,30.0 L 76.5,27.3 L 87.4,4.0 L 98.3,14.4 L 109.2,21.5 L 120.2,14.1 L 131.1,16.5 L 142.0,25.8" fill="none" stroke="#dc2626" stroke-width="1.8" stroke-linejoin="round"/><circle cx="142.0" cy="25.8" r="3" fill="#dc2626"/></svg></div>
+    <div class="col-trend"><span class="tb tb-dn" title="Last week was below the prior 3-week average">↓ Declining</span></div>
+    <div class="col-stat tc-total">411</div>
+    <div class="col-stat tc-email">353</div>
+    <div class="col-stat tc-call">54</div>
+    <div class="col-stat tc-mtg">4</div>
+    <div class="col-stat tc-uacct">40</div>
+    <div class="col-stat tc-wks">9</div>
+    <div class="col-stat tc-opps">2</div>
+    <div class="col-pipe"><span class="pipe-acv">$2.0M</span></div>
+    <span class="chev">▼</span>
+  </div>
+  <div class="card-bd">
+    <div class="hl-box"><strong>$2M in credited pipeline — standout result for a ramping rep:</strong> Chris has $2M in credited pipeline (2 opps on his accounts, 2 at Stage 1, 1 at Stage 2) — the result of BDR-sourced deals landing on his territory and his own early prospecting work. His 411 total activities across 40 unique accounts and 54 calls show genuine multi-channel effort for someone still early in ramp. Last week was 20 activities. The pipeline emerging on his accounts is a significant early signal. The coaching focus is sustaining account coverage while supporting those deals toward close.<div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(0,0,0,.07);font-size:12px;color:#6b7280;line-height:1.6">📬 Reached <strong>40 unique accounts</strong> over the 90-day period &nbsp;·&nbsp; 🗓 Logged <strong>4 booked meetings</strong> in Salesforce</div></div>
+    <div class="act-bar-wrap"><div class="act-bar-track"><div class="act-bar-fill" style="width:4%"></div></div><span class="act-bar-pct">4% of org top volume</span></div>
+    <div class="peer-bar-wrap"><div class="peer-bar-lbl">vs. peer group avg (1,420 acts):</div><div class="peer-bar-track"><div class="peer-bar-fill" style="width:29%;background:#dc2626"></div><div class="peer-bar-marker"></div></div><span class="peer-bar-pct" style="color:#dc2626">29%</span></div>
+    <div class="sub-section"><div class="sub-title" style="color:#059669">💰 Pipeline — $2.0M ACV <span class="sub-note">credited to creator (Created By)</span></div><div class="prog-chips-row"><span class="prog-chip chip-created">Created: 2</span><span class="prog-chip chip-s1">S1 Reached: 2</span><span class="prog-chip chip-s2">S2 Reached: 1</span></div><table class="wk-table"><thead><tr><th>Account</th><th class="num">ACV</th><th>Stage</th><th>Created</th><th style="color:#0891b2">S1 Reached</th><th style="color:#7c3aed">S2 Reached</th><th style="color:#7c3aed">Account Owner</th></tr></thead><tbody><tr style=""><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="IBM Enterprise Sales- Upsell">IBM</td><td class="num" style="color:#059669;font-weight:700">$1.0M</td><td style="font-size:11px;color:#6b7280">1</td><td style="font-size:11px;color:#6b7280">2026-04-27</td><td style="font-size:11px;color:#0891b2">2026-04-27</td><td style="font-size:11px;color:#7c3aed">—</td><td style="font-size:11px;color:#7c3aed;font-weight:600">Jordan Hayes</td></tr><tr style=""><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="IBM Cross Sell- Consulting Group">IBM</td><td class="num" style="color:#059669;font-weight:700">$1.0M</td><td style="font-size:11px;color:#6b7280">2</td><td style="font-size:11px;color:#6b7280">2026-04-15</td><td style="font-size:11px;color:#0891b2;font-style:italic" title="Inferred from created date">2026-04-15</td><td style="font-size:11px;color:#7c3aed">2026-04-15</td><td style="font-size:11px;color:#7c3aed;font-weight:600">Jordan Hayes</td></tr></tbody></table></div>
+    <div class="sub-title" style="margin-top:16px">Week-by-Week Activity Breakdown</div>
+    <table class="wk-table"><thead><tr><th>Week of</th><th class="num">Activities</th><th class="num em">Emails</th><th class="num cl">Calls</th><th class="num mt">Booked Mtgs</th></tr></thead><tbody><tr><td>Apr 06–12</td><td class="num">1</td><td class="num em">1</td><td class="num cl">0</td><td class="num mt">0</td></tr><tr><td>Apr 13–19</td><td class="num">1</td><td class="num em">1</td><td class="num cl">0</td><td class="num mt">0</td></tr><tr><td>Apr 27–May 03</td><td class="num">13</td><td class="num em">13</td><td class="num cl">0</td><td class="num mt">0</td></tr><tr><td>May 04–10</td><td class="num">123</td><td class="num em">114</td><td class="num cl">9</td><td class="num mt">0</td></tr><tr><td>May 11–17</td><td class="num">74</td><td class="num em">66</td><td class="num cl">7</td><td class="num mt">1</td></tr><tr><td>May 18–24</td><td class="num">40</td><td class="num em">32</td><td class="num cl">7</td><td class="num mt">1</td></tr><tr><td>May 25–31</td><td class="num">75</td><td class="num em">56</td><td class="num cl">19</td><td class="num mt">0</td></tr><tr><td>Jun 01–07</td><td class="num">64</td><td class="num em">51</td><td class="num cl">12</td><td class="num mt">1</td></tr><tr><td>Jun 08–14</td><td class="num">20</td><td class="num em">19</td><td class="num cl">0</td><td class="num mt">1</td></tr></tbody></table>
+  </div>
+</div>
+</div>
+<div class="group-block" style="--group-color:#7c3aed">
+  <div class="group-hd">
+    <span class="group-icon">🏢</span>
+    <span class="group-title">Key Accounts</span>
+    <span class="group-count">4 reps</span>
+  </div>
+  
+  <div class="avg-row">
+      <span class="avg-label">🏢 Key Accounts — 90-Day Totals</span>
+      <span class="avg-val">3,115 actions</span>
+      <span class="avg-sep">·</span>
+      <span class="avg-val">146 accounts touched</span>
+      <span class="avg-sep">·</span>
+      <span class="avg-val">209 meetings booked</span>
+      <span class="avg-sep">·</span>
+      <span class="avg-val">$3.7M pipeline created</span>
+    </div>
+  <div class="col-header-row">
+    <div class="ch">Rep</div><div class="ch">14-Wk Trend</div><div class="ch">Weekly Trend</div>
+    <div class="ch right">Activities</div><div class="ch right">Emails</div>
+    <div class="ch right">Calls</div><div class="ch right">Booked Mtgs</div>
+    <div class="ch right">Uniq Accts</div><div class="ch right">Active Wks</div>
+    <div class="ch right">Opps</div><div class="ch right">Pipeline</div><div></div>
+    </div>
+  
+<div class="rep-card" onclick="toggleCard(this)">
+  <div class="card-hd">
+    <div class="col-name">
+      <span class="rname">Parker Ellis</span>
+      <div class="badges-row"></div>
+    </div>
+    <div class="col-spark"><svg width="142" height="34" xmlns="http://www.w3.org/2000/svg"><path d="M 0.0,30.0 L 10.9,27.0 L 21.8,26.8 L 32.8,26.8 L 43.7,25.8 L 54.6,28.6 L 65.5,27.9 L 76.5,27.0 L 87.4,28.3 L 98.3,28.4 L 109.2,15.1 L 120.2,7.1 L 131.1,4.0 L 142.0,5.9 L 142.0,34 L 0.0,34 Z" fill="#2563eb" opacity="0.1"/><path d="M 0.0,30.0 L 10.9,27.0 L 21.8,26.8 L 32.8,26.8 L 43.7,25.8 L 54.6,28.6 L 65.5,27.9 L 76.5,27.0 L 87.4,28.3 L 98.3,28.4 L 109.2,15.1 L 120.2,7.1 L 131.1,4.0 L 142.0,5.9" fill="none" stroke="#2563eb" stroke-width="1.8" stroke-linejoin="round"/><circle cx="142.0" cy="5.9" r="3" fill="#2563eb"/></svg></div>
+    <div class="col-trend"><span class="tb tb-flat" title="Last week was similar to the prior 3-week average">→ Steady</span></div>
+    <div class="col-stat tc-total">1,349</div>
+    <div class="col-stat tc-email">1,304</div>
+    <div class="col-stat tc-call">9</div>
+    <div class="col-stat tc-mtg">36</div>
+    <div class="col-stat tc-uacct">86</div>
+    <div class="col-stat tc-wks">13</div>
+    <div class="col-stat tc-opps">—</div>
+    <div class="col-pipe"><span class="pipe-acv  pipe-none">—</span></div>
+    <span class="chev">▼</span>
+  </div>
+  <div class="card-bd">
+    <div class="hl-box-warn"><strong>Activity surging — 292 activities last week, meetings building:</strong> Rich's 1,349 total activities and 36 meetings this period reflect a meaningful step up in engagement. His 292 activities last week is one of the strongest single-week outputs in the KA group this window. His 86 unique accounts represent the broadest account coverage in Key Accounts. The gap remains pipeline: no opportunities have been created or sourced in this window. The activity and meeting volume is there — the coaching conversation is about what is happening in those 36 meetings and how to turn them into opened opportunities.<div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(0,0,0,.07);font-size:12px;color:#6b7280;line-height:1.6">📬 Reached <strong>86 unique accounts</strong> over the 90-day period &nbsp;·&nbsp; 🗓 Logged <strong>36 booked meetings</strong> in Salesforce</div></div>
+    <div class="act-bar-wrap"><div class="act-bar-track"><div class="act-bar-fill" style="width:14%"></div></div><span class="act-bar-pct">14% of org top volume</span></div>
+    <div class="peer-bar-wrap"><div class="peer-bar-lbl">vs. peer group avg (779 acts):</div><div class="peer-bar-track"><div class="peer-bar-fill" style="width:100%;background:#16a34a"></div><div class="peer-bar-marker"></div></div><span class="peer-bar-pct" style="color:#16a34a">150%</span></div>
+    <div class="sub-section"><div class="sub-title" style="color:#9ca3af">💰 Pipeline</div><p class="empty-note">No pipeline activity in this period</p></div>
+    <div class="sub-title" style="margin-top:16px">Week-by-Week Activity Breakdown</div>
+    <table class="wk-table"><thead><tr><th>Week of</th><th class="num">Activities</th><th class="num em">Emails</th><th class="num cl">Calls</th><th class="num mt">Booked Mtgs</th></tr></thead><tbody><tr><td>Mar 16–22</td><td class="num">36</td><td class="num em">33</td><td class="num cl">0</td><td class="num mt">3</td></tr><tr><td>Mar 23–29</td><td class="num">39</td><td class="num em">31</td><td class="num cl">3</td><td class="num mt">5</td></tr><tr><td>Mar 30–Apr 05</td><td class="num">39</td><td class="num em">36</td><td class="num cl">0</td><td class="num mt">3</td></tr><tr><td>Apr 06–12</td><td class="num">51</td><td class="num em">49</td><td class="num cl">0</td><td class="num mt">2</td></tr><tr><td>Apr 13–19</td><td class="num">17</td><td class="num em">15</td><td class="num cl">0</td><td class="num mt">2</td></tr><tr><td>Apr 20–26</td><td class="num">26</td><td class="num em">22</td><td class="num cl">1</td><td class="num mt">3</td></tr><tr><td>Apr 27–May 03</td><td class="num">36</td><td class="num em">31</td><td class="num cl">3</td><td class="num mt">2</td></tr><tr><td>May 04–10</td><td class="num">21</td><td class="num em">18</td><td class="num cl">2</td><td class="num mt">1</td></tr><tr><td>May 11–17</td><td class="num">19</td><td class="num em">18</td><td class="num cl">0</td><td class="num mt">1</td></tr><tr><td>May 18–24</td><td class="num">181</td><td class="num em">177</td><td class="num cl">0</td><td class="num mt">4</td></tr><tr><td>May 25–31</td><td class="num">277</td><td class="num em">274</td><td class="num cl">0</td><td class="num mt">3</td></tr><tr><td>Jun 01–07</td><td class="num">315</td><td class="num em">312</td><td class="num cl">0</td><td class="num mt">3</td></tr><tr><td>Jun 08–14</td><td class="num">292</td><td class="num em">288</td><td class="num cl">0</td><td class="num mt">4</td></tr></tbody></table>
+  </div>
+</div>
+<div class="rep-card" onclick="toggleCard(this)">
+  <div class="card-hd">
+    <div class="col-name">
+      <span class="rname">Mason Reed</span>
+      <div class="badges-row"></div>
+    </div>
+    <div class="col-spark"><svg width="142" height="34" xmlns="http://www.w3.org/2000/svg"><path d="M 0.0,30.0 L 10.9,4.0 L 21.8,17.0 L 32.8,18.2 L 43.7,14.3 L 54.6,18.5 L 65.5,11.4 L 76.5,13.5 L 87.4,10.5 L 98.3,8.7 L 109.2,9.6 L 120.2,6.1 L 131.1,10.5 L 142.0,13.8 L 142.0,34 L 0.0,34 Z" fill="#2563eb" opacity="0.1"/><path d="M 0.0,30.0 L 10.9,4.0 L 21.8,17.0 L 32.8,18.2 L 43.7,14.3 L 54.6,18.5 L 65.5,11.4 L 76.5,13.5 L 87.4,10.5 L 98.3,8.7 L 109.2,9.6 L 120.2,6.1 L 131.1,10.5 L 142.0,13.8" fill="none" stroke="#2563eb" stroke-width="1.8" stroke-linejoin="round"/><circle cx="142.0" cy="13.8" r="3" fill="#2563eb"/></svg></div>
+    <div class="col-trend"><span class="tb tb-dn" title="Last week was below the prior 3-week average">↓ Declining</span></div>
+    <div class="col-stat tc-total">792</div>
+    <div class="col-stat tc-email">725</div>
+    <div class="col-stat tc-call">0</div>
+    <div class="col-stat tc-mtg">67</div>
+    <div class="col-stat tc-uacct">16</div>
+    <div class="col-stat tc-wks">13</div>
+    <div class="col-stat tc-opps">5</div>
+    <div class="col-pipe"><span class="pipe-acv">$437K</span></div>
+    <span class="chev">▼</span>
+  </div>
+  <div class="card-bd">
+    <div class="hl-box"><strong>$437K with 4 deals at Stage 2 — the most advanced pipeline in Key Accounts:</strong> Bo's $437K pipeline (5 opps, 4 at Stage 1, 4 at Stage 2) is the most advanced deal set in the KA group. His 67 meetings across 16 accounts show the deep engagement level that's driving this. Last week was 55 activities — steady. With four Stage 2 deals in play simultaneously, near-term revenue contribution is significant. The priority is progressing all four through close.<div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(0,0,0,.07);font-size:12px;color:#6b7280;line-height:1.6">📬 Reached <strong>16 unique accounts</strong> over the 90-day period &nbsp;·&nbsp; 🗓 Logged <strong>67 booked meetings</strong> in Salesforce</div></div>
+    <div class="act-bar-wrap"><div class="act-bar-track"><div class="act-bar-fill" style="width:8%"></div></div><span class="act-bar-pct">8% of org top volume</span></div>
+    <div class="peer-bar-wrap"><div class="peer-bar-lbl">vs. peer group avg (779 acts):</div><div class="peer-bar-track"><div class="peer-bar-fill" style="width:100%;background:#16a34a"></div><div class="peer-bar-marker"></div></div><span class="peer-bar-pct" style="color:#16a34a">102%</span></div>
+    <div class="sub-section"><div class="sub-title" style="color:#059669">💰 Pipeline — $437K ACV <span class="sub-note">credited to creator (Created By)</span></div><div class="prog-chips-row"><span class="prog-chip chip-created">Created: 5</span><span class="prog-chip chip-s1">S1 Reached: 4</span><span class="prog-chip chip-s2">S2 Reached: 4</span></div><table class="wk-table"><thead><tr><th>Account</th><th class="num">ACV</th><th>Stage</th><th>Created</th><th style="color:#0891b2">S1 Reached</th><th style="color:#7c3aed">S2 Reached</th><th style="color:#7c3aed">Account Owner</th></tr></thead><tbody><tr style="opacity:.5"><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="TU Expansion - OP Conversion, INTL Exp, DM + INS land">TransUnion</td><td class="num" style="color:#059669;font-weight:700">$534K</td><td style="font-size:11px;color:#6b7280">2</td><td style="font-size:11px;color:#6b7280">2026-02-12</td><td style="font-size:11px;color:#0891b2">2026-02-12</td><td style="font-size:11px;color:#7c3aed">2026-03-18</td><td style="font-size:11px;color:#7c3aed;font-weight:600">Mason Reed</td></tr><tr style=""><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="Visa VAS expansion">Visa</td><td class="num" style="color:#059669;font-weight:700">$350K</td><td style="font-size:11px;color:#6b7280">1</td><td style="font-size:11px;color:#6b7280">2026-04-24</td><td style="font-size:11px;color:#0891b2">2026-04-24</td><td style="font-size:11px;color:#7c3aed">—</td><td style="font-size:11px;color:#7c3aed;font-weight:600">Mason Reed</td></tr><tr style=""><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="Renewal- AnaPlan - FY27Q3 - Upsell - 58 Users">Anaplan</td><td class="num" style="color:#059669;font-weight:700">$59K</td><td style="font-size:11px;color:#6b7280">4</td><td style="font-size:11px;color:#6b7280">2026-04-28</td><td style="font-size:11px;color:#0891b2;font-style:italic" title="Inferred from created date">2026-04-28</td><td style="font-size:11px;color:#7c3aed;font-style:italic" title="Inferred from S1 or created date">2026-04-28</td><td style="font-size:11px;color:#7c3aed;font-weight:600">Mason Reed</td></tr><tr style=""><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="TransUnion -- Land w/ Insurance">TransUnion</td><td class="num" style="color:#059669;font-weight:700">$22K</td><td style="font-size:11px;color:#6b7280">Closed Won</td><td style="font-size:11px;color:#6b7280">2026-04-27</td><td style="font-size:11px;color:#0891b2;font-style:italic" title="Inferred from created date">2026-04-27</td><td style="font-size:11px;color:#7c3aed;font-style:italic" title="Inferred from S1 or created date">2026-04-27</td><td style="font-size:11px;color:#7c3aed;font-weight:600">Mason Reed</td></tr><tr style=""><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="TU - Canada license upgrade (DF to Full)">TransUnion</td><td class="num" style="color:#059669;font-weight:700">$6K</td><td style="font-size:11px;color:#6b7280">4</td><td style="font-size:11px;color:#6b7280">2026-05-12</td><td style="font-size:11px;color:#0891b2;font-style:italic" title="Inferred from created date">2026-05-12</td><td style="font-size:11px;color:#7c3aed;font-style:italic" title="Inferred from S1 or created date">2026-05-12</td><td style="font-size:11px;color:#7c3aed;font-weight:600">Mason Reed</td></tr></tbody></table></div>
+    <div class="sub-title" style="margin-top:16px">Week-by-Week Activity Breakdown</div>
+    <table class="wk-table"><thead><tr><th>Week of</th><th class="num">Activities</th><th class="num em">Emails</th><th class="num cl">Calls</th><th class="num mt">Booked Mtgs</th></tr></thead><tbody><tr><td>Mar 16–22</td><td class="num">88</td><td class="num em">81</td><td class="num cl">0</td><td class="num mt">7</td></tr><tr><td>Mar 23–29</td><td class="num">44</td><td class="num em">41</td><td class="num cl">0</td><td class="num mt">3</td></tr><tr><td>Mar 30–Apr 05</td><td class="num">40</td><td class="num em">38</td><td class="num cl">0</td><td class="num mt">2</td></tr><tr><td>Apr 06–12</td><td class="num">53</td><td class="num em">50</td><td class="num cl">0</td><td class="num mt">3</td></tr><tr><td>Apr 13–19</td><td class="num">39</td><td class="num em">35</td><td class="num cl">0</td><td class="num mt">4</td></tr><tr><td>Apr 20–26</td><td class="num">63</td><td class="num em">59</td><td class="num cl">0</td><td class="num mt">4</td></tr><tr><td>Apr 27–May 03</td><td class="num">56</td><td class="num em">53</td><td class="num cl">0</td><td class="num mt">3</td></tr><tr><td>May 04–10</td><td class="num">66</td><td class="num em">63</td><td class="num cl">0</td><td class="num mt">3</td></tr><tr><td>May 11–17</td><td class="num">72</td><td class="num em">68</td><td class="num cl">0</td><td class="num mt">4</td></tr><tr><td>May 18–24</td><td class="num">69</td><td class="num em">65</td><td class="num cl">0</td><td class="num mt">4</td></tr><tr><td>May 25–31</td><td class="num">81</td><td class="num em">68</td><td class="num cl">0</td><td class="num mt">13</td></tr><tr><td>Jun 01–07</td><td class="num">66</td><td class="num em">62</td><td class="num cl">0</td><td class="num mt">4</td></tr><tr><td>Jun 08–14</td><td class="num">55</td><td class="num em">42</td><td class="num cl">0</td><td class="num mt">13</td></tr></tbody></table>
+  </div>
+</div>
+<div class="rep-card" onclick="toggleCard(this)">
+  <div class="card-hd">
+    <div class="col-name">
+      <span class="rname">Lucas Brooks</span>
+      <div class="badges-row"></div>
+    </div>
+    <div class="col-spark"><svg width="142" height="34" xmlns="http://www.w3.org/2000/svg"><path d="M 0.0,30.0 L 10.9,21.8 L 21.8,21.8 L 32.8,13.3 L 43.7,16.5 L 54.6,19.3 L 65.5,11.5 L 76.5,4.0 L 87.4,5.1 L 98.3,16.5 L 109.2,5.1 L 120.2,14.7 L 131.1,27.9 L 142.0,23.9 L 142.0,34 L 0.0,34 Z" fill="#dc2626" opacity="0.1"/><path d="M 0.0,30.0 L 10.9,21.8 L 21.8,21.8 L 32.8,13.3 L 43.7,16.5 L 54.6,19.3 L 65.5,11.5 L 76.5,4.0 L 87.4,5.1 L 98.3,16.5 L 109.2,5.1 L 120.2,14.7 L 131.1,27.9 L 142.0,23.9" fill="none" stroke="#dc2626" stroke-width="1.8" stroke-linejoin="round"/><circle cx="142.0" cy="23.9" r="3" fill="#dc2626"/></svg></div>
+    <div class="col-trend"><span class="tb tb-dn" title="Last week was below the prior 3-week average">↓ Declining</span></div>
+    <div class="col-stat tc-total">530</div>
+    <div class="col-stat tc-email">481</div>
+    <div class="col-stat tc-call">0</div>
+    <div class="col-stat tc-mtg">49</div>
+    <div class="col-stat tc-uacct">31</div>
+    <div class="col-stat tc-wks">13</div>
+    <div class="col-stat tc-opps">6</div>
+    <div class="col-pipe"><span class="pipe-acv">$1.2M</span></div>
+    <span class="chev">▼</span>
+  </div>
+  <div class="card-bd">
+    <div class="hl-box"><strong>$1.2M in pipeline — 6 opps on his accounts, 2 at Stage 2:</strong> Brian leads the Key Accounts group in deal count with $1.2M in credited pipeline (6 opps, 5 at Stage 1, 2 at Stage 2 — includes BDR-sourced deals on his strategic accounts). His 49 meetings across 31 accounts — the most meetings in the KA group — reflect the engagement level that is generating this pipeline. Last week was 17 activities. With 2 Stage 2 deals on his accounts, near-term revenue potential is real. The priority is protecting and advancing those deals to close in partnership with the BDR team.<div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(0,0,0,.07);font-size:12px;color:#6b7280;line-height:1.6">📬 Reached <strong>31 unique accounts</strong> over the 90-day period &nbsp;·&nbsp; 🗓 Logged <strong>49 booked meetings</strong> in Salesforce</div></div>
+    <div class="act-bar-wrap"><div class="act-bar-track"><div class="act-bar-fill" style="width:6%"></div></div><span class="act-bar-pct">6% of org top volume</span></div>
+    <div class="peer-bar-wrap"><div class="peer-bar-lbl">vs. peer group avg (779 acts):</div><div class="peer-bar-track"><div class="peer-bar-fill" style="width:68%;background:#dc2626"></div><div class="peer-bar-marker"></div></div><span class="peer-bar-pct" style="color:#dc2626">68%</span></div>
+    <div class="sub-section"><div class="sub-title" style="color:#059669">💰 Pipeline — $1.2M ACV <span class="sub-note">credited to creator (Created By)</span></div><div class="prog-chips-row"><span class="prog-chip chip-created">Created: 6</span><span class="prog-chip chip-s1">S1 Reached: 5</span><span class="prog-chip chip-s2">S2 Reached: 2</span></div><table class="wk-table"><thead><tr><th>Account</th><th class="num">ACV</th><th>Stage</th><th>Created</th><th style="color:#0891b2">S1 Reached</th><th style="color:#7c3aed">S2 Reached</th><th style="color:#7c3aed">Account Owner</th></tr></thead><tbody><tr style=""><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="NVIDIA - Platform + Credit Expansions">NVIDIA</td><td class="num" style="color:#059669;font-weight:700">$457K</td><td style="font-size:11px;color:#6b7280">1</td><td style="font-size:11px;color:#6b7280">2026-04-30</td><td style="font-size:11px;color:#0891b2">2026-04-30</td><td style="font-size:11px;color:#7c3aed">—</td><td style="font-size:11px;color:#7c3aed;font-weight:600">Lucas Brooks</td></tr><tr style=""><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="HP - Upsell Expansion DF + SalesAI">HP</td><td class="num" style="color:#059669;font-weight:700">$350K</td><td style="font-size:11px;color:#6b7280">Closed Lost</td><td style="font-size:11px;color:#6b7280">2026-04-30</td><td style="font-size:11px;color:#0891b2">2026-04-30</td><td style="font-size:11px;color:#7c3aed;font-style:italic" title="Inferred from S1 or created date">2026-04-30</td><td style="font-size:11px;color:#7c3aed;font-weight:600">Lucas Brooks</td></tr><tr style="opacity:.5"><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="Netskope - Forensics Premium Upsell from POC">Netskope</td><td class="num" style="color:#059669;font-weight:700">$216K</td><td style="font-size:11px;color:#6b7280">2</td><td style="font-size:11px;color:#6b7280">2026-02-09</td><td style="font-size:11px;color:#0891b2">2026-02-09</td><td style="font-size:11px;color:#7c3aed">2026-04-30</td><td style="font-size:11px;color:#7c3aed;font-weight:600">Lucas Brooks</td></tr><tr style=""><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="F5 - SalesAI True Forward">F5 Networks</td><td class="num" style="color:#059669;font-weight:700">$188K</td><td style="font-size:11px;color:#6b7280">1</td><td style="font-size:11px;color:#6b7280">2026-04-30</td><td style="font-size:11px;color:#0891b2">2026-04-30</td><td style="font-size:11px;color:#7c3aed">—</td><td style="font-size:11px;color:#7c3aed;font-weight:600">Lucas Brooks</td></tr><tr style=""><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="Thales - SalesAI Enabled ClosePlan">Thales</td><td class="num" style="color:#059669;font-weight:700">$180K</td><td style="font-size:11px;color:#6b7280">1</td><td style="font-size:11px;color:#6b7280">2026-05-19</td><td style="font-size:11px;color:#0891b2">2026-05-19</td><td style="font-size:11px;color:#7c3aed">—</td><td style="font-size:11px;color:#7c3aed;font-weight:600">Lucas Brooks</td></tr><tr style=""><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="Rubrik - Upsell - True Forward DF - 78 Licenses">Rubrik</td><td class="num" style="color:#059669;font-weight:700">$40K</td><td style="font-size:11px;color:#6b7280">1</td><td style="font-size:11px;color:#6b7280">2026-05-11</td><td style="font-size:11px;color:#0891b2">2026-05-11</td><td style="font-size:11px;color:#7c3aed">—</td><td style="font-size:11px;color:#7c3aed;font-weight:600">Lucas Brooks</td></tr></tbody></table></div>
+    <div class="sub-title" style="margin-top:16px">Week-by-Week Activity Breakdown</div>
+    <table class="wk-table"><thead><tr><th>Week of</th><th class="num">Activities</th><th class="num em">Emails</th><th class="num cl">Calls</th><th class="num mt">Booked Mtgs</th></tr></thead><tbody><tr><td>Mar 16–22</td><td class="num">23</td><td class="num em">19</td><td class="num cl">0</td><td class="num mt">4</td></tr><tr><td>Mar 23–29</td><td class="num">23</td><td class="num em">22</td><td class="num cl">0</td><td class="num mt">1</td></tr><tr><td>Mar 30–Apr 05</td><td class="num">47</td><td class="num em">43</td><td class="num cl">0</td><td class="num mt">4</td></tr><tr><td>Apr 06–12</td><td class="num">38</td><td class="num em">34</td><td class="num cl">0</td><td class="num mt">4</td></tr><tr><td>Apr 13–19</td><td class="num">30</td><td class="num em">27</td><td class="num cl">0</td><td class="num mt">3</td></tr><tr><td>Apr 20–26</td><td class="num">52</td><td class="num em">49</td><td class="num cl">0</td><td class="num mt">3</td></tr><tr><td>Apr 27–May 03</td><td class="num">73</td><td class="num em">69</td><td class="num cl">0</td><td class="num mt">4</td></tr><tr><td>May 04–10</td><td class="num">70</td><td class="num em">62</td><td class="num cl">0</td><td class="num mt">8</td></tr><tr><td>May 11–17</td><td class="num">38</td><td class="num em">36</td><td class="num cl">0</td><td class="num mt">2</td></tr><tr><td>May 18–24</td><td class="num">70</td><td class="num em">63</td><td class="num cl">0</td><td class="num mt">7</td></tr><tr><td>May 25–31</td><td class="num">43</td><td class="num em">38</td><td class="num cl">0</td><td class="num mt">5</td></tr><tr><td>Jun 01–07</td><td class="num">6</td><td class="num em">4</td><td class="num cl">0</td><td class="num mt">2</td></tr><tr><td>Jun 08–14</td><td class="num">17</td><td class="num em">15</td><td class="num cl">0</td><td class="num mt">2</td></tr></tbody></table>
+  </div>
+</div>
+<div class="rep-card" onclick="toggleCard(this)">
+  <div class="card-hd">
+    <div class="col-name">
+      <span class="rname">Sydney Palmer</span>
+      <div class="badges-row"></div>
+    </div>
+    <div class="col-spark"><svg width="142" height="34" xmlns="http://www.w3.org/2000/svg"><path d="M 0.0,30.0 L 10.9,27.3 L 21.8,6.1 L 32.8,20.8 L 43.7,13.2 L 54.6,4.0 L 65.5,12.6 L 76.5,11.9 L 87.4,22.5 L 98.3,25.6 L 109.2,26.6 L 120.2,25.6 L 131.1,24.5 L 142.0,17.7 L 142.0,34 L 0.0,34 Z" fill="#16a34a" opacity="0.1"/><path d="M 0.0,30.0 L 10.9,27.3 L 21.8,6.1 L 32.8,20.8 L 43.7,13.2 L 54.6,4.0 L 65.5,12.6 L 76.5,11.9 L 87.4,22.5 L 98.3,25.6 L 109.2,26.6 L 120.2,25.6 L 131.1,24.5 L 142.0,17.7" fill="none" stroke="#16a34a" stroke-width="1.8" stroke-linejoin="round"/><circle cx="142.0" cy="17.7" r="3" fill="#16a34a"/></svg></div>
+    <div class="col-trend"><span class="tb tb-up" title="Last week was above the prior 3-week average">↑ Improving</span></div>
+    <div class="col-stat tc-total">444</div>
+    <div class="col-stat tc-email">387</div>
+    <div class="col-stat tc-call">0</div>
+    <div class="col-stat tc-mtg">57</div>
+    <div class="col-stat tc-uacct">23</div>
+    <div class="col-stat tc-wks">13</div>
+    <div class="col-stat tc-opps">4</div>
+    <div class="col-pipe"><span class="pipe-acv">$2.0M</span></div>
+    <span class="chev">▼</span>
+  </div>
+  <div class="card-bd">
+    <div class="hl-box"><strong>Org-wide pipeline leader — $2M created, 3 opps at Stage 2:</strong> Susan leads the entire organization with $2.03M in credited pipeline (4 opps, 4 at Stage 1, 3 at Stage 2 — including a BDR-sourced deal on her account). Her 57 meetings across 23 accounts reflect sustained strategic engagement. Last week was 36 activities. With 3 opps at Stage 2, near-term revenue contribution from her accounts is the highest in the org. The focus is entirely on protecting and closing those deals.<div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(0,0,0,.07);font-size:12px;color:#6b7280;line-height:1.6">📬 Reached <strong>23 unique accounts</strong> over the 90-day period &nbsp;·&nbsp; 🗓 Logged <strong>57 booked meetings</strong> in Salesforce</div></div>
+    <div class="act-bar-wrap"><div class="act-bar-track"><div class="act-bar-fill" style="width:5%"></div></div><span class="act-bar-pct">5% of org top volume</span></div>
+    <div class="peer-bar-wrap"><div class="peer-bar-lbl">vs. peer group avg (779 acts):</div><div class="peer-bar-track"><div class="peer-bar-fill" style="width:57%;background:#dc2626"></div><div class="peer-bar-marker"></div></div><span class="peer-bar-pct" style="color:#dc2626">57%</span></div>
+    <div class="sub-section"><div class="sub-title" style="color:#059669">💰 Pipeline — $2.0M ACV <span class="sub-note">credited to creator (Created By)</span></div><div class="prog-chips-row"><span class="prog-chip chip-created">Created: 4</span><span class="prog-chip chip-s1">S1 Reached: 4</span><span class="prog-chip chip-s2">S2 Reached: 3</span></div><table class="wk-table"><thead><tr><th>Account</th><th class="num">ACV</th><th>Stage</th><th>Created</th><th style="color:#0891b2">S1 Reached</th><th style="color:#7c3aed">S2 Reached</th><th style="color:#7c3aed">Account Owner</th></tr></thead><tbody><tr style=""><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="IBM Enterprise Sales- Upsell">IBM</td><td class="num" style="color:#059669;font-weight:700">$1.0M</td><td style="font-size:11px;color:#6b7280">1</td><td style="font-size:11px;color:#6b7280">2026-04-27</td><td style="font-size:11px;color:#0891b2">2026-04-27</td><td style="font-size:11px;color:#7c3aed">—</td><td style="font-size:11px;color:#7c3aed;font-weight:600">Jordan Hayes</td></tr><tr style=""><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="IBM Cross Sell- Consulting Group">IBM</td><td class="num" style="color:#059669;font-weight:700">$1.0M</td><td style="font-size:11px;color:#6b7280">2</td><td style="font-size:11px;color:#6b7280">2026-04-15</td><td style="font-size:11px;color:#0891b2;font-style:italic" title="Inferred from created date">2026-04-15</td><td style="font-size:11px;color:#7c3aed">2026-04-15</td><td style="font-size:11px;color:#7c3aed;font-weight:600">Jordan Hayes</td></tr><tr style=""><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="HPE Upsell CSLV (67 Seats)">Hewlett Packard Enterprise</td><td class="num" style="color:#059669;font-weight:700">$17K</td><td style="font-size:11px;color:#6b7280">Closed Won</td><td style="font-size:11px;color:#6b7280">2026-04-15</td><td style="font-size:11px;color:#0891b2;font-style:italic" title="Inferred from created date">2026-04-15</td><td style="font-size:11px;color:#7c3aed;font-style:italic" title="Inferred from S1 or created date">2026-04-15</td><td style="font-size:11px;color:#7c3aed;font-weight:600">Sydney Palmer</td></tr><tr style=""><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="HPE Upsell Add NA Sales Users">Hewlett Packard Enterprise</td><td class="num" style="color:#059669;font-weight:700">$14K</td><td style="font-size:11px;color:#6b7280">Closed Won</td><td style="font-size:11px;color:#6b7280">2026-04-15</td><td style="font-size:11px;color:#0891b2;font-style:italic" title="Inferred from created date">2026-04-15</td><td style="font-size:11px;color:#7c3aed;font-style:italic" title="Inferred from S1 or created date">2026-04-15</td><td style="font-size:11px;color:#7c3aed;font-weight:600">Sydney Palmer</td></tr></tbody></table></div>
+    <div class="sub-title" style="margin-top:16px">Week-by-Week Activity Breakdown</div>
+    <table class="wk-table"><thead><tr><th>Week of</th><th class="num">Activities</th><th class="num em">Emails</th><th class="num cl">Calls</th><th class="num mt">Booked Mtgs</th></tr></thead><tbody><tr><td>Mar 16–22</td><td class="num">8</td><td class="num em">8</td><td class="num cl">0</td><td class="num mt">0</td></tr><tr><td>Mar 23–29</td><td class="num">70</td><td class="num em">63</td><td class="num cl">0</td><td class="num mt">7</td></tr><tr><td>Mar 30–Apr 05</td><td class="num">27</td><td class="num em">20</td><td class="num cl">0</td><td class="num mt">7</td></tr><tr><td>Apr 06–12</td><td class="num">49</td><td class="num em">37</td><td class="num cl">0</td><td class="num mt">12</td></tr><tr><td>Apr 13–19</td><td class="num">76</td><td class="num em">69</td><td class="num cl">0</td><td class="num mt">7</td></tr><tr><td>Apr 20–26</td><td class="num">51</td><td class="num em">45</td><td class="num cl">0</td><td class="num mt">6</td></tr><tr><td>Apr 27–May 03</td><td class="num">53</td><td class="num em">48</td><td class="num cl">0</td><td class="num mt">5</td></tr><tr><td>May 04–10</td><td class="num">22</td><td class="num em">17</td><td class="num cl">0</td><td class="num mt">5</td></tr><tr><td>May 11–17</td><td class="num">13</td><td class="num em">11</td><td class="num cl">0</td><td class="num mt">2</td></tr><tr><td>May 18–24</td><td class="num">10</td><td class="num em">8</td><td class="num cl">0</td><td class="num mt">2</td></tr><tr><td>May 25–31</td><td class="num">13</td><td class="num em">13</td><td class="num cl">0</td><td class="num mt">0</td></tr><tr><td>Jun 01–07</td><td class="num">16</td><td class="num em">15</td><td class="num cl">0</td><td class="num mt">1</td></tr><tr><td>Jun 08–14</td><td class="num">36</td><td class="num em">33</td><td class="num cl">0</td><td class="num mt">3</td></tr></tbody></table>
+  </div>
+</div>
+</div>
+<div class="group-block" style="--group-color:#f59e0b">
+  <div class="group-hd">
+    <span class="group-icon">📈</span>
+    <span class="group-title">AE Growth Team</span>
+    <span class="group-count">5 reps</span>
+  </div>
+  
+  <div class="avg-row">
+      <span class="avg-label">📈 AE Growth Team — 90-Day Totals</span>
+      <span class="avg-val">11,465 actions</span>
+      <span class="avg-sep">·</span>
+      <span class="avg-val">440 accounts touched</span>
+      <span class="avg-sep">·</span>
+      <span class="avg-val">253 meetings booked</span>
+      <span class="avg-sep">·</span>
+      <span class="avg-val">$61K pipeline created</span>
+    </div>
+  <div class="col-header-row">
+    <div class="ch">Rep</div><div class="ch">14-Wk Trend</div><div class="ch">Weekly Trend</div>
+    <div class="ch right">Activities</div><div class="ch right">Emails</div>
+    <div class="ch right">Calls</div><div class="ch right">Booked Mtgs</div>
+    <div class="ch right">Uniq Accts</div><div class="ch right">Active Wks</div>
+    <div class="ch right">Opps</div><div class="ch right">Pipeline</div><div></div>
+    </div>
+  
+<div class="rep-card" onclick="toggleCard(this)">
+  <div class="card-hd">
+    <div class="col-name">
+      <span class="rname">Taylor Blake</span>
+      <div class="badges-row"></div>
+    </div>
+    <div class="col-spark"><svg width="142" height="34" xmlns="http://www.w3.org/2000/svg"><path d="M 0.0,30.0 L 10.9,12.4 L 21.8,4.0 L 32.8,13.7 L 43.7,14.7 L 54.6,26.7 L 65.5,28.6 L 76.5,24.9 L 87.4,18.4 L 98.3,19.9 L 109.2,20.4 L 120.2,26.0 L 131.1,24.0 L 142.0,25.7 L 142.0,34 L 0.0,34 Z" fill="#dc2626" opacity="0.1"/><path d="M 0.0,30.0 L 10.9,12.4 L 21.8,4.0 L 32.8,13.7 L 43.7,14.7 L 54.6,26.7 L 65.5,28.6 L 76.5,24.9 L 87.4,18.4 L 98.3,19.9 L 109.2,20.4 L 120.2,26.0 L 131.1,24.0 L 142.0,25.7" fill="none" stroke="#dc2626" stroke-width="1.8" stroke-linejoin="round"/><circle cx="142.0" cy="25.7" r="3" fill="#dc2626"/></svg></div>
+    <div class="col-trend"><span class="tb tb-dn" title="Last week was below the prior 3-week average">↓ Declining</span></div>
+    <div class="col-stat tc-total">9,257</div>
+    <div class="col-stat tc-email">9,110</div>
+    <div class="col-stat tc-call">110</div>
+    <div class="col-stat tc-mtg">37</div>
+    <div class="col-stat tc-uacct">335</div>
+    <div class="col-stat tc-wks">13</div>
+    <div class="col-stat tc-opps">2</div>
+    <div class="col-pipe"><span class="pipe-acv">$50K</span></div>
+    <span class="chev">▼</span>
+  </div>
+  <div class="card-bd">
+    <div class="hl-box"><strong>Activity leader in AE Growth — $50K in pipeline with 2 deals advancing:</strong> Max leads the AE Growth group with 9,257 activities and 335 unique accounts — the broadest reach in the team. His $50K in credited pipeline (2 opps, both at Stage 2) shows deal progression from his outreach. His 110 calls and 37 meetings reflect genuine multi-channel engagement. Last week was 303 activities — a strong finish. The priority is advancing both Stage 2 deals to close while continuing to build pipeline from his deep account coverage.<div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(0,0,0,.07);font-size:12px;color:#6b7280;line-height:1.6">📬 Reached <strong>335 unique accounts</strong> over the 90-day period &nbsp;·&nbsp; 🗓 Logged <strong>37 booked meetings</strong> in Salesforce</div></div>
+    <div class="act-bar-wrap"><div class="act-bar-track"><div class="act-bar-fill" style="width:98%"></div></div><span class="act-bar-pct">98% of org top volume</span></div>
+    <div class="peer-bar-wrap"><div class="peer-bar-lbl">vs. peer group avg (2,293 acts):</div><div class="peer-bar-track"><div class="peer-bar-fill" style="width:100%;background:#16a34a"></div><div class="peer-bar-marker"></div></div><span class="peer-bar-pct" style="color:#16a34a">150%</span></div>
+    <div class="sub-section"><div class="sub-title" style="color:#059669">💰 Pipeline — $50K ACV <span class="sub-note">credited to creator (Created By)</span></div><div class="prog-chips-row"><span class="prog-chip chip-created">Created: 2</span><span class="prog-chip chip-s1">S1 Reached: 2</span><span class="prog-chip chip-s2">S2 Reached: 2</span></div><table class="wk-table"><thead><tr><th>Account</th><th class="num">ACV</th><th>Stage</th><th>Created</th><th style="color:#0891b2">S1 Reached</th><th style="color:#7c3aed">S2 Reached</th><th style="color:#7c3aed">Account Owner</th></tr></thead><tbody><tr style=""><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="Govini | DF & Forecasting">Govini</td><td class="num" style="color:#059669;font-weight:700">$25K</td><td style="font-size:11px;color:#6b7280">3</td><td style="font-size:11px;color:#6b7280">2026-04-02</td><td style="font-size:11px;color:#0891b2">2026-04-01</td><td style="font-size:11px;color:#7c3aed">2026-04-30</td><td style="font-size:11px;color:#7c3aed;font-weight:600">Taylor Blake</td></tr><tr style=""><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="Defined.ai | Forensics/Forecasting Upsell">Defined.ai</td><td class="num" style="color:#059669;font-weight:700">$25K</td><td style="font-size:11px;color:#6b7280">Closed Lost</td><td style="font-size:11px;color:#6b7280">2026-03-27</td><td style="font-size:11px;color:#0891b2">2026-03-27</td><td style="font-size:11px;color:#7c3aed;font-style:italic" title="Inferred from S1 or created date">2026-03-27</td><td style="font-size:11px;color:#7c3aed;font-weight:600">Taylor Blake</td></tr></tbody></table></div>
+    <div class="sub-title" style="margin-top:16px">Week-by-Week Activity Breakdown</div>
+    <table class="wk-table"><thead><tr><th>Week of</th><th class="num">Activities</th><th class="num em">Emails</th><th class="num cl">Calls</th><th class="num mt">Booked Mtgs</th></tr></thead><tbody><tr><td>Mar 16–22</td><td class="num">1,249</td><td class="num em">1,247</td><td class="num cl">0</td><td class="num mt">2</td></tr><tr><td>Mar 23–29</td><td class="num">1,844</td><td class="num em">1,842</td><td class="num cl">0</td><td class="num mt">2</td></tr><tr><td>Mar 30–Apr 05</td><td class="num">1,154</td><td class="num em">1,119</td><td class="num cl">30</td><td class="num mt">5</td></tr><tr><td>Apr 06–12</td><td class="num">1,087</td><td class="num em">1,067</td><td class="num cl">18</td><td class="num mt">2</td></tr><tr><td>Apr 13–19</td><td class="num">233</td><td class="num em">227</td><td class="num cl">4</td><td class="num mt">2</td></tr><tr><td>Apr 20–26</td><td class="num">100</td><td class="num em">99</td><td class="num cl">0</td><td class="num mt">1</td></tr><tr><td>Apr 27–May 03</td><td class="num">359</td><td class="num em">353</td><td class="num cl">0</td><td class="num mt">6</td></tr><tr><td>May 04–10</td><td class="num">824</td><td class="num em">822</td><td class="num cl">0</td><td class="num mt">2</td></tr><tr><td>May 11–17</td><td class="num">715</td><td class="num em">654</td><td class="num cl">58</td><td class="num mt">3</td></tr><tr><td>May 18–24</td><td class="num">678</td><td class="num em">674</td><td class="num cl">0</td><td class="num mt">4</td></tr><tr><td>May 25–31</td><td class="num">284</td><td class="num em">282</td><td class="num cl">0</td><td class="num mt">2</td></tr><tr><td>Jun 01–07</td><td class="num">427</td><td class="num em">425</td><td class="num cl">0</td><td class="num mt">2</td></tr><tr><td>Jun 08–14</td><td class="num">303</td><td class="num em">299</td><td class="num cl">0</td><td class="num mt">4</td></tr></tbody></table>
+  </div>
+</div>
+<div class="rep-card" onclick="toggleCard(this)">
+  <div class="card-hd">
+    <div class="col-name">
+      <span class="rname">Noah Bennett</span>
+      <div class="badges-row"></div>
+    </div>
+    <div class="col-spark"><svg width="142" height="34" xmlns="http://www.w3.org/2000/svg"><path d="M 0.0,30.0 L 10.9,19.5 L 21.8,14.3 L 32.8,17.1 L 43.7,18.5 L 54.6,12.6 L 65.5,20.6 L 76.5,12.7 L 87.4,15.5 L 98.3,12.2 L 109.2,4.0 L 120.2,19.7 L 131.1,8.4 L 142.0,19.7 L 142.0,34 L 0.0,34 Z" fill="#dc2626" opacity="0.1"/><path d="M 0.0,30.0 L 10.9,19.5 L 21.8,14.3 L 32.8,17.1 L 43.7,18.5 L 54.6,12.6 L 65.5,20.6 L 76.5,12.7 L 87.4,15.5 L 98.3,12.2 L 109.2,4.0 L 120.2,19.7 L 131.1,8.4 L 142.0,19.7" fill="none" stroke="#dc2626" stroke-width="1.8" stroke-linejoin="round"/><circle cx="142.0" cy="19.7" r="3" fill="#dc2626"/></svg></div>
+    <div class="col-trend"><span class="tb tb-dn" title="Last week was below the prior 3-week average">↓ Declining</span></div>
+    <div class="col-stat tc-total">1,119</div>
+    <div class="col-stat tc-email">751</div>
+    <div class="col-stat tc-call">299</div>
+    <div class="col-stat tc-mtg">69</div>
+    <div class="col-stat tc-uacct">46</div>
+    <div class="col-stat tc-wks">13</div>
+    <div class="col-stat tc-opps">3</div>
+    <div class="col-pipe"><span class="pipe-acv">$11K</span></div>
+    <span class="chev">▼</span>
+  </div>
+  <div class="card-bd">
+    <div class="hl-box"><strong>Pipeline emerged this period — 3 opps, 2 at Stage 2:</strong> Chris leads the AE Growth group in activity with 1,119 total activities and 69 meetings across 46 unique accounts. His $11K pipeline (3 opps, 3 at Stage 1, 2 at Stage 2) represents real deal progression — a meaningful shift from prior periods. His 299 calls are the highest in the group. Last week was 59 activities. With 2 opps at Stage 2, near-term pipeline conversion is in reach. The focus is advancing those deals while continuing to open new opportunities off his meeting volume.<div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(0,0,0,.07);font-size:12px;color:#6b7280;line-height:1.6">📬 Reached <strong>46 unique accounts</strong> over the 90-day period &nbsp;·&nbsp; 🗓 Logged <strong>69 booked meetings</strong> in Salesforce</div></div>
+    <div class="act-bar-wrap"><div class="act-bar-track"><div class="act-bar-fill" style="width:12%"></div></div><span class="act-bar-pct">12% of org top volume</span></div>
+    <div class="peer-bar-wrap"><div class="peer-bar-lbl">vs. peer group avg (2,293 acts):</div><div class="peer-bar-track"><div class="peer-bar-fill" style="width:49%;background:#dc2626"></div><div class="peer-bar-marker"></div></div><span class="peer-bar-pct" style="color:#dc2626">49%</span></div>
+    <div class="sub-section"><div class="sub-title" style="color:#059669">💰 Pipeline — $11K ACV <span class="sub-note">credited to creator (Created By)</span></div><div class="prog-chips-row"><span class="prog-chip chip-created">Created: 3</span><span class="prog-chip chip-s1">S1 Reached: 3</span><span class="prog-chip chip-s2">S2 Reached: 2</span></div><table class="wk-table"><thead><tr><th>Account</th><th class="num">ACV</th><th>Stage</th><th>Created</th><th style="color:#0891b2">S1 Reached</th><th style="color:#7c3aed">S2 Reached</th><th style="color:#7c3aed">Account Owner</th></tr></thead><tbody><tr style=""><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="Fictiv - Enterprise Team Expansion">Fictiv</td><td class="num" style="color:#059669;font-weight:700">$6K</td><td style="font-size:11px;color:#6b7280">4</td><td style="font-size:11px;color:#6b7280">2026-05-06</td><td style="font-size:11px;color:#0891b2;font-style:italic" title="Inferred from created date">2026-05-06</td><td style="font-size:11px;color:#7c3aed;font-style:italic" title="Inferred from S1 or created date">2026-05-06</td><td style="font-size:11px;color:#7c3aed;font-weight:600">Noah Bennett</td></tr><tr style=""><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="Fictiv - 7-Seat Expansion">Fictiv</td><td class="num" style="color:#059669;font-weight:700">$3K</td><td style="font-size:11px;color:#6b7280">1</td><td style="font-size:11px;color:#6b7280">2026-05-15</td><td style="font-size:11px;color:#0891b2">2026-05-15</td><td style="font-size:11px;color:#7c3aed">—</td><td style="font-size:11px;color:#7c3aed;font-weight:600">Noah Bennett</td></tr><tr style=""><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="Dozuki - Addtl license">Dozuki</td><td class="num" style="color:#059669;font-weight:700">$907</td><td style="font-size:11px;color:#6b7280">Closed Won</td><td style="font-size:11px;color:#6b7280">2026-05-05</td><td style="font-size:11px;color:#0891b2">2026-05-05</td><td style="font-size:11px;color:#7c3aed;font-style:italic" title="Inferred from S1 or created date">2026-05-05</td><td style="font-size:11px;color:#7c3aed;font-weight:600">Noah Bennett</td></tr></tbody></table></div>
+    <div class="sub-title" style="margin-top:16px">Week-by-Week Activity Breakdown</div>
+    <table class="wk-table"><thead><tr><th>Week of</th><th class="num">Activities</th><th class="num em">Emails</th><th class="num cl">Calls</th><th class="num mt">Booked Mtgs</th></tr></thead><tbody><tr><td>Mar 16–22</td><td class="num">60</td><td class="num em">49</td><td class="num cl">7</td><td class="num mt">4</td></tr><tr><td>Mar 23–29</td><td class="num">90</td><td class="num em">35</td><td class="num cl">50</td><td class="num mt">5</td></tr><tr><td>Mar 30–Apr 05</td><td class="num">74</td><td class="num em">26</td><td class="num cl">46</td><td class="num mt">2</td></tr><tr><td>Apr 06–12</td><td class="num">66</td><td class="num em">54</td><td class="num cl">6</td><td class="num mt">6</td></tr><tr><td>Apr 13–19</td><td class="num">100</td><td class="num em">83</td><td class="num cl">11</td><td class="num mt">6</td></tr><tr><td>Apr 20–26</td><td class="num">54</td><td class="num em">38</td><td class="num cl">11</td><td class="num mt">5</td></tr><tr><td>Apr 27–May 03</td><td class="num">99</td><td class="num em">53</td><td class="num cl">39</td><td class="num mt">7</td></tr><tr><td>May 04–10</td><td class="num">83</td><td class="num em">60</td><td class="num cl">15</td><td class="num mt">8</td></tr><tr><td>May 11–17</td><td class="num">102</td><td class="num em">75</td><td class="num cl">18</td><td class="num mt">9</td></tr><tr><td>May 18–24</td><td class="num">149</td><td class="num em">64</td><td class="num cl">79</td><td class="num mt">6</td></tr><tr><td>May 25–31</td><td class="num">59</td><td class="num em">53</td><td class="num cl">2</td><td class="num mt">4</td></tr><tr><td>Jun 01–07</td><td class="num">124</td><td class="num em">111</td><td class="num cl">10</td><td class="num mt">3</td></tr><tr><td>Jun 08–14</td><td class="num">59</td><td class="num em">50</td><td class="num cl">5</td><td class="num mt">4</td></tr></tbody></table>
+  </div>
+</div>
+<div class="rep-card" onclick="toggleCard(this)">
+  <div class="card-hd">
+    <div class="col-name">
+      <span class="rname">Casey Parker</span>
+      <div class="badges-row"></div>
+    </div>
+    <div class="col-spark"><svg width="142" height="34" xmlns="http://www.w3.org/2000/svg"><path d="M 0.0,30.0 L 10.9,29.0 L 21.8,8.4 L 32.8,25.6 L 43.7,17.7 L 54.6,7.8 L 65.5,24.9 L 76.5,17.7 L 87.4,4.0 L 98.3,17.0 L 109.2,8.1 L 120.2,11.9 L 131.1,26.2 L 142.0,20.4 L 142.0,34 L 0.0,34 Z" fill="#dc2626" opacity="0.1"/><path d="M 0.0,30.0 L 10.9,29.0 L 21.8,8.4 L 32.8,25.6 L 43.7,17.7 L 54.6,7.8 L 65.5,24.9 L 76.5,17.7 L 87.4,4.0 L 98.3,17.0 L 109.2,8.1 L 120.2,11.9 L 131.1,26.2 L 142.0,20.4" fill="none" stroke="#dc2626" stroke-width="1.8" stroke-linejoin="round"/><circle cx="142.0" cy="20.4" r="3" fill="#dc2626"/></svg></div>
+    <div class="col-trend"><span class="tb tb-dn" title="Last week was below the prior 3-week average">↓ Declining</span></div>
+    <div class="col-stat tc-total">501</div>
+    <div class="col-stat tc-email">476</div>
+    <div class="col-stat tc-call">0</div>
+    <div class="col-stat tc-mtg">25</div>
+    <div class="col-stat tc-uacct">40</div>
+    <div class="col-stat tc-wks">13</div>
+    <div class="col-stat tc-opps">—</div>
+    <div class="col-pipe"><span class="pipe-acv  pipe-none">—</span></div>
+    <span class="chev">▼</span>
+  </div>
+  <div class="card-bd">
+    <div class="hl-box"><strong>Consistent coverage — 25 meetings across 40 accounts:</strong> Alexa's 501 total activities and 25 meetings across 40 unique accounts reflect steady outreach with real engagement conversion. Last week was 28 activities — consistent output. No credited pipeline in this window. Her multi-account approach and meeting conversion rate make her well-positioned to open opportunities. The coaching focus is identifying which of the 40 accounts in her rotation are furthest along and converting meetings into opened pipeline.<div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(0,0,0,.07);font-size:12px;color:#6b7280;line-height:1.6">📬 Reached <strong>40 unique accounts</strong> over the 90-day period &nbsp;·&nbsp; 🗓 Logged <strong>25 booked meetings</strong> in Salesforce</div></div>
+    <div class="act-bar-wrap"><div class="act-bar-track"><div class="act-bar-fill" style="width:5%"></div></div><span class="act-bar-pct">5% of org top volume</span></div>
+    <div class="peer-bar-wrap"><div class="peer-bar-lbl">vs. peer group avg (2,293 acts):</div><div class="peer-bar-track"><div class="peer-bar-fill" style="width:22%;background:#dc2626"></div><div class="peer-bar-marker"></div></div><span class="peer-bar-pct" style="color:#dc2626">22%</span></div>
+    <div class="sub-section"><div class="sub-title" style="color:#9ca3af">💰 Pipeline</div><p class="empty-note">No pipeline activity in this period</p></div>
+    <div class="sub-title" style="margin-top:16px">Week-by-Week Activity Breakdown</div>
+    <table class="wk-table"><thead><tr><th>Week of</th><th class="num">Activities</th><th class="num em">Emails</th><th class="num cl">Calls</th><th class="num mt">Booked Mtgs</th></tr></thead><tbody><tr><td>Mar 16–22</td><td class="num">3</td><td class="num em">0</td><td class="num cl">0</td><td class="num mt">3</td></tr><tr><td>Mar 23–29</td><td class="num">63</td><td class="num em">61</td><td class="num cl">0</td><td class="num mt">2</td></tr><tr><td>Mar 30–Apr 05</td><td class="num">13</td><td class="num em">11</td><td class="num cl">0</td><td class="num mt">2</td></tr><tr><td>Apr 06–12</td><td class="num">36</td><td class="num em">34</td><td class="num cl">0</td><td class="num mt">2</td></tr><tr><td>Apr 13–19</td><td class="num">65</td><td class="num em">64</td><td class="num cl">0</td><td class="num mt">1</td></tr><tr><td>Apr 20–26</td><td class="num">15</td><td class="num em">13</td><td class="num cl">0</td><td class="num mt">2</td></tr><tr><td>Apr 27–May 03</td><td class="num">36</td><td class="num em">36</td><td class="num cl">0</td><td class="num mt">0</td></tr><tr><td>May 04–10</td><td class="num">76</td><td class="num em">75</td><td class="num cl">0</td><td class="num mt">1</td></tr><tr><td>May 11–17</td><td class="num">38</td><td class="num em">36</td><td class="num cl">0</td><td class="num mt">2</td></tr><tr><td>May 18–24</td><td class="num">64</td><td class="num em">62</td><td class="num cl">0</td><td class="num mt">2</td></tr><tr><td>May 25–31</td><td class="num">53</td><td class="num em">50</td><td class="num cl">0</td><td class="num mt">3</td></tr><tr><td>Jun 01–07</td><td class="num">11</td><td class="num em">9</td><td class="num cl">0</td><td class="num mt">2</td></tr><tr><td>Jun 08–14</td><td class="num">28</td><td class="num em">25</td><td class="num cl">0</td><td class="num mt">3</td></tr></tbody></table>
+  </div>
+</div>
+<div class="rep-card" onclick="toggleCard(this)">
+  <div class="card-hd">
+    <div class="col-name">
+      <span class="rname">Caleb Foster</span>
+      <div class="badges-row"></div>
+    </div>
+    <div class="col-spark"><svg width="142" height="34" xmlns="http://www.w3.org/2000/svg"><path d="M 0.0,30.0 L 10.9,12.5 L 21.8,6.0 L 32.8,4.0 L 43.7,16.0 L 54.6,15.0 L 65.5,14.5 L 76.5,21.0 L 87.4,24.0 L 98.3,20.0 L 109.2,21.5 L 120.2,22.5 L 131.1,12.5 L 142.0,14.0 L 142.0,34 L 0.0,34 Z" fill="#16a34a" opacity="0.1"/><path d="M 0.0,30.0 L 10.9,12.5 L 21.8,6.0 L 32.8,4.0 L 43.7,16.0 L 54.6,15.0 L 65.5,14.5 L 76.5,21.0 L 87.4,24.0 L 98.3,20.0 L 109.2,21.5 L 120.2,22.5 L 131.1,12.5 L 142.0,14.0" fill="none" stroke="#16a34a" stroke-width="1.8" stroke-linejoin="round"/><circle cx="142.0" cy="14.0" r="3" fill="#16a34a"/></svg></div>
+    <div class="col-trend"><span class="tb tb-up" title="Last week was above the prior 3-week average">↑ Improving</span></div>
+    <div class="col-stat tc-total">373</div>
+    <div class="col-stat tc-email">303</div>
+    <div class="col-stat tc-call">0</div>
+    <div class="col-stat tc-mtg">70</div>
+    <div class="col-stat tc-uacct">13</div>
+    <div class="col-stat tc-wks">13</div>
+    <div class="col-stat tc-opps">—</div>
+    <div class="col-pipe"><span class="pipe-acv  pipe-none">—</span></div>
+    <span class="chev">▼</span>
+  </div>
+  <div class="card-bd">
+    <div class="hl-box"><strong>70 meetings on 13 accounts — deepest relationship investment in the org:</strong> Jeff's 70 meetings across just 13 accounts means he's averaging over 5 meetings per account — the most concentrated engagement of any rep in the organization. His 373 total activities show consistent investment in a focused account set. Last week was 32 activities. No self-sourced pipeline yet, but the relationship depth he's building is the precursor to conversion. With 13 accounts this engaged, the next step is qualifying those conversations into formal pipeline — the foundation is clearly there.<div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(0,0,0,.07);font-size:12px;color:#6b7280;line-height:1.6">📬 Reached <strong>13 unique accounts</strong> over the 90-day period &nbsp;·&nbsp; 🗓 Logged <strong>70 booked meetings</strong> in Salesforce</div></div>
+    <div class="act-bar-wrap"><div class="act-bar-track"><div class="act-bar-fill" style="width:4%"></div></div><span class="act-bar-pct">4% of org top volume</span></div>
+    <div class="peer-bar-wrap"><div class="peer-bar-lbl">vs. peer group avg (2,293 acts):</div><div class="peer-bar-track"><div class="peer-bar-fill" style="width:16%;background:#dc2626"></div><div class="peer-bar-marker"></div></div><span class="peer-bar-pct" style="color:#dc2626">16%</span></div>
+    <div class="sub-section"><div class="sub-title" style="color:#9ca3af">💰 Pipeline</div><p class="empty-note">No pipeline activity in this period</p></div>
+    <div class="sub-title" style="margin-top:16px">Week-by-Week Activity Breakdown</div>
+    <table class="wk-table"><thead><tr><th>Week of</th><th class="num">Activities</th><th class="num em">Emails</th><th class="num cl">Calls</th><th class="num mt">Booked Mtgs</th></tr></thead><tbody><tr><td>Mar 16–22</td><td class="num">35</td><td class="num em">29</td><td class="num cl">0</td><td class="num mt">6</td></tr><tr><td>Mar 23–29</td><td class="num">48</td><td class="num em">41</td><td class="num cl">0</td><td class="num mt">7</td></tr><tr><td>Mar 30–Apr 05</td><td class="num">52</td><td class="num em">39</td><td class="num cl">0</td><td class="num mt">13</td></tr><tr><td>Apr 06–12</td><td class="num">28</td><td class="num em">21</td><td class="num cl">0</td><td class="num mt">7</td></tr><tr><td>Apr 13–19</td><td class="num">30</td><td class="num em">25</td><td class="num cl">0</td><td class="num mt">5</td></tr><tr><td>Apr 20–26</td><td class="num">31</td><td class="num em">26</td><td class="num cl">0</td><td class="num mt">5</td></tr><tr><td>Apr 27–May 03</td><td class="num">18</td><td class="num em">13</td><td class="num cl">0</td><td class="num mt">5</td></tr><tr><td>May 04–10</td><td class="num">12</td><td class="num em">8</td><td class="num cl">0</td><td class="num mt">4</td></tr><tr><td>May 11–17</td><td class="num">20</td><td class="num em">16</td><td class="num cl">0</td><td class="num mt">4</td></tr><tr><td>May 18–24</td><td class="num">17</td><td class="num em">14</td><td class="num cl">0</td><td class="num mt">3</td></tr><tr><td>May 25–31</td><td class="num">15</td><td class="num em">11</td><td class="num cl">0</td><td class="num mt">4</td></tr><tr><td>Jun 01–07</td><td class="num">35</td><td class="num em">31</td><td class="num cl">0</td><td class="num mt">4</td></tr><tr><td>Jun 08–14</td><td class="num">32</td><td class="num em">29</td><td class="num cl">0</td><td class="num mt">3</td></tr></tbody></table>
+  </div>
+</div>
+<div class="rep-card" onclick="toggleCard(this)">
+  <div class="card-hd">
+    <div class="col-name">
+      <span class="rname">Riley Morgan</span>
+      <div class="badges-row"></div>
+    </div>
+    <div class="col-spark"><svg width="142" height="34" xmlns="http://www.w3.org/2000/svg"><path d="M 0.0,30.0 L 10.9,4.0 L 21.8,10.3 L 32.8,19.0 L 43.7,19.8 L 54.6,19.0 L 65.5,16.6 L 76.5,19.8 L 87.4,16.6 L 98.3,22.1 L 109.2,19.8 L 120.2,18.2 L 131.1,16.6 L 142.0,19.0 L 142.0,34 L 0.0,34 Z" fill="#2563eb" opacity="0.1"/><path d="M 0.0,30.0 L 10.9,4.0 L 21.8,10.3 L 32.8,19.0 L 43.7,19.8 L 54.6,19.0 L 65.5,16.6 L 76.5,19.8 L 87.4,16.6 L 98.3,22.1 L 109.2,19.8 L 120.2,18.2 L 131.1,16.6 L 142.0,19.0" fill="none" stroke="#2563eb" stroke-width="1.8" stroke-linejoin="round"/><circle cx="142.0" cy="19.0" r="3" fill="#2563eb"/></svg></div>
+    <div class="col-trend"><span class="tb tb-flat" title="Last week was similar to the prior 3-week average">→ Steady</span></div>
+    <div class="col-stat tc-total">215</div>
+    <div class="col-stat tc-email">163</div>
+    <div class="col-stat tc-call">0</div>
+    <div class="col-stat tc-mtg">52</div>
+    <div class="col-stat tc-uacct">21</div>
+    <div class="col-stat tc-wks">13</div>
+    <div class="col-stat tc-opps">—</div>
+    <div class="col-pipe"><span class="pipe-acv  pipe-none">—</span></div>
+    <span class="chev">▼</span>
+  </div>
+  <div class="card-bd">
+    <div class="hl-box"><strong>52 meetings on 21 accounts — strong engagement depth, pipeline is the gap:</strong> Steve's 52 meetings across 21 unique accounts are the highest meeting-to-account ratio in the AE Growth group. His 215 total activities reflect a relationship-focused model. Last week was 14 activities. No self-sourced pipeline in this window. With 52 meetings logged, the conversations are happening. The next step is identifying which of those 21 accounts are closest to a formal opportunity and converting the meeting investment into opened pipeline.<div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(0,0,0,.07);font-size:12px;color:#6b7280;line-height:1.6">📬 Reached <strong>21 unique accounts</strong> over the 90-day period &nbsp;·&nbsp; 🗓 Logged <strong>52 booked meetings</strong> in Salesforce</div></div>
+    <div class="act-bar-wrap"><div class="act-bar-track"><div class="act-bar-fill" style="width:2%"></div></div><span class="act-bar-pct">2% of org top volume</span></div>
+    <div class="peer-bar-wrap"><div class="peer-bar-lbl">vs. peer group avg (2,293 acts):</div><div class="peer-bar-track"><div class="peer-bar-fill" style="width:9%;background:#dc2626"></div><div class="peer-bar-marker"></div></div><span class="peer-bar-pct" style="color:#dc2626">9%</span></div>
+    <div class="sub-section"><div class="sub-title" style="color:#9ca3af">💰 Pipeline</div><p class="empty-note">No pipeline activity in this period</p></div>
+    <div class="sub-title" style="margin-top:16px">Week-by-Week Activity Breakdown</div>
+    <table class="wk-table"><thead><tr><th>Week of</th><th class="num">Activities</th><th class="num em">Emails</th><th class="num cl">Calls</th><th class="num mt">Booked Mtgs</th></tr></thead><tbody><tr><td>Mar 16–22</td><td class="num">33</td><td class="num em">28</td><td class="num cl">0</td><td class="num mt">5</td></tr><tr><td>Mar 23–29</td><td class="num">25</td><td class="num em">21</td><td class="num cl">0</td><td class="num mt">4</td></tr><tr><td>Mar 30–Apr 05</td><td class="num">14</td><td class="num em">12</td><td class="num cl">0</td><td class="num mt">2</td></tr><tr><td>Apr 06–12</td><td class="num">13</td><td class="num em">10</td><td class="num cl">0</td><td class="num mt">3</td></tr><tr><td>Apr 13–19</td><td class="num">14</td><td class="num em">10</td><td class="num cl">0</td><td class="num mt">4</td></tr><tr><td>Apr 20–26</td><td class="num">17</td><td class="num em">12</td><td class="num cl">0</td><td class="num mt">5</td></tr><tr><td>Apr 27–May 03</td><td class="num">13</td><td class="num em">8</td><td class="num cl">0</td><td class="num mt">5</td></tr><tr><td>May 04–10</td><td class="num">17</td><td class="num em">13</td><td class="num cl">0</td><td class="num mt">4</td></tr><tr><td>May 11–17</td><td class="num">10</td><td class="num em">7</td><td class="num cl">0</td><td class="num mt">3</td></tr><tr><td>May 18–24</td><td class="num">13</td><td class="num em">9</td><td class="num cl">0</td><td class="num mt">4</td></tr><tr><td>May 25–31</td><td class="num">15</td><td class="num em">10</td><td class="num cl">0</td><td class="num mt">5</td></tr><tr><td>Jun 01–07</td><td class="num">17</td><td class="num em">13</td><td class="num cl">0</td><td class="num mt">4</td></tr><tr><td>Jun 08–14</td><td class="num">14</td><td class="num em">10</td><td class="num cl">0</td><td class="num mt">4</td></tr></tbody></table>
+  </div>
+</div>
+</div>
+
+</div>
+<div class="report-footer">
+  <span class="footer-label">Data sources</span>
+  <a class="footer-link" href="https://peopleai.lightning.force.com/lightning/r/Report/00ORi00000LcEYvMAN/view?queryScope=userFolders" target="_blank" rel="noopener noreferrer">
+    📊 90-Day Activity Report
+  </a>
+  <span class="footer-sep">·</span>
+  <a class="footer-link" href="https://glass.people.ai/sheet/80e9f99e-19a1-4081-b11b-02d8ce835ad0" target="_blank" rel="noopener noreferrer">
+    💰 Pipeline Created Report
+  </a>
+  <span class="footer-meta" data-report-meta>Mar 15, 2026 – Jun 12, 2026 &nbsp;·&nbsp; Generated Jun 12, 2026</span>
+</div>
+<script>
+function toggleCard(c) {
+  c.classList.toggle('open');
+}
+
+/*
+ * Keep this sample report current by shifting every displayed date by the
+ * same number of days. Set REPORT_LAG_DAYS to any value from 0 through 10
+ * if the report should intentionally trail the current date.
+ */
+(function keepReportDatesCurrent() {
+  const REPORT_LAG_DAYS = 0;
+  const ORIGINAL_REPORT_END = Date.UTC(2026, 5, 12);
+  const ORIGINAL_REPORT_YEAR = 2026;
+  const DAY_MS = 24 * 60 * 60 * 1000;
+  const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+  const safeLagDays = Math.min(10, Math.max(0, REPORT_LAG_DAYS));
+  const now = new Date();
+  const currentReportEnd = Date.UTC(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate() - safeLagDays
+  );
+  const shiftDays = Math.round(
+    (currentReportEnd - ORIGINAL_REPORT_END) / DAY_MS
+  );
+
+  function addDays(date, days) {
+    return new Date(date.getTime() + (days * DAY_MS));
+  }
+
+  function formatLong(date) {
+    return `${MONTHS[date.getUTCMonth()]} ${date.getUTCDate()}, ${date.getUTCFullYear()}`;
+  }
+
+  function formatIso(date) {
+    const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+    const day = String(date.getUTCDate()).padStart(2, '0');
+    return `${date.getUTCFullYear()}-${month}-${day}`;
+  }
+
+  function parseIso(value) {
+    const match = value.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    if (!match) return null;
+    return new Date(Date.UTC(
+      Number(match[1]),
+      Number(match[2]) - 1,
+      Number(match[3])
+    ));
+  }
+
+  function shiftIsoDates() {
+    document.querySelectorAll('.wk-table td').forEach((cell) => {
+      const originalDate = parseIso(cell.textContent.trim());
+      if (originalDate) {
+        cell.textContent = formatIso(addDays(originalDate, shiftDays));
+      }
+    });
+  }
+
+  function parseWeekRange(value) {
+    const match = value.match(
+      /^([A-Z][a-z]{2}) (\d{2})–(?:([A-Z][a-z]{2}) )?(\d{2})$/
+    );
+    if (!match) return null;
+
+    const startMonth = MONTHS.indexOf(match[1]);
+    const endMonth = match[3] ? MONTHS.indexOf(match[3]) : startMonth;
+    if (startMonth < 0 || endMonth < 0) return null;
+
+    const start = new Date(Date.UTC(
+      ORIGINAL_REPORT_YEAR,
+      startMonth,
+      Number(match[2])
+    ));
+    const endYear = endMonth < startMonth
+      ? ORIGINAL_REPORT_YEAR + 1
+      : ORIGINAL_REPORT_YEAR;
+    const end = new Date(Date.UTC(endYear, endMonth, Number(match[4])));
+    return { start, end };
+  }
+
+  function formatWeekRange(start, end) {
+    const startLabel = `${MONTHS[start.getUTCMonth()]} ${String(start.getUTCDate()).padStart(2, '0')}`;
+    const endDay = String(end.getUTCDate()).padStart(2, '0');
+    const endLabel = start.getUTCMonth() === end.getUTCMonth()
+      ? endDay
+      : `${MONTHS[end.getUTCMonth()]} ${endDay}`;
+    return `${startLabel}–${endLabel}`;
+  }
+
+  function shiftWeekRanges() {
+    document.querySelectorAll('.wk-table').forEach((table) => {
+      const firstHeading = table.querySelector('th');
+      if (!firstHeading || firstHeading.textContent.trim() !== 'Week of') return;
+
+      table.querySelectorAll('tbody tr td:first-child').forEach((cell) => {
+        const range = parseWeekRange(cell.textContent.trim());
+        if (range) {
+          cell.textContent = formatWeekRange(
+            addDays(range.start, shiftDays),
+            addDays(range.end, shiftDays)
+          );
+        }
+      });
+    });
+  }
+
+  const reportEnd = new Date(currentReportEnd);
+  const reportStart = addDays(reportEnd, -89);
+  const reportRange = `${formatLong(reportStart)} – ${formatLong(reportEnd)}`;
+
+  document.querySelector('[data-report-range]').textContent = reportRange;
+  document.querySelector('[data-report-meta]').innerHTML =
+    `${reportRange} &nbsp;·&nbsp; Generated ${formatLong(reportEnd)}`;
+
+  shiftIsoDates();
+  shiftWeekRanges();
+})();
+</script>
+</body>
+</html>
